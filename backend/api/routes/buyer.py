@@ -1,10 +1,12 @@
 """Channel-agnostic buyer chat. A WhatsApp (or any other) adapter can call this later; none is built here."""
 from __future__ import annotations
 
+import os
+
 from fastapi import APIRouter, Depends, Header, Request
 from pydantic import BaseModel, Field
 
-from app import buyer, buyers, config
+from app import buyer, buyers, config, review
 from app.agent import BuyerAgent
 from backend.api import auth, deps
 from backend.api.deps import ApiError
@@ -70,6 +72,8 @@ def buyer_chat(body: BuyerChatRequest, request: Request, authorization: str | No
         if cid is None:
             raise ApiError(401, "unauthorized", "Missing or invalid buyer token.")
     _, c = deps.get_contract(cid)                      # scoped: the contract comes from the identity, never from the request
+    if os.environ.get("REQUIRE_REVIEW", "1") != "0" and not review.is_approved(c):
+        raise ApiError(409, "pending_review", "Your contract is still being checked by our team. Please try again soon.")
     r = BuyerAgent(c).ask(body.message, history=[t.model_dump() for t in body.history])
     buyer.audit(who, cid, body.message, r, body.channel)
     return BuyerChatResponse(answer=r.answer, refused=r.refused, reason=r.reason, tool_calls=r.tool_calls,

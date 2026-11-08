@@ -31,6 +31,16 @@ create table if not exists public.contracts (
     updated_at    timestamptz not null default now()
 );
 
+-- Only contracts whose flagged values have ALL been reviewed by a person (or that had nothing flagged). `data` is the reviewed
+-- result: the extraction with every human decision applied. Drafts stay in app_files; they are never copied here.
+create table if not exists public.approved_contracts (
+    contract_id   text primary key references public.contracts(id) on delete cascade,
+    name          text not null,
+    approved_at   timestamptz not null default now(),
+    approved_by   text not null default '',
+    data          jsonb not null
+);
+
 -- Which buyer identity may ask about which contract. Replaces hard-coded buyer keys.
 create table if not exists public.buyer_assignments (
     id          bigserial primary key,
@@ -77,3 +87,4 @@ alter table public.app_files         enable row level security;
 alter table public.contracts         enable row level security;
 alter table public.buyer_assignments enable row level security;
 alter table public.audit_log         enable row level security;
+alter table public.approved_contracts enable row level security;

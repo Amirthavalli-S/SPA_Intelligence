@@ -63,20 +63,25 @@ def sync_contracts() -> None:
     """Refresh the readable `contracts` table from the registry. Best effort."""
     if not db.enabled():
         return
+    import json
     from backend.api import deps
-    from app.review import review_items
-    rows = []
+    from app.review import is_approved, last_reviewer, load_store, review_items
+    rows, approved, unapproved = [], [], []
     for s in deps.list_sources():
         status, _ = deps.status_for(s)
         eff = deps.effective_contract(s) if status == "extracted" else None
-        open_items = sum(1 for it in review_items(eff) if it.get("needs_review")) if eff else 0
+        open_items = len(review_items(eff)) if eff else 0
         up = None
         meta = s.path.with_suffix(".meta.json")
         if s.kind == "upload" and meta.exists():
-            import json
             up = json.loads(meta.read_text()).get("uploaded_at")
         rows.append((s.id, s.name, s.kind, s.pages, s.size, status, eff.model if eff else None,
                      eff.extracted_at if eff else None, open_items, up))
+        if eff is not None and is_approved(eff):                 # reviewed (or nothing flagged): the only data that becomes "official"
+            who = last_reviewer(load_store(s.id)) or "automatic (nothing was flagged)"
+            approved.append((s.id, s.name, who, json.dumps(eff.model_dump(mode="json"), default=str)))
+        else:
+            unapproved.append(s.id)                              # new draft, re-extracted, or a decision was removed: no longer official
     try:
         with db.connection() as cx:
             for r in rows:
@@ -85,6 +90,14 @@ def sync_contracts() -> None:
                     "values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) on conflict (id) do update set name = excluded.name, "
                     "pages = excluded.pages, size_bytes = excluded.size_bytes, status = excluded.status, model = excluded.model, "
                     "extracted_at = excluded.extracted_at, review_open = excluded.review_open, updated_at = now()", r)
+            for cid, name, who, data in approved:
+                cx.execute(
+                    "insert into approved_contracts (contract_id, name, approved_by, data) values (%s,%s,%s,%s::jsonb) "
+                    "on conflict (contract_id) do update set name = excluded.name, approved_by = excluded.approved_by, "
+                    "approved_at = case when approved_contracts.data is distinct from excluded.data then now() else approved_contracts.approved_at end, "
+                    "data = excluded.data", (cid, name, who, data))
+            if unapproved:
+                cx.execute("delete from approved_contracts where contract_id = any(%s)", (unapproved,))
     except Exception as e:  # noqa: BLE001
         log.warning("contracts sync failed: %s", type(e).__name__)
 

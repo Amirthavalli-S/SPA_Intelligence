@@ -80,7 +80,7 @@ def migrate() -> None:
         cx.execute(sql)
 
 
-TABLES = ("app_files", "contracts", "buyer_assignments", "audit_log", "app_users")
+TABLES = ("app_files", "contracts", "buyer_assignments", "audit_log", "app_users", "approved_contracts")
 
 
 def health() -> dict:

@@ -141,3 +141,14 @@ Machine callers (Teams agent, WhatsApp adapter) keep using `X-API-Key` with the 
 - This was tested against a faithful stand-in for Supabase Auth and a real PostgreSQL. The first real sign-in against your
   Supabase project is yours to confirm: create the admin account and check that **Users** opens.
 - No social or single-sign-on login yet (GitHub sign-in still works alongside it if configured).
+
+## Human review before anything is "official"
+
+Extractions are working drafts (table `app_files`). A contract is copied into the table **`approved_contracts`** only when
+every value that needs review has been accepted, corrected or rejected by a person in the Review queue (or nothing was
+flagged). The row holds the reviewed result and `approved_by` (the last reviewer's signed-in name). If a contract is
+re-extracted or a decision is removed and values are flagged again, its approved row is deleted.
+
+Buyer chat gives no answers from a contract that still has open review items (HTTP 409 `pending_review`). To switch that
+off for demos set `REQUIRE_REVIEW=0`. The new table is created automatically at startup (`DB_AUTO_MIGRATE`, default on); or
+run `supabase/schema.sql` in the SQL editor. Not gated yet: alert emails and the ERP export.

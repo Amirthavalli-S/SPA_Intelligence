@@ -202,6 +202,17 @@ def review_items(c: ContractData) -> list[dict]:
     return out
 
 
+def is_approved(c: ContractData) -> bool:
+    """True when no value is waiting for a person: everything flagged has been accepted, corrected or rejected (or nothing was flagged).
+    `c` must already have the human decisions applied (deps.effective_contract does that)."""
+    return not review_items(c)
+
+
+def last_reviewer(store: dict) -> str:
+    ds = store.get("decisions") or []
+    return str(ds[-1].get("reviewer") or "") if ds else ""
+
+
 def label_value(it):
     if isinstance(it, Sourced):
         v = it.value
