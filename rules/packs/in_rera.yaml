@@ -9,8 +9,9 @@ currency: "INR"
 version: "1.0"
 detect_keywords:
   - "Real Estate \\(Regulation and Development\\) Act"
-  - "\\bRERA\\b"
   - "\\bRERA\\s+registration\\b"
+detect_weak_keywords:          # a bare "RERA" is ambiguous: Dubai's regulator is also called RERA
+  - "\\bRERA\\b"
 
 penalty:
   day_count_basis: 365

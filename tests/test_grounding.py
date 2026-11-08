@@ -84,6 +84,14 @@ def test_ungrounded_payment_row_is_excluded():
     assert len(c.payment_plan) == 4 and len(c.ungrounded_rows) == 1
     assert c.payment_plan_percent_sum == 80
     assert any("excluded" in w for w in c.warnings)
+    assert any("excluded" in w and "quote not found" in w for w in c.warnings)     # the warning says WHY the row was dropped
+
+
+def test_payment_row_with_wrong_percent_says_which_check_failed():
+    inp = oracle_input(A)
+    inp["payment_plan"][0]["percent"] = 37.0
+    c = contract_from(inp)
+    assert any("excluded" in w and "percent 37 in row quote" in w for w in c.warnings)
 
 
 def test_tool_schema_hides_trust_fields():

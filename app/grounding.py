@@ -232,7 +232,8 @@ def ground_contract(data: ContractData, pdf_bytes: bytes, pages: list[str]) -> C
         g = ground_item(m, f"payment_plan[{i}]", pdf_bytes, pages, doc_key, percent=m.percent)
         if g.status == "ungrounded":
             bad_rows.append(m)
-            notes.append(f"Grounding: payment-plan row '{m.name}' is ungrounded and was excluded from the plan.")
+            why = "; ".join(c.detail for c in g.checks if not c.passed) or "no source quote"
+            notes.append(f"Grounding: payment-plan row '{m.name}' is ungrounded ({why}) and was excluded from the plan.")
         else:
             kept_rows.append(m)
             if m.needs_review:
@@ -244,13 +245,15 @@ def ground_contract(data: ContractData, pdf_bytes: bytes, pages: list[str]) -> C
             keep_cl.append(cl); continue
         g = ground_item(cl, f"dated_clauses[{i}]", pdf_bytes, pages, doc_key)
         if g.status == "ungrounded":
-            notes.append(f"Grounding: dated clause '{cl.description}' is ungrounded and was dropped.")
+            why = "; ".join(c.detail for c in g.checks if not c.passed) or "no source quote"
+            notes.append(f"Grounding: dated clause '{cl.description}' is ungrounded ({why}) and was dropped.")
         else:
             keep_cl.append(cl)
             if cl.needs_review:
                 notes.append(f"Grounding: dated clause '{cl.description}' needs review.")
     data.dated_clauses = keep_cl
     detect_jurisdiction(data, pdf_bytes, pages, doc_key)
+    data.currency = printed_currency(pages, data.price.value) or data.currency
     data.grounded_version = 1
     data.warnings = keep + notes
     return data
@@ -269,3 +272,26 @@ def detect_jurisdiction(data: ContractData, pdf_bytes: bytes, pages: list[str], 
     ground_item(s, "jurisdiction", pdf_bytes, pages, doc_key)
     data.jurisdiction_detected = s
     data.currency = next((p.currency for p in list_packs() if p.id == pack_id), data.currency)
+
+
+_CURRENCY_TOKEN = {"AED": "AED", "DHS": "AED", "INR": "INR", "RS": "INR", "₹": "INR", "USD": "USD", "EUR": "EUR", "GBP": "GBP",
+                   "SAR": "SAR", "QAR": "QAR", "OMR": "OMR", "BHD": "BHD", "KWD": "KWD"}
+_CODES = "AED|INR|USD|EUR|GBP|SAR|QAR|OMR|BHD|KWD|Dhs|Rs|₹"
+
+
+def printed_currency(pages: list[str], price: float | None) -> str | None:
+    """The currency printed right next to the purchase price in the contract (e.g. 'AED 1,457,000.00'), or None if it is not
+    clear. A statute pack's currency is only a fallback: a Dubai contract must never be shown in INR because of one keyword."""
+    if not price:
+        return None
+    nums = {f"{price:,.2f}", f"{price:,.0f}", f"{price:.2f}", f"{price:.0f}"}
+    found: list[str] = []
+    for n in nums:
+        num = re.escape(n) + r"(?![\d,])"
+        pat = re.compile(rf"(?<![\d,.])(?P<a>{_CODES})\.?\s*[:\-]?\s*{num}|(?<![\d,.]){num}\s*(?P<b>{_CODES})", re.IGNORECASE)
+        for pg in pages:
+            found += [_CURRENCY_TOKEN[(m.group("a") or m.group("b")).upper()] for m in pat.finditer(pg)]
+    top = {c: found.count(c) for c in set(found)}
+    best = max(top.values(), default=0)
+    winners = [c for c, k in top.items() if k == best]
+    return winners[0] if len(winners) == 1 else None

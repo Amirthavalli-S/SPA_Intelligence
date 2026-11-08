@@ -59,6 +59,7 @@ class Pack(BaseModel):
     currency: str
     version: str
     detect_keywords: list[str] = Field(default_factory=list)
+    detect_weak_keywords: list[str] = Field(default_factory=list)   # ambiguous hints (e.g. a bare 'RERA'): used only if NO pack has a strong hit
     penalty: dict[str, Any]
     entries: list[PackEntry]
 
@@ -89,15 +90,20 @@ def list_packs() -> list[Pack]:
 
 def detect_pack(pages: list[str]) -> tuple[str, str] | None:
     """(pack_id, matched_text) from the pack keyword lists, preferring the pack with the most specific hit.
-    Order: packs with more distinctive keywords first (list order inside the YAML)."""
+    Strong keywords (detect_keywords, earlier in the list = more specific) are tried first across ALL packs. Weak keywords
+    (detect_weak_keywords) are ambiguous on their own, e.g. Dubai also has a "RERA", so they count only when nothing strong matched."""
     text = "\n".join(pages)
-    best = None
-    for p in list_packs():
-        for i, pat in enumerate(p.detect_keywords):
-            m = re.search(pat, text, re.IGNORECASE)
-            if m and (best is None or i < best[2]):
-                best = (p.id, m.group(0), i)
-    return (best[0], best[1]) if best else None
+    packs = list_packs()
+    for field in ("detect_keywords", "detect_weak_keywords"):
+        best = None
+        for p in packs:
+            for i, pat in enumerate(getattr(p, field)):
+                m = re.search(pat, text, re.IGNORECASE)
+                if m and (best is None or i < best[2]):
+                    best = (p.id, m.group(0), i)
+        if best:
+            return best[0], best[1]
+    return None
 
 
 # --------------------------------------------------------------------------- rate tables
