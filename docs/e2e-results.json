@@ -1,6 +1,6 @@
 {
-  "passed": 311,
-  "total": 311,
+  "passed": 291,
+  "total": 291,
   "failed": [],
   "results": [
     {
@@ -766,12 +766,12 @@
     {
       "name": "palm: growth takes about the same time whether you arrive by slow scrolling or a hard flick",
       "ok": true,
-      "detail": "1616 ms vs 1600 ms"
+      "detail": "1600 ms vs 1600 ms"
     },
     {
       "name": "palm: no frame advances the growth by more than 5%",
       "ok": true,
-      "detail": "1.3% / 1.4%"
+      "detail": "1.6% / 1.3%"
     },
     {
       "name": "palm: fully grown, and stays grown after scrolling away and back",
@@ -931,7 +931,7 @@
     {
       "name": "E1: highlight box sits inside the rendered page",
       "ok": true,
-      "detail": "{\"x\":1233.578125,\"y\":1075.9375,\"width\":48.25,\"height\":10.796875}"
+      "detail": "{\"x\":1233.57568359375,\"y\":1075.93701171875,\"width\":48.2548828125,\"height\":10.7978515625}"
     },
     {
       "name": "E2 gap(D): statutory amount equals the API value exactly",
@@ -1079,26 +1079,6 @@
       "detail": ""
     },
     {
-      "name": "E7 erp: placeholder warning is visible",
-      "ok": true,
-      "detail": ""
-    },
-    {
-      "name": "E7 erp: dry-run preview has rows and validates",
-      "ok": true,
-      "detail": ""
-    },
-    {
-      "name": "E7 erp: CSV downloads",
-      "ok": true,
-      "detail": ""
-    },
-    {
-      "name": "E7 erp: live push is refused while disabled, with a clear reason (after an explicit confirmation step)",
-      "ok": true,
-      "detail": ""
-    },
-    {
       "name": "E8 review: the partially-grounded price is queued",
       "ok": true,
       "detail": ""
@@ -1174,16 +1154,6 @@
       "detail": ""
     },
     {
-      "name": "new page en a/erp: renders",
-      "ok": true,
-      "detail": ""
-    },
-    {
-      "name": "disclaimer visible: new page en a/erp",
-      "ok": true,
-      "detail": ""
-    },
-    {
       "name": "new page en b/gap: renders",
       "ok": true,
       "detail": ""
@@ -1210,16 +1180,6 @@
     },
     {
       "name": "disclaimer visible: new page en b/playbook",
-      "ok": true,
-      "detail": ""
-    },
-    {
-      "name": "new page en b/erp: renders",
-      "ok": true,
-      "detail": ""
-    },
-    {
-      "name": "disclaimer visible: new page en b/erp",
       "ok": true,
       "detail": ""
     },
@@ -1254,16 +1214,6 @@
       "detail": ""
     },
     {
-      "name": "new page en c/erp: renders",
-      "ok": true,
-      "detail": ""
-    },
-    {
-      "name": "disclaimer visible: new page en c/erp",
-      "ok": true,
-      "detail": ""
-    },
-    {
       "name": "new page en d/gap: renders",
       "ok": true,
       "detail": ""
@@ -1290,16 +1240,6 @@
     },
     {
       "name": "disclaimer visible: new page en d/playbook",
-      "ok": true,
-      "detail": ""
-    },
-    {
-      "name": "new page en d/erp: renders",
-      "ok": true,
-      "detail": ""
-    },
-    {
-      "name": "disclaimer visible: new page en d/erp",
       "ok": true,
       "detail": ""
     },
@@ -1374,16 +1314,6 @@
       "detail": ""
     },
     {
-      "name": "new page ar a/erp: renders",
-      "ok": true,
-      "detail": ""
-    },
-    {
-      "name": "disclaimer visible: new page ar a/erp",
-      "ok": true,
-      "detail": ""
-    },
-    {
       "name": "new page ar b/gap: renders",
       "ok": true,
       "detail": ""
@@ -1410,16 +1340,6 @@
     },
     {
       "name": "disclaimer visible: new page ar b/playbook",
-      "ok": true,
-      "detail": ""
-    },
-    {
-      "name": "new page ar b/erp: renders",
-      "ok": true,
-      "detail": ""
-    },
-    {
-      "name": "disclaimer visible: new page ar b/erp",
       "ok": true,
       "detail": ""
     },
@@ -1454,16 +1374,6 @@
       "detail": ""
     },
     {
-      "name": "new page ar c/erp: renders",
-      "ok": true,
-      "detail": ""
-    },
-    {
-      "name": "disclaimer visible: new page ar c/erp",
-      "ok": true,
-      "detail": ""
-    },
-    {
       "name": "new page ar d/gap: renders",
       "ok": true,
       "detail": ""
@@ -1490,16 +1400,6 @@
     },
     {
       "name": "disclaimer visible: new page ar d/playbook",
-      "ok": true,
-      "detail": ""
-    },
-    {
-      "name": "new page ar d/erp: renders",
-      "ok": true,
-      "detail": ""
-    },
-    {
-      "name": "disclaimer visible: new page ar d/erp",
       "ok": true,
       "detail": ""
     },
@@ -1551,7 +1451,7 @@
     {
       "name": "fps probe (informational)",
       "ok": true,
-      "detail": "53.8 fps"
+      "detail": "55.2 fps"
     },
     {
       "name": "no console errors or page errors anywhere",
