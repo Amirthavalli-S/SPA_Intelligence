@@ -31,7 +31,10 @@ function prewarm(tl: gsap.core.Timeline, resync?: () => void): () => void {
 }
 
 const FEATURES = ["extraction", "penalty", "cashflow", "assistant"] as const;
-const ROADMAP = ["docint", "cross", "bilingual", "rulebook", "whatsapp", "evalset"] as const;
+/** Cards in the closing gallery: what the app does today (checked against the code), then what is still to come. */
+const AVAILABLE = ["ocr", "cross", "statute", "review", "obligations", "accuracy", "erp", "roles"] as const;
+const COMING = ["bilingual", "whatsapp", "evalset"] as const;
+const GALLERY = [...AVAILABLE.map((k) => ({ kind: "available" as const, k })), ...COMING.map((k) => ({ kind: "coming" as const, k }))];
 const LIGHT = "#f3ead3";
 
 export default function Landing() {
@@ -926,7 +929,7 @@ export default function Landing() {
               maxWidth: tier === "full" ? undefined : "100%",
             }}
           >
-            {ROADMAP.map((r, i) => (
+            {GALLERY.map(({ kind, k: r }, i) => (
               <article
                 key={r}
                 className="glass"
@@ -941,21 +944,23 @@ export default function Landing() {
               >
                 <span
                   className="chip"
+                  data-testid={`gallery-${kind}`}
                   style={{
                     cursor: "default",
-                    color: "#f1cf8a",
-                    background: "rgba(241,207,138,.14)", // own background: the theme's chip surface is light in day mode
-                    borderColor: "rgba(241,207,138,.55)",
+                    // own backgrounds: the theme's chip surface is light in day mode
+                    color: kind === "available" ? "#7fdca3" : "#f1cf8a",
+                    background: kind === "available" ? "rgba(127,220,163,.14)" : "rgba(241,207,138,.14)",
+                    borderColor: kind === "available" ? "rgba(127,220,163,.55)" : "rgba(241,207,138,.55)",
                   }}
                 >
-                  {t("common.comingNext")}
+                  {kind === "available" ? `✓ ${t("common.availableNow")}` : t("common.comingNext")}
                 </span>
                 <h3 className="display" style={{ fontSize: "1.45rem", margin: "1rem 0 0.4rem" }}>
-                  <span className="num" style={{ color: "var(--gold)" }}>{`0${i + 1}`}</span>{" "}
-                  {t(`landing.roadmap.${r}.title`)}
+                  <span className="num" style={{ color: "var(--gold)" }}>{String(i + 1).padStart(2, "0")}</span>{" "}
+                  {t(`landing.${kind === "available" ? "available" : "roadmap"}.${r}.title`)}
                 </h3>
                 <p style={{ color: "#d6dde3", lineHeight: 1.55, margin: 0 }}>
-                  {t(`landing.roadmap.${r}.body`)}
+                  {t(`landing.${kind === "available" ? "available" : "roadmap"}.${r}.body`)}
                 </p>
               </article>
             ))}

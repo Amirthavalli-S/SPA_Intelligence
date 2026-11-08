@@ -29,7 +29,8 @@
     "menu": "Menu",
     "closeMenu": "Close menu",
     "pageShort": "p.",
-    "arReview": "Arabic text needs native review"
+    "arReview": "Arabic text needs native review",
+    "availableNow": "Available now"
   },
   "nav": {
     "home": "Home",
@@ -70,23 +71,11 @@
         "body": "Answers only from your contract, cites the clause, and refers legal questions to the legal team."
       }
     },
-    "roadmapTitle": "What is coming next",
+    "roadmapTitle": "What you can do today, and what comes next",
     "roadmap": {
-      "docint": {
-        "title": "Document Intelligence parsing",
-        "body": "Scanned pages and complex layouts."
-      },
-      "cross": {
-        "title": "Cross-document check",
-        "body": "Compare the SPA with related documents."
-      },
       "bilingual": {
         "title": "Arabic–English check",
         "body": "Spot differences between the two language versions."
-      },
-      "rulebook": {
-        "title": "Rulebook check",
-        "body": "Check terms against the jurisdiction rules."
       },
       "whatsapp": {
         "title": "WhatsApp assistant",
@@ -98,7 +87,41 @@
       }
     },
     "ctaTitle": "Ready to read your contract?",
-    "ctaBody": "Open the app, pick a sample, or upload your own PDF."
+    "ctaBody": "Open the app, pick a sample, or upload your own PDF.",
+    "available": {
+      "ocr": {
+        "title": "Scanned contracts",
+        "body": "Scanned pages are read automatically with OCR; values it is unsure of go to a person for review."
+      },
+      "cross": {
+        "title": "Cross-document check",
+        "body": "Compare the SPA with related documents and see where price, area, dates or the payment plan disagree."
+      },
+      "statute": {
+        "title": "Statute and playbook check",
+        "body": "Compare delay compensation with the statute's formula and check terms against your playbook. Statute logic is marked unreviewed until a lawyer signs off."
+      },
+      "review": {
+        "title": "Human review queue",
+        "body": "A person accepts, corrects or rejects every value the system is unsure of before the contract counts as approved."
+      },
+      "obligations": {
+        "title": "Obligations and deadlines",
+        "body": "A calendar and timeline of the dates in each contract, with email alerts when they are set up."
+      },
+      "accuracy": {
+        "title": "Accuracy dashboard",
+        "body": "Measure extraction accuracy against labelled sample contracts and track each run."
+      },
+      "erp": {
+        "title": "ERP export",
+        "body": "Export the payment schedule as a dry run for your finance system. Live push is off by default."
+      },
+      "roles": {
+        "title": "Roles and buyer access",
+        "body": "Administrator, reviewer, staff and buyer roles. Each buyer can ask about their own contract only."
+      }
+    }
   },
   "shell": {
     "contracts": "Contracts",
