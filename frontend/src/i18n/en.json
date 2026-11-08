@@ -139,7 +139,27 @@
     "extractedAt": "Extracted {{when}} with {{model}}",
     "tabs": "Contract sections",
     "dropHintOcr": "PDF only, up to 20 MB. Scans are read with OCR.",
-    "scannedOcr": "This PDF looks scanned. Its pages will be read with OCR first; values from pages the two readers disagree on are sent to review."
+    "scannedOcr": "This PDF looks scanned. Its pages will be read with OCR first; values from pages the two readers disagree on are sent to review.",
+    "stepsTitle": "How it works",
+    "steps": {
+      "pick": {
+        "title": "Choose a contract",
+        "body": "Pick a sample on the left or drop in your own SPA as a PDF. Scanned pages are read automatically."
+      },
+      "extract": {
+        "title": "Extract the terms",
+        "body": "One click reads the contract. Every value comes with its page and the exact words it was taken from."
+      },
+      "review": {
+        "title": "Check what is flagged",
+        "body": "Anything the system is not sure about waits in the review queue until a person confirms it."
+      },
+      "use": {
+        "title": "Use the results",
+        "body": "Simulate delay, see the cash flow, compare with the statute, or ask the assistant."
+      }
+    },
+    "warningsOne": "{{count}} to check"
   },
   "tabs": {
     "terms": "Terms",
@@ -207,7 +227,23 @@
     "notTotal100": "The payment plan totals {{total}}, not 100%.",
     "jurisdiction": "Jurisdiction",
     "jurisdictionAuto": "Auto (detected: {{value}})",
-    "detectedFrom": "Detected from “{{text}}”"
+    "detectedFrom": "Detected from “{{text}}”",
+    "warnTitle": "Things to check",
+    "warnSub": "What the system found that a person should look at, and what the contract simply does not say.",
+    "warnAction": "{{count}} to check",
+    "warnNotes": "{{count}} for information",
+    "attention": "Needs a person's attention",
+    "notesTitle": "For your information",
+    "subtitle": "Each value comes with the page and the exact words it was taken from.",
+    "quoteNoValue": "The contract mentions this, but no exact value could be confirmed. See the quote.",
+    "groups": {
+      "parties": "Buyer and property",
+      "price": "Price and size",
+      "delay": "Handover and delay compensation",
+      "cancel": "Cancellation"
+    },
+    "planSub": "The instalments the contract asks you to pay. The percentages should add up to 100%.",
+    "planProgress": "{{pct}} of the price is scheduled"
   },
   "penalty": {
     "title": "Delay-penalty simulator",
@@ -311,20 +347,20 @@
     "title": "Evidence",
     "trust": "Trust",
     "status": {
-      "grounded": "Grounded",
-      "partial": "Partial",
-      "ungrounded": "Ungrounded",
-      "human": "Human verified",
+      "grounded": "Verified in the PDF",
+      "partial": "Partly matched",
+      "ungrounded": "Not confirmed",
+      "human": "Checked by a person",
       "not_stated": "Not stated"
     },
-    "confidenceHelp": "Confidence = weighted mean of the checks that apply: quote found on the page, values appear in the quote, names appear in the document.",
+    "confidenceHelp": "How sure the system is. It checks that the quote is on the page, that the value appears in the quote, and that names appear in the document.",
     "highlighted": "The exact span is highlighted on the page.",
     "noBox": "No exact position found for this text; showing the page.",
     "prev": "Previous page",
     "next": "Next page",
     "openPdf": "Open PDF",
     "open": "Open",
-    "needsReview": "Needs review"
+    "needsReview": "Review needed"
   },
   "gap": {
     "title": "Contract vs statute",
@@ -486,7 +522,6 @@
   "review": {
     "title": "Review queue",
     "intro": "Fields the system is not sure about. Accept, correct or reject each one; your decision overrides the extraction and is stored with your name and the time.",
-    "count": "{{n}} fields need review",
     "emptyTitle": "Nothing to review",
     "emptyBody": "Every extracted field is grounded or already reviewed.",
     "open": "Open contract",
@@ -503,7 +538,21 @@
     "reject": "Reject",
     "golden": "Export to the golden set",
     "goldenHelp": "Writes eval/golden/<doc>/ with human-verified labels (fields still unreviewed are listed in the file).",
-    "exported": "Written to {{path}}"
+    "exported": "Written to {{path}}",
+    "fieldRow": "Payment plan, row {{n}}",
+    "fieldUngrounded": "Payment plan, row not confirmed ({{n}})",
+    "fieldClause": "Dated clause {{n}}",
+    "whatRead": "What the system read",
+    "quoteHead": "Where it came from",
+    "acceptHelp": "Accept: the value matches the PDF.",
+    "correctHelp": "Correct: type the right value.",
+    "rejectHelp": "Reject: treat it as not stated.",
+    "contractCount_one": "1 value to review",
+    "contractCount_other": "{{count}} values to review",
+    "howTitle": "What to do with each item",
+    "how": "Open the contract to see the highlighted words in the PDF, then accept, correct or reject. Your decision is saved with your name and the time.",
+    "count_one": "1 value needs review",
+    "count_other": "{{count}} values need review"
   },
   "cross": {
     "title": "Cross-document check",
@@ -721,5 +770,20 @@
       "buyer": "Buyer: asks questions about their own contract only. A buyer whose email is linked to a contract gets this role automatically."
     },
     "viaLink": "Buyer (linked to a contract)"
+  },
+  "summary": {
+    "title": "At a glance",
+    "review": {
+      "title": "Human review",
+      "done": "Everything has been checked",
+      "open_one": "1 value needs a person to review it",
+      "open_other": "{{count}} values need a person to review them",
+      "go": "Open the review queue",
+      "help": "Values the system cannot fully confirm wait here until a person accepts, corrects or rejects them."
+    },
+    "contractSays": "The contract says: “{{text}}”",
+    "planTotal": "Payment plan",
+    "planOk": "adds up to 100%",
+    "planBad": "does not add up to 100%"
   }
 }

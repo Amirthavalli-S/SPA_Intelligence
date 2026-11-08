@@ -140,12 +140,12 @@ export function Alert({ tone, children }: { tone: "warn" | "danger" | "ok" | "in
   );
 }
 
-/** Warning card: CustomWiggle on appear. */
-export function WarningCard({ children }: { children: ReactNode }) {
+/** One message about a contract. "action" = a person should look at it (wiggles once on appear); "note" = for information. */
+export function WarningCard({ children, tone = "action" }: { children: ReactNode; tone?: "action" | "note" }) {
   const ref = useRef<HTMLDivElement>(null);
   const { tier } = usePrefs();
   useEffect(() => {
-    if (tier === "reduced" || !ref.current) return;
+    if (tone !== "action" || tier === "reduced" || !ref.current) return;
     const tw = gsap.fromTo(
       ref.current,
       { rotation: 0 },
@@ -158,23 +158,11 @@ export function WarningCard({ children }: { children: ReactNode }) {
       },
     );
     return () => void tw.kill();
-  }, [tier]);
+  }, [tier, tone]);
   return (
-    <div
-      ref={ref}
-      role="alert"
-      style={{
-        background: "var(--danger-bg)",
-        color: "var(--fg)",
-        border: "1px solid var(--danger)",
-        padding: "0.7rem 1rem",
-        borderRadius: 10,
-        display: "flex",
-        gap: 10,
-      }}
-    >
-      <span aria-hidden="true" style={{ color: "var(--danger)" }}>
-        ▲
+    <div ref={ref} role={tone === "action" ? "alert" : "status"} className={`alert-row ${tone}`}>
+      <span className="mark" aria-hidden="true">
+        {tone === "action" ? "!" : "i"}
       </span>
       <span>{children}</span>
     </div>

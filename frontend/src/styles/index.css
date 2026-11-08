@@ -713,3 +713,343 @@ body {
   background: #d4a24c;
   color: #0b1b2b;
 }
+
+/* =====================================================================================================
+   App UI: readable panels, tables, badges and summary cards (same UAE palette, clearer hierarchy)
+   ===================================================================================================== */
+body {
+  line-height: 1.55;
+}
+.page-lead {
+  margin: 0;
+  color: var(--muted);
+  font-size: 1rem;
+  max-width: 70ch;
+}
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  overflow: hidden;
+}
+.panel-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.8rem 1rem;
+  padding: 1rem 1.15rem;
+  border-bottom: 1px solid var(--line);
+  background: color-mix(in srgb, var(--surface-2) 38%, transparent);
+}
+.panel-head h2 {
+  margin: 0;
+  font-size: 1.25rem;
+}
+.panel-sub {
+  margin: 0.2rem 0 0;
+  color: var(--muted);
+  font-size: 0.92rem;
+  line-height: 1.45;
+}
+.panel-body {
+  padding: 1rem 1.15rem;
+}
+
+/* status badges: one look everywhere (icon + plain words) */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+  border: 1px solid;
+  font-size: 0.8rem;
+  font-weight: 700;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+.badge.ok {
+  color: var(--ok);
+  background: var(--ok-bg);
+  border-color: color-mix(in srgb, var(--ok) 50%, transparent);
+}
+.badge.warn {
+  color: var(--gold-ink);
+  background: var(--warn-bg);
+  border-color: color-mix(in srgb, var(--gold) 65%, transparent);
+}
+.badge.bad {
+  color: var(--danger);
+  background: var(--danger-bg);
+  border-color: color-mix(in srgb, var(--danger) 55%, transparent);
+}
+.badge.muted {
+  color: var(--muted);
+  background: transparent;
+  border-color: var(--line);
+}
+.badge.info {
+  color: var(--info);
+  background: color-mix(in srgb, var(--info) 12%, transparent);
+  border-color: color-mix(in srgb, var(--info) 45%, transparent);
+}
+
+/* at-a-glance cards */
+.kpi-grid {
+  display: grid;
+  gap: 0.8rem;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+.kpi {
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  gap: 0.2rem;
+  align-content: start;
+  padding: 0.9rem 1rem 0.9rem 1.15rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+}
+.kpi::before {
+  content: "";
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+  width: 4px;
+  background: linear-gradient(180deg, var(--gold), var(--accent-fill));
+}
+.kpi .label {
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+:root[lang="ar"] .kpi .label {
+  letter-spacing: 0;
+  text-transform: none;
+  font-size: 0.82rem;
+}
+.kpi .value {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 700;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+.kpi.missing .value {
+  color: var(--muted);
+  font-weight: 500;
+  font-size: 1.05rem;
+}
+.kpi .hint {
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+.meter {
+  height: 9px;
+  border-radius: 999px;
+  background: var(--surface-2);
+  overflow: hidden;
+  margin-block-start: 0.3rem;
+}
+.meter > span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--turquoise), var(--gold));
+}
+.meter.bad > span {
+  background: linear-gradient(90deg, var(--terracotta), var(--danger));
+}
+
+/* data tables */
+.dtable {
+  width: 100%;
+  border-collapse: collapse;
+}
+.dtable thead th {
+  text-align: start;
+  font-size: 0.74rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 700;
+  padding: 0.65rem 1rem;
+  background: color-mix(in srgb, var(--surface-2) 55%, transparent);
+  white-space: nowrap;
+}
+:root[lang="ar"] .dtable thead th {
+  letter-spacing: 0;
+  text-transform: none;
+  font-size: 0.85rem;
+}
+.dtable td,
+.dtable tbody th {
+  padding: 0.85rem 1rem;
+  border-top: 1px solid var(--line);
+  vertical-align: top;
+}
+.dtable tbody tr:hover {
+  background: color-mix(in srgb, var(--surface-2) 42%, transparent);
+}
+.dtable tr.group th {
+  background: color-mix(in srgb, var(--gold) 9%, var(--surface));
+  color: var(--gold-ink);
+  font-size: 0.8rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 0.5rem 1rem;
+  text-align: start;
+  border-top: 1px solid var(--line);
+}
+:root[lang="ar"] .dtable tr.group th {
+  letter-spacing: 0;
+  text-transform: none;
+}
+.dtable .field {
+  font-weight: 600;
+}
+.dtable .val {
+  font-weight: 700;
+  font-size: 1.03rem;
+}
+.dtable .val.missing {
+  color: var(--muted);
+  font-weight: 500;
+  font-style: italic;
+}
+.dtable .note {
+  display: block;
+  margin-block-start: 0.25rem;
+  font-size: 0.8rem;
+  color: var(--muted);
+  font-weight: 400;
+}
+.dtable .nowrap {
+  white-space: nowrap;
+}
+.quote-cell {
+  color: var(--muted);
+  font-size: 0.9rem;
+  border-inline-start: 2px solid var(--line);
+  padding-inline-start: 0.7rem;
+}
+tr.missing-row {
+  background: color-mix(in srgb, var(--warn-bg) 28%, transparent);
+}
+.kpi-grid.wide {
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  margin-block-start: 0.8rem;
+}
+
+/* warnings: grouped, prioritised, scannable */
+.alert-row {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.7rem;
+  align-items: start;
+  padding: 0.7rem 0.95rem;
+  border-radius: 0.85rem;
+  border: 1px solid;
+  line-height: 1.45;
+}
+.alert-row.action {
+  background: var(--danger-bg);
+  border-color: color-mix(in srgb, var(--danger) 60%, transparent);
+}
+.alert-row.note {
+  background: color-mix(in srgb, var(--surface-2) 70%, transparent);
+  border-color: var(--line);
+}
+.alert-row .mark {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  font-size: 0.85rem;
+  font-weight: 800;
+}
+.alert-row.action .mark {
+  background: var(--danger);
+  color: var(--bg);
+}
+.alert-row.note .mark {
+  background: var(--info);
+  color: var(--bg);
+}
+.group-title {
+  margin: 0.3rem 0 0.1rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+:root[lang="ar"] .group-title {
+  letter-spacing: 0;
+  text-transform: none;
+  font-size: 0.92rem;
+}
+
+/* guided empty state: how the app works */
+.steps {
+  display: grid;
+  gap: 0.9rem;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  counter-reset: step;
+}
+.step {
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  padding: 1rem 1.1rem 1.1rem;
+  display: grid;
+  gap: 0.35rem;
+  align-content: start;
+}
+.step::before {
+  counter-increment: step;
+  content: counter(step);
+  width: 2rem;
+  height: 2rem;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  background: var(--accent-fill);
+  color: var(--on-accent);
+  margin-block-end: 0.3rem;
+}
+.step strong {
+  font-family: var(--font-display);
+  font-size: 1.08rem;
+}
+.step span {
+  color: var(--muted);
+  font-size: 0.93rem;
+}
+@media (max-width: 640px) {
+  .kpi-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .kpi-grid.wide {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .kpi .value {
+    font-size: 1.1rem;
+  }
+}
+@media (max-width: 640px) {
+  /* inside the stacked table cards a badge may wrap, so a long label never pushes the card wider than the screen */
+  .rtable td .badge {
+    white-space: normal;
+    text-align: start;
+  }
+  .rtable td > span {
+    min-width: 0;
+  }
+}

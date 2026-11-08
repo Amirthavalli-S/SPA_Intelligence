@@ -56,7 +56,14 @@ function Card({ c, active, onOpen }: { c: ContractSummary; active: boolean; onOp
         <span className="display" style={{ fontWeight: 700, fontSize: "1.05rem", overflowWrap: "anywhere" }}>
           {c.name}
         </span>
-        <StatusChip c={c} />
+        <span style={{ display: "flex", flexWrap: "wrap", gap: 8, alignItems: "center" }}>
+          <StatusChip c={c} />
+          {c.status === "extracted" && c.warnings_count > 0 && (
+            <span className="badge warn" style={{ fontSize: "0.72rem", padding: "0.1rem 0.5rem" }}>
+              {t("shell.warningsOne", { count: c.warnings_count })}
+            </span>
+          )}
+        </span>
         {active && (
           <span
             data-card-detail

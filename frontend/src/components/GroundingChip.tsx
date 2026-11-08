@@ -8,29 +8,33 @@ interface Item {
   human_verified?: boolean;
 }
 
-/** grounded | partial | ungrounded | human verified, with the confidence score. */
+const FALLBACK = { cls: "muted", icon: "–" };
+const LOOK: Record<string, { cls: string; icon: string }> = {
+  grounded: { cls: "ok", icon: "✓" },
+  human: { cls: "ok", icon: "✓" },
+  partial: { cls: "warn", icon: "!" },
+  ungrounded: { cls: "bad", icon: "✕" },
+  not_stated: { cls: "muted", icon: "–" },
+};
+
+/** One badge says how far a value can be trusted: verified in the PDF, partly matched, not confirmed, checked by a person, or not stated. */
 export function GroundingChip({ item }: { item: Item }) {
   const { t } = useTranslation();
   const fmt = useFmt();
   const s = item.human_verified ? "human" : (item.grounding?.status ?? "not_stated");
-  const tone =
-    s === "grounded" || s === "human"
-      ? "var(--ok)"
-      : s === "partial"
-        ? "var(--warn)"
-        : s === "ungrounded"
-          ? "var(--danger)"
-          : "var(--muted)";
+  const look = LOOK[s] ?? FALLBACK;
   return (
     <span
       data-testid="grounding-chip"
       data-status={s}
-      className="chip"
-      style={{ borderColor: tone, color: tone, whiteSpace: "nowrap", fontSize: "0.78rem" }}
+      className={`badge ${look.cls}`}
       title={t("evidence.confidenceHelp")}
     >
+      <span aria-hidden="true">{look.icon}</span>
       {t(`evidence.status.${s}`)}
-      {item.confidence != null && s !== "not_stated" && s !== "human" ? ` · ${fmt.pct(item.confidence * 100, 0)}` : ""}
+      {item.confidence != null && s !== "not_stated" && s !== "human" ? (
+        <span style={{ fontWeight: 500, opacity: 0.85 }}> · {fmt.pct(item.confidence * 100, 0)}</span>
+      ) : null}
     </span>
   );
 }

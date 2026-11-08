@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { Navigate, Route, Routes, useLocation, useParams } from "react-router-dom";
 import { ApiError } from "../api/client";
 import { useContract, useContracts, useExtract, useHealth, useStatus } from "../api/hooks";
+import { ContractSummary } from "../components/ContractSummary";
 import { Tabs } from "../components/Tabs";
 import { Alert, EmptyState, ErrorState, Loader, Skeleton } from "../components/ui";
 import { coinBurst } from "../motion/effects";
@@ -150,19 +151,22 @@ export default function ContractLayout() {
     <ContractCtx.Provider value={ctx}>
       <CurrencyContext.Provider value={c.currency ?? null}>
       <div style={{ display: "grid", gap: "1rem" }}>
-        <header style={{ display: "grid", gap: 8 }}>
-          <h1
-            data-glitch-title
-            className="display"
-            style={{ margin: 0, fontSize: "clamp(1.6rem,3vw,2.3rem)", overflowWrap: "anywhere" }}
-          >
-            {ctx.detail.name}
-          </h1>
-          <p style={{ margin: 0, color: "var(--muted)" }} data-testid="extracted-info">
-            {t("shell.extractedAt", { when: c.extracted_at ?? "", model: c.model ?? "" })}
-          </p>
+        <header style={{ display: "grid", gap: "0.9rem" }}>
+          <div style={{ display: "grid", gap: 4 }}>
+            <h1
+              data-glitch-title
+              className="display"
+              style={{ margin: 0, fontSize: "clamp(1.5rem,2.6vw,2rem)", overflowWrap: "anywhere" }}
+            >
+              {ctx.detail.name}
+            </h1>
+            <p style={{ margin: 0, color: "var(--muted)", fontSize: "0.9rem" }} data-testid="extracted-info">
+              {t("shell.extractedAt", { when: c.extracted_at ?? "", model: c.model ?? "" })}
+            </p>
+          </div>
+          <ContractSummary c={c} />
           <details style={{ color: "var(--muted)" }}>
-            <summary style={{ cursor: "pointer", color: "var(--fg)" }}>🔄 {t("shell.rerun")}</summary>
+            <summary style={{ cursor: "pointer", color: "var(--fg)", fontWeight: 600 }}>🔄 {t("shell.rerun")}</summary>
             <div style={{ paddingBlockStart: 8 }}>
               <ExtractControls id={id} force />
             </div>

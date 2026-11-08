@@ -21,7 +21,24 @@ const Users = lazy(() => import("./Users"));
 
 function Pick() {
   const { t } = useTranslation();
-  return <EmptyState title={t("shell.pickTitle")} body={t("shell.pickBody")} />;
+  return (
+    <div style={{ display: "grid", gap: "1.2rem" }} data-testid="get-started">
+      <EmptyState title={t("shell.pickTitle")} body={t("shell.pickBody")} />
+      <section aria-labelledby="steps-h" style={{ display: "grid", gap: "0.8rem" }}>
+        <h2 id="steps-h" className="display" style={{ margin: 0, fontSize: "1.25rem" }}>
+          {t("shell.stepsTitle")}
+        </h2>
+        <ol className="steps" style={{ listStyle: "none", margin: 0, padding: 0 }}>
+          {(["pick", "extract", "review", "use"] as const).map((k) => (
+            <li key={k} className="step">
+              <strong>{t(`shell.steps.${k}.title`)}</strong>
+              <span>{t(`shell.steps.${k}.body`)}</span>
+            </li>
+          ))}
+        </ol>
+      </section>
+    </div>
+  );
 }
 
 export default function AppShell() {
