@@ -1,0 +1,558 @@
+@import "tailwindcss";
+
+/* ---------- Design tokens: Emirates desert & skyline ----------
+   Palette: sand #EAD9B5, dune #C98A4B, terracotta #B5532E, dusk navy #0B1B2B, Gulf turquoise #1FB5B0, gold #D4A24C */
+:root {
+  --sand: #ead9b5;
+  --dune: #c98a4b;
+  --terracotta: #b5532e;
+  --navy: #0b1b2b;
+  --turquoise: #1fb5b0;
+  --gold: #d4a24c;
+  --violet: #3b2250;
+  --sunset: linear-gradient(180deg, #0b1b2b 0%, #3b2250 38%, #b5532e 72%, #d4a24c 100%);
+  /* Safe area for full-screen scenes = viewport minus the fixed header and banner. JS overwrites these with the
+     MEASURED sizes (TopBar / Disclaimer), so scenes are centred in what the user can actually see. */
+  --inset-top: 6rem;
+  --inset-bottom: 3rem;
+  --font-display: "Fraunces Variable", "Noto Kufi Arabic", Georgia, serif;
+  --font-body: "Inter Variable", "Tajawal", system-ui, sans-serif;
+}
+:root[lang="ar"] {
+  --font-display: "Noto Kufi Arabic", "Fraunces Variable", serif;
+  --font-body: "Tajawal", "Inter Variable", system-ui, sans-serif;
+}
+
+:root[data-theme="day"] {
+  color-scheme: light;
+  --bg: #f4ead2;
+  --bg-2: #ead9b5;
+  --surface: #fbf6e8;
+  --surface-2: #f0e3c4;
+  --fg: #1f1912;
+  --muted: #54432f;
+  --line: #c9b38a;
+  --accent: #8f3f20; /* text/link terracotta (>= 4.5:1 on sand) */
+  --accent-fill: #b5532e;
+  --on-accent: #ffffff;
+  --gold-ink: #6e4c0d;
+  --danger: #a12b1b;
+  --danger-bg: #f8dcd3;
+  --warn-bg: #f6e3b4;
+  --ok: #1d6a39;
+  --ok-bg: #d9ecd8;
+  --info: #0b6b68;
+  --sb-track: #ead9b5;
+  --sb-thumb: linear-gradient(180deg, #c98a4b, #b5532e);
+  --sb-thumb-hover: linear-gradient(180deg, #d99a5a, #c4602f);
+  --sb-solid: #b5532e;
+}
+:root[data-theme="dusk"] {
+  color-scheme: dark;
+  --bg: #0b1b2b;
+  --bg-2: #102a41;
+  --surface: #12283d;
+  --surface-2: #183550;
+  --fg: #f3ead3;
+  --muted: #b9c6d0;
+  --line: #2c4863;
+  --accent: #e3ab55;
+  --accent-fill: #d4a24c;
+  --on-accent: #0b1b2b;
+  --gold-ink: #e3ab55;
+  --danger: #ff9b85;
+  --danger-bg: #3a1f26;
+  --warn-bg: #3a3118;
+  --ok: #7fdca3;
+  --ok-bg: #16372b;
+  --info: #5fd4cf;
+  --sb-track: #0b1b2b;
+  --sb-thumb: linear-gradient(180deg, #e3ab55, #c98a4b 55%, #b5532e);
+  --sb-thumb-hover: linear-gradient(180deg, #f2bd6a, #dd9a52 55%, #c4602f);
+  --sb-solid: #d4a24c;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-bg2: var(--bg-2);
+  --color-surface: var(--surface);
+  --color-surface2: var(--surface-2);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-accentfill: var(--accent-fill);
+  --color-onaccent: var(--on-accent);
+  --color-danger: var(--danger);
+  --color-dangerbg: var(--danger-bg);
+  --color-warnbg: var(--warn-bg);
+  --color-ok: var(--ok);
+  --color-okbg: var(--ok-bg);
+  --color-info: var(--info);
+  --color-gold: var(--gold);
+  --color-turq: var(--turquoise);
+  --font-display: var(--font-display);
+  --font-sans: var(--font-body);
+}
+
+html {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-body);
+  -webkit-text-size-adjust: 100%;
+}
+body {
+  margin: 0;
+  min-height: 100dvh;
+  background: var(--bg);
+  transition: background-color 0.5s ease;
+  /* room for the always-visible disclaimer bar */
+  padding-block-end: 2.6rem;
+}
+:root[data-banner="hidden"] body {
+  padding-block-end: 0;
+}
+h1,
+h2,
+h3,
+.display {
+  font-family: var(--font-display);
+  letter-spacing: -0.01em;
+}
+:root[lang="ar"] h1,
+:root[lang="ar"] h2,
+:root[lang="ar"] h3,
+:root[lang="ar"] .display {
+  letter-spacing: 0;
+}
+
+/* Financial figures: tabular, lining numerals, always LTR so digits never reorder in RTL */
+.num {
+  font-variant-numeric: tabular-nums lining-nums;
+  font-feature-settings: "tnum", "lnum";
+  unicode-bidi: isolate;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+::selection {
+  background: color-mix(in srgb, var(--gold) 55%, transparent);
+  color: inherit;
+}
+
+/* ---------- surfaces ---------- */
+.glass {
+  background: color-mix(in srgb, var(--surface) 74%, transparent);
+  backdrop-filter: blur(14px) saturate(1.2);
+  -webkit-backdrop-filter: blur(14px) saturate(1.2);
+  border: 1px solid color-mix(in srgb, var(--line) 80%, transparent);
+  border-radius: 1rem;
+}
+.card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  justify-content: center;
+  padding: 0.7rem 1.25rem;
+  border-radius: 999px;
+  font-weight: 600;
+  cursor: pointer;
+  background: var(--accent-fill);
+  color: var(--on-accent);
+  border: 1px solid transparent;
+  transition:
+    filter 0.2s,
+    transform 0.2s;
+}
+.btn:hover {
+  filter: brightness(1.08);
+}
+.btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+.btn-ghost {
+  background: transparent;
+  color: var(--fg);
+  border-color: var(--line);
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.3rem 0.75rem;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--surface-2) 70%, transparent);
+  color: var(--fg);
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+.chip:hover {
+  border-color: var(--accent);
+}
+
+/* ---------- cinematic helpers ---------- */
+.grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  /* plain alpha, no blend mode: blend modes force a full-layer re-composite every frame under animated content */
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+.sunset-text {
+  background: linear-gradient(90deg, #f3ead3, #d4a24c 55%, #e08a4f);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.skeleton {
+  background: linear-gradient(90deg, var(--surface) 25%, var(--surface-2) 50%, var(--surface) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite linear;
+  border-radius: 0.5rem;
+}
+@keyframes shimmer {
+  to {
+    background-position: -200% 0;
+  }
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* Reduced effects: no ambient CSS animation; GSAP side is switched by the same flag */
+:root[data-effects="reduced"] *,
+:root[data-effects="reduced"] *::before,
+:root[data-effects="reduced"] *::after {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  scroll-behavior: auto !important;
+}
+:root[data-effects="reduced"] .grain::after {
+  display: none;
+}
+
+/* Cursor: one plain orange arrow everywhere (no custom ring/dot, no trail). Text fields keep the text caret. */
+:root {
+  --cursor-orange:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28'><path d='M4 3 L4 22 L9.2 17.4 L12.6 25 L16 23.6 L12.7 16.2 L19.6 16 Z' fill='%23ff8a1f' stroke='%232b1400' stroke-width='1.4' stroke-linejoin='round'/></svg>")
+      4 3,
+    auto;
+}
+html,
+body,
+a,
+button,
+summary,
+label,
+select,
+[role="button"],
+[role="tab"],
+[role="slider"],
+.btn,
+.chip,
+[data-cursor] {
+  cursor: var(--cursor-orange);
+}
+input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]),
+textarea {
+  cursor: text;
+}
+button:disabled,
+.btn:disabled {
+  cursor: not-allowed;
+}
+
+/* data layer never gets continuous distortion: guard class used by tests */
+.data-layer {
+  filter: none !important;
+}
+
+/* =====================================================================================================
+   Touch and small screens
+   ===================================================================================================== */
+html {
+  -webkit-tap-highlight-color: transparent;
+}
+button,
+a,
+summary,
+label,
+[role="tab"] {
+  touch-action: manipulation; /* no 300 ms tap delay, no double-tap zoom on controls */
+}
+img,
+svg,
+video,
+canvas {
+  max-width: 100%;
+}
+h1,
+h2,
+h3,
+p,
+td,
+th,
+li {
+  overflow-wrap: anywhere;
+}
+input,
+textarea,
+select {
+  font-size: 16px;
+} /* iOS Safari zooms the page on focus when a field is smaller than 16px */
+
+/* Text fields get a visible edge in both themes (they were borderless on the dark surface). */
+input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]),
+textarea,
+select {
+  color: var(--fg);
+  background: color-mix(in srgb, var(--surface) 80%, transparent);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 0.4rem 0.75rem;
+}
+input::placeholder,
+textarea::placeholder {
+  color: var(--muted);
+  opacity: 0.85;
+}
+
+/* Safe areas (notches / home indicator): needs viewport-fit=cover in index.html */
+body {
+  padding-block-end: calc(2.6rem + env(safe-area-inset-bottom, 0px));
+}
+:root[data-banner="hidden"] body {
+  padding-block-end: env(safe-area-inset-bottom, 0px);
+}
+
+/* Touch devices: every control is at least 44px tall (WCAG target-size guidance) */
+@media (pointer: coarse) {
+  .tap,
+  .chip {
+    min-height: 44px;
+  }
+  .chip {
+    padding-inline: 0.95rem;
+  }
+  .btn {
+    min-height: 48px;
+  }
+  summary {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+  }
+  input[type="range"] {
+    height: 32px;
+  }
+  input[type="checkbox"],
+  input[type="radio"] {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+/* Tabs: a tidy 2x2 grid on phones */
+.tabs {
+  position: relative;
+  display: inline-flex;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 999px;
+  background: var(--surface-2);
+  flex-wrap: wrap;
+  max-width: 100%;
+}
+.tabs a {
+  position: relative;
+  z-index: 1;
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+@media (max-width: 640px) {
+  .tabs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+    border-radius: 24px;
+  }
+  .tabs a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    text-align: center;
+    padding-inline: 0.5rem;
+  }
+
+  /* Wide tables become stacked cards: one card per row, "label: value" lines (labels come from data-label) */
+  .rtable {
+    min-width: 0 !important;
+  }
+  .rtable thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+  .rtable,
+  .rtable tbody,
+  .rtable tr {
+    display: block;
+    width: 100%;
+  }
+  .rtable tr {
+    padding: 0.55rem 0.9rem;
+    border-top: 1px solid var(--line);
+  }
+  .rtable tbody tr:first-child {
+    border-top: 0;
+  }
+  .rtable th[scope="row"] {
+    display: block;
+    padding: 0.15rem 0 0.35rem !important;
+    border: 0 !important;
+    font-size: 1.02rem;
+    text-align: start;
+  }
+  .rtable td {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+    padding: 0.28rem 0 !important;
+    border: 0 !important;
+    text-align: end;
+  }
+  .rtable td::before {
+    content: attr(data-label);
+    flex: 0 0 34%;
+    text-align: start;
+    color: var(--muted);
+    font-size: 0.82rem;
+    font-weight: 600;
+  }
+  .rtable td[dir="auto"] {
+    text-align: start;
+  }
+}
+
+/* Charts: shorter, and the secondary (right) axis is dropped on narrow screens (see the chart components) */
+@media (max-width: 640px) {
+  .chart-box {
+    height: 300px !important;
+  }
+  .hide-narrow {
+    display: none !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .falcon {
+    top: 14% !important;
+    width: 46px !important;
+    inset-inline-end: 7% !important;
+  }
+  .dhow {
+    width: 64px !important;
+  }
+}
+@media (pointer: coarse) {
+  .banner-x {
+    width: 44px !important;
+    height: 44px !important;
+  }
+}
+
+/* Phones: scenes size to their content instead of reserving a full screen of empty space */
+@media (max-width: 640px) {
+  .scene {
+    min-height: auto !important;
+    padding-block: 3.5rem;
+  }
+  #palm > div[style*="padding: 6rem"] {
+    padding-block: 2rem 1rem !important;
+  }
+}
+/* Landscape phones: the fixed header and banner already use a lot of height, so tighten the hero */
+@media (max-height: 480px) and (orientation: landscape) {
+  #hero > div:last-of-type {
+    padding-block: 5.5rem 2.5rem !important;
+  }
+  #hero h1 {
+    font-size: clamp(1.8rem, 6vh, 3rem) !important;
+    margin-block: 0.6rem !important;
+  }
+}
+
+/* =====================================================================================================
+   Scrollbar: navy track, gold-to-terracotta thumb (dusk) / sand track, terracotta thumb (day)
+   ===================================================================================================== */
+::-webkit-scrollbar {
+  width: 13px;
+  height: 13px;
+}
+::-webkit-scrollbar-track,
+::-webkit-scrollbar-corner {
+  background: var(--sb-track);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--sb-thumb);
+  background-clip: padding-box;
+  border: 3px solid var(--sb-track); /* insets the thumb so it floats in the track */
+  border-radius: 999px;
+  min-height: 56px;
+  min-width: 56px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--sb-thumb-hover);
+  background-clip: padding-box;
+}
+/* Firefox has no ::-webkit-scrollbar. Chrome 121+ would let scrollbar-color override the rules above, so only
+   apply the standard properties where the webkit pseudo-elements do not exist. */
+@supports not selector(::-webkit-scrollbar) {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--sb-solid) var(--sb-track);
+  }
+}
+
+/* Palm illustration: never taller than the visible frame (short laptop windows, large Windows display scaling) */
+.palm-svg {
+  width: min(100%, calc(100svh - var(--inset-top) - var(--inset-bottom) - 3rem));
+  height: auto;
+  aspect-ratio: 1 / 1;
+  margin-inline: auto;
+}
+
+:root[data-scene="dark"] {
+  --sb-track: #0b1b2b;
+  --sb-thumb: linear-gradient(180deg, #e3ab55, #c98a4b 55%, #b5532e);
+  --sb-thumb-hover: linear-gradient(180deg, #f2bd6a, #dd9a52 55%, #c4602f);
+  --sb-solid: #d4a24c;
+}

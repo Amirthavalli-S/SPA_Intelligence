@@ -1,0 +1,69 @@
+# Rules shared by every jurisdiction pack (merged under the pack; the pack wins on conflicts).
+# Nothing here is legal advice; these are configurable parameters for the deterministic calculators and the agent.
+
+cashflow:
+  default_period: "quarter"       # month | quarter
+  default_delay_scenario_days: 180
+  # "At risk" (see app/cashflow.py docstring):
+  #   at_risk = (sum of payments whose milestone is construction- or handover-linked)
+  #           + (delay-penalty exposure from the simulator for the chosen delay scenario)
+  # A milestone is construction/handover-linked when its name or trigger text contains
+  # one of these keywords (case-insensitive). All other milestones are time-based.
+  at_risk:
+    definition: >-
+      At risk = payments tied to construction or handover milestones (the milestone name or trigger
+      contains a construction/handover keyword below) plus the delay-compensation exposure computed
+      for the chosen delay scenario. Penalty exposure is compensation the buyer could be owed, so it
+      is always shown separately as well.
+    handover_keywords: ["handover", "hand over", "notice of completion", "possession"]
+    construction_keywords:
+      - "construction"
+      - "excavation"
+      - "foundation"
+      - "podium"
+      - "slab"
+      - "structur"
+      - "piling"
+      - "site clearance"
+      - "roof"
+      - "external walls"
+      - "completion of"
+      - "commencement of"
+
+agent:
+  # Questions matching these patterns are legal-advice questions: the agent must refuse.
+  legal_advice_patterns:
+    - "\\bcancel"
+    - "\\brefund"
+    - "\\bterminat"
+    - "\\bsue\\b"
+    - "\\bwill i win\\b"
+    - "\\bwin (the|my) (case|dispute)"
+    - "\\blawsuit"
+    - "\\bcompensation claim"
+    - "\\bis (it|this) (legal|enforceable|valid)"
+    - "\\bshould i (sign|walk away|pursue|take legal)"
+    - "\\bwithhold payment"
+    - "\\bstop paying"
+    - "\\bmy rights\\b"
+    - "\\bam i entitled"
+    - "\\bbreach"
+    - "\\bcan i claim"
+    - "\\bdamages\\b"
+    - "\\bforfeit"
+  # Questions that reach for another buyer's contract/data are refused before any LLM call.
+  cross_contract_patterns:
+    - "\\b(another|other|different|someone else'?s?|somebody else'?s?)\\s+(buyer|customer|client|contract|unit|owner|spa|agreement)s?"
+    - "\\b(all|every|each)\\s+(the\\s+)?(buyers|customers|clients|contracts|units|owners)\\b"
+    - "\\b[0-9a-f]{64}\\b"
+    - "\\bcontract[_ ]?id\\b"
+  cross_contract_message: "I can only discuss your own contract."
+  refusal_message: "I can't advise on that; please contact the legal team."
+
+disclaimer: "Decision support, not legal advice."
+
+gap:
+  # How the statute-gap tab ranks a shortfall. These are product heuristics, not legal thresholds.
+  severity:
+    high_if_shortfall_ratio_gte: 0.5      # shortfall >= 50% of the statutory amount
+    medium_if_shortfall_ratio_gte: 0.2

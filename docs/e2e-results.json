@@ -1,0 +1,1562 @@
+{
+  "passed": 311,
+  "total": 311,
+  "failed": [],
+  "results": [
+    {
+      "name": "landing dusk_en_full: dir/lang",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "landing dusk_en_full: effects mode",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "landing dusk_en_full: headline visible",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "disclaimer visible: landing dusk_en_full",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "landing dusk_en_reduced: dir/lang",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "landing dusk_en_reduced: effects mode",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "landing dusk_en_reduced: headline visible",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "landing dusk_en_reduced: no video, no sandstorm",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "disclaimer visible: landing dusk_en_reduced",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "landing dusk_ar_full: dir/lang",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "landing dusk_ar_full: effects mode",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "landing dusk_ar_full: headline visible",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "disclaimer visible: landing dusk_ar_full",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "landing dusk_ar_reduced: dir/lang",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "landing dusk_ar_reduced: effects mode",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "landing dusk_ar_reduced: headline visible",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "landing dusk_ar_reduced: no video, no sandstorm",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "disclaimer visible: landing dusk_ar_reduced",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "landing day_en_full: dir/lang",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "landing day_en_full: effects mode",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "landing day_en_full: headline visible",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "disclaimer visible: landing day_en_full",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "landing day_en_reduced: dir/lang",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "landing day_en_reduced: effects mode",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "landing day_en_reduced: headline visible",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "landing day_en_reduced: no video, no sandstorm",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "disclaimer visible: landing day_en_reduced",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "landing day_ar_full: dir/lang",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "landing day_ar_full: effects mode",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "landing day_ar_full: headline visible",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "disclaimer visible: landing day_ar_full",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "landing day_ar_reduced: dir/lang",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "landing day_ar_reduced: effects mode",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "landing day_ar_reduced: headline visible",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "landing day_ar_reduced: no video, no sandstorm",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "disclaimer visible: landing day_ar_reduced",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "C: not-extracted state offers Extract + cost note",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "C: visible progress while extracting",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "C: percentage-sum warning shown",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "C: missing-cancellation flag shown",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "C: cancellation row highlighted as not found",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "C: plan total chip shows 95% (alert styled)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "app dusk_en a/terms: renders content",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "disclaimer visible: app dusk_en a/terms",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "app dusk_en a/penalty: renders content",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "disclaimer visible: app dusk_en a/penalty",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "app dusk_en a/cashflow: renders content",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "disclaimer visible: app dusk_en a/cashflow",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "app dusk_en a/assistant: renders content",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "disclaimer visible: app dusk_en a/assistant",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "app dusk_en b/terms: renders content",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "disclaimer visible: app dusk_en b/terms",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "app dusk_en b/penalty: renders content",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "disclaimer visible: app dusk_en b/penalty",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "app dusk_en b/cashflow: renders content",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "disclaimer visible: app dusk_en b/cashflow",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "app dusk_en b/assistant: renders content",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "disclaimer visible: app dusk_en b/assistant",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "app dusk_en c/terms: renders content",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "disclaimer visible: app dusk_en c/terms",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "app dusk_en c/penalty: renders content",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "disclaimer visible: app dusk_en c/penalty",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "app dusk_en c/cashflow: renders content",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "disclaimer visible: app dusk_en c/cashflow",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "app dusk_en c/assistant: renders content",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "disclaimer visible: app dusk_en c/assistant",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "app dusk_ar a/terms: renders content",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "disclaimer visible: app dusk_ar a/terms",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "app dusk_ar a/penalty: renders content",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "disclaimer visible: app dusk_ar a/penalty",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "app dusk_ar a/cashflow: renders content",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "disclaimer visible: app dusk_ar a/cashflow",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "app dusk_ar a/assistant: renders content",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "disclaimer visible: app dusk_ar a/assistant",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "app dusk_ar b/terms: renders content",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "disclaimer visible: app dusk_ar b/terms",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "app dusk_ar b/penalty: renders content",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "disclaimer visible: app dusk_ar b/penalty",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "app dusk_ar b/cashflow: renders content",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "disclaimer visible: app dusk_ar b/cashflow",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "app dusk_ar b/assistant: renders content",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "disclaimer visible: app dusk_ar b/assistant",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "app dusk_ar c/terms: renders content",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "disclaimer visible: app dusk_ar c/terms",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "app dusk_ar c/penalty: renders content",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "disclaimer visible: app dusk_ar c/penalty",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "app dusk_ar c/cashflow: renders content",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "disclaimer visible: app dusk_ar c/cashflow",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "app dusk_ar c/assistant: renders content",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "disclaimer visible: app dusk_ar c/assistant",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "app day_en a/terms: renders content",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "disclaimer visible: app day_en a/terms",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "app day_en a/penalty: renders content",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "disclaimer visible: app day_en a/penalty",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "app day_en a/cashflow: renders content",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "disclaimer visible: app day_en a/cashflow",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "app day_en a/assistant: renders content",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "disclaimer visible: app day_en a/assistant",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "app reduced_en c/terms: renders content",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "disclaimer visible: app reduced_en c/terms",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "app reduced_en c/penalty: renders content",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "disclaimer visible: app reduced_en c/penalty",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "app reduced_en c/cashflow: renders content",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "disclaimer visible: app reduced_en c/cashflow",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "app reduced_en c/assistant: renders content",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "disclaimer visible: app reduced_en c/assistant",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "chat: cancel/refund refused with 'legal team'",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "chat: handover answer contains the date and the quote",
+      "ok": true,
+      "detail": "Assistant\nThe handover date is 2027-06-30 (page 3: “30 June 2027”).\n📎\nPage 3\n“30 June 2027”"
+    },
+    {
+      "name": "chat: citation chip shows page 3",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "chat: citation opens the PDF panel",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "chat: PDF panel shows page 3 as an image",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "chat: the cited quote is highlighted on the page",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "chat: outside-contract question says not stated",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "API: fixture 1,000,000 / 6% / grace 30 / 90 days = 9863.01",
+      "ok": true,
+      "detail": "{\"delay_days\":90,\"grace_days\":30,\"chargeable_days\":60,\"penalty\":9863.01,\"cap_amount\":null,\"cap_reached\":false,\"pct_of_price\":0.986}"
+    },
+    {
+      "name": "UI shows AED 9,863.01 for the 90-day preset",
+      "ok": true,
+      "detail": "AED 9,863.01"
+    },
+    {
+      "name": "UI amount equals API value after rapid scenario changes",
+      "ok": true,
+      "detail": "AED 48,328.77 | AED 48,328.77 | want AED 48,328.77"
+    },
+    {
+      "name": "scenario table equals API rows",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "dial is keyboard accessible (ArrowRight changes days)",
+      "ok": true,
+      "detail": "181"
+    },
+    {
+      "name": "KPI linked equals API",
+      "ok": true,
+      "detail": "AED 980,000"
+    },
+    {
+      "name": "KPI penalty exposure equals API",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "KPI at-risk total equals API",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "at-risk definition comes from the API",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "timeline has a node per dated milestone and a payment dot",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "chart renders",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "RTL: sidebar sits on the right of the content",
+      "ok": true,
+      "detail": "1094 vs 16"
+    },
+    {
+      "name": "AR: figures use Western digits by default",
+      "ok": true,
+      "detail": "48,328.77 د.إ"
+    },
+    {
+      "name": "AR: Arabic-Indic digits only after opting in",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "route transition: sandstorm overlay shown, then app opened",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "upload: fake PDF rejected with the server's message",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "toggle: Reduce effects switches the mode",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "toggle: preference persists after reload",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "accuracy: page loads with golden-set note",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "disclaimer visible: accuracy",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "404 page renders with disclaimer",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "mobile: lite tier (no smooth scroll / WebGL / video)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "mobile: no horizontal overflow on landing",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "disclaimer visible: mobile landing",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "mobile: no horizontal overflow in the app",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "mobile: contracts list is a collapsed panel once a contract is open",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "disclaimer visible: mobile app",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "banner shown by default",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "banner can be dismissed",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "dismissed banner frees the bottom padding",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "dismissal is remembered after reload",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "banner can be restored with one click",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "skyline: scrolling past the end is not pulled back by snapping",
+      "ok": true,
+      "detail": "5324 -> 6224"
+    },
+    {
+      "name": "skyline: nothing lit and no cards at the start",
+      "ok": true,
+      "detail": "{\"cards\":[{\"visible\":false,\"side\":\"left\",\"y\":733},{\"visible\":false,\"side\":\"right\",\"y\":565},{\"visible\":false,\"side\":\"left\",\"y\":463},{\"visible\":false,\"side\":\"right\",\"y\":341}],\"lit\":[0,0,0,0]}"
+    },
+    {
+      "name": "skyline: mid-scroll lights lower bands only, cards 1-2 shown",
+      "ok": true,
+      "detail": "{\"cards\":[{\"visible\":true,\"side\":\"left\",\"y\":733},{\"visible\":false,\"side\":\"right\",\"y\":565},{\"visible\":false,\"side\":\"left\",\"y\":463},{\"visible\":false,\"side\":\"right\",\"y\":341}],\"lit\":[14,0,0,0]}"
+    },
+    {
+      "name": "skyline: at the end all 4 bands are lit and all 4 cards shown",
+      "ok": true,
+      "detail": "{\"cards\":[{\"visible\":true,\"side\":\"left\",\"y\":733},{\"visible\":true,\"side\":\"right\",\"y\":565},{\"visible\":true,\"side\":\"left\",\"y\":463},{\"visible\":true,\"side\":\"right\",\"y\":341}],\"lit\":[14,6,6,8]}"
+    },
+    {
+      "name": "skyline: cards alternate left / right of the tower",
+      "ok": true,
+      "detail": "left,right,left,right"
+    },
+    {
+      "name": "skyline: step 1 is lowest and step 4 highest (matches the tower bands)",
+      "ok": true,
+      "detail": "733,565,463,341"
+    },
+    {
+      "name": "palm: section is not pinned (no pin-spacer)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "palm: growth takes about the same time whether you arrive by slow scrolling or a hard flick",
+      "ok": true,
+      "detail": "1600 ms vs 1600 ms"
+    },
+    {
+      "name": "palm: no frame advances the growth by more than 5%",
+      "ok": true,
+      "detail": "1.4% / 1.3%"
+    },
+    {
+      "name": "palm: fully grown, and stays grown after scrolling away and back",
+      "ok": true,
+      "detail": "1.00 / 1.00"
+    },
+    {
+      "name": "cursor: body and buttons use the orange arrow image, no custom ring/dot",
+      "ok": true,
+      "detail": "{\"body\":true,\"btn\":true,\"custom\":false}"
+    },
+    {
+      "name": "cursor: text fields keep the text caret",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "mobile: no overflow, off-screen header controls, tiny tap targets or cut-off elements on any route/viewport",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "mobile: header shows brand, theme toggle and a menu button only",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "mobile: menu opens with navigation, language and reduce-effects",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "mobile: Escape closes the menu",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "mobile: choosing a menu link navigates and closes the menu",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "mobile: language switch from the menu flips the page to RTL",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "mobile: contracts list is collapsed once a contract is open; tabs form a 2x2 grid",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "Windows 1536x730 (125% scaling): scrolling is free (no teleport on the first wheel tick)",
+      "ok": true,
+      "detail": "scrollY 100"
+    },
+    {
+      "name": "Windows 1536x730 (125% scaling): scrolling settles with the Palm scene framed at the viewport top",
+      "ok": true,
+      "detail": "top 0"
+    },
+    {
+      "name": "Windows 1536x730 (125% scaling): Palm text and illustration sit inside the area between header and banner",
+      "ok": true,
+      "detail": "copy 245-516 svg 183-578 safe 70-690"
+    },
+    {
+      "name": "Windows 1536x730 (125% scaling): Palm animation starts only once framed",
+      "ok": true,
+      "detail": "palm top 0px at start"
+    },
+    {
+      "name": "Windows 1536x730 (125% scaling): a small further scroll settles on the skyline frame",
+      "ok": true,
+      "detail": "top 0"
+    },
+    {
+      "name": "Windows 1920x945: scrolling is free (no teleport on the first wheel tick)",
+      "ok": true,
+      "detail": "scrollY 100"
+    },
+    {
+      "name": "Windows 1920x945: scrolling settles with the Palm scene framed at the viewport top",
+      "ok": true,
+      "detail": "top 0"
+    },
+    {
+      "name": "Windows 1920x945: Palm text and illustration sit inside the area between header and banner",
+      "ok": true,
+      "detail": "copy 353-623 svg 291-685 safe 70-905"
+    },
+    {
+      "name": "Windows 1920x945: Palm animation starts only once framed",
+      "ok": true,
+      "detail": "palm top 0px at start"
+    },
+    {
+      "name": "Windows 1920x945: a small further scroll settles on the skyline frame",
+      "ok": true,
+      "detail": "top 0"
+    },
+    {
+      "name": "macOS 1440x780: scrolling is free (no teleport on the first wheel tick)",
+      "ok": true,
+      "detail": "scrollY 100"
+    },
+    {
+      "name": "macOS 1440x780: scrolling settles with the Palm scene framed at the viewport top",
+      "ok": true,
+      "detail": "top 0"
+    },
+    {
+      "name": "macOS 1440x780: Palm text and illustration sit inside the area between header and banner",
+      "ok": true,
+      "detail": "copy 270-541 svg 208-603 safe 70-740"
+    },
+    {
+      "name": "macOS 1440x780: Palm animation starts only once framed",
+      "ok": true,
+      "detail": "palm top 0px at start"
+    },
+    {
+      "name": "macOS 1440x780: a small further scroll settles on the skyline frame",
+      "ok": true,
+      "detail": "top 0"
+    },
+    {
+      "name": "scrollbar (dusk): themed gradient thumb, rounded, 13px",
+      "ok": true,
+      "detail": "{\"w\":\"13px\",\"r\":\"999px\",\"g\":true}"
+    },
+    {
+      "name": "scrollbar (day): themed gradient thumb, rounded, 13px",
+      "ok": true,
+      "detail": "{\"w\":\"13px\",\"r\":\"999px\",\"g\":true}"
+    },
+    {
+      "name": "E1 terms(D): amounts are shown in INR, not AED",
+      "ok": true,
+      "detail": "INR 8,450,000"
+    },
+    {
+      "name": "E1 terms(D): every extracted field carries a grounding chip (grounded or not stated)",
+      "ok": true,
+      "detail": "grounded,grounded,grounded,grounded,grounded,grounded,grounded,grounded,grounded,grounded"
+    },
+    {
+      "name": "E1 terms(D): jurisdiction detected as India (RERA) with its evidence",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "E1: clicking a field's page opens the PDF with the exact span highlighted",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "E1: highlight box sits inside the rendered page",
+      "ok": true,
+      "detail": "{\"x\":1233.578125,\"y\":816.921875,\"width\":48.25,\"height\":10.796875}"
+    },
+    {
+      "name": "E2 gap(D): statutory amount equals the API value exactly",
+      "ok": true,
+      "detail": "458383.56 vs 458383.56"
+    },
+    {
+      "name": "E2 gap(D): contractual amount equals the API value exactly",
+      "ok": true,
+      "detail": "12797.26 vs 12797.26"
+    },
+    {
+      "name": "E2 gap(D): shortfall counter settles exactly on statutory - contractual",
+      "ok": true,
+      "detail": "445586.3"
+    },
+    {
+      "name": "E2 gap(D): unreviewed-legal-logic badge and illustrative-rate warning are shown",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "E2 gap(D): input table lists inputs with evidence links",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "E2 gap(D): findings flag the one-sided clause with severity",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "E2 gap(D): an input's evidence link opens the highlighted PDF span",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "E2 gap(D): zero delay gives a zero shortfall",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "E2 gap(A, Dubai): clear 'cannot compute' reason and badge, no invented number",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "E3 penalty(D): probabilistic view is labelled assumption-driven",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "E3 penalty(D): fixed 180-day distribution reproduces the deterministic statutory amount",
+      "ok": true,
+      "detail": "458383.56 vs 458383.56"
+    },
+    {
+      "name": "E3: probabilities shown",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "E3: same seed gives the same table (reproducible)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "E3: portfolio rollup keeps currencies separate (AED and INR rows)",
+      "ok": true,
+      "detail": "Total (4)\tAED\t93,407.84\t232,402.16\t–|Total (1)\tINR\t5,545.48\t23,888.22\t657,016.44"
+    },
+    {
+      "name": "E4 watch: alerts feed lists due-soon items (in-app only)",
+      "ok": true,
+      "detail": "4 alerts"
+    },
+    {
+      "name": "E4 watch: timeline and obligation rows are visible",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "E4 watch: acknowledging removes the alert from the feed",
+      "ok": true,
+      "detail": "4 -> 3"
+    },
+    {
+      "name": "E4 watch: event filter narrows the table",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "E4 per-contract: calendar view and evidence links",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "E5 cross-check: sample set labelled synthetic",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "E5 cross-check set_1: both planted conflicts found (price, handover)",
+      "ok": true,
+      "detail": "2"
+    },
+    {
+      "name": "E5 cross-check: planted-error precision and recall are shown (1.00 / 1.00)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "E5 cross-check: graph draws conflict edges in the alert colour",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "E5 cross-check: clicking a conflict shows two documents side by side",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "E5 cross-check: the conflicting value is highlighted in the PDF",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "E6 playbook(C): flagged as example content, internal view",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "E6 playbook(C): the 95% plan fails with an approved-clause redline",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "E6 playbook: qualitative rules are 'not run' until the specialist LLM is invoked",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "E6 playbook: running the clause specialists grounds and fills the qualitative rules",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "E7 erp: placeholder warning is visible",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "E7 erp: dry-run preview has rows and validates",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "E7 erp: CSV downloads",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "E7 erp: live push is refused while disabled, with a clear reason (after an explicit confirmation step)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "E8 review: the partially-grounded price is queued",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "E8 review: after a correction the item leaves the queue",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "E8 review: the corrected field shows as human verified",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "E8 review: the decision is stored with a timestamp",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "E9 accuracy: states the golden-set size and that no real documents exist yet",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "E9 accuracy: a run appears in the history, labelled as a test stub",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "E9 accuracy: a second run is compared with the first (history grows)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "E9 engines: unconfigured engines are reported 'not configured', never faked",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "E9 engines: comparison states that results apply only to our golden set",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "new page en a/gap: renders",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "disclaimer visible: new page en a/gap",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "new page en a/obligations: renders",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "disclaimer visible: new page en a/obligations",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "new page en a/playbook: renders",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "disclaimer visible: new page en a/playbook",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "new page en a/erp: renders",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "disclaimer visible: new page en a/erp",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "new page en b/gap: renders",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "disclaimer visible: new page en b/gap",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "new page en b/obligations: renders",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "disclaimer visible: new page en b/obligations",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "new page en b/playbook: renders",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "disclaimer visible: new page en b/playbook",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "new page en b/erp: renders",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "disclaimer visible: new page en b/erp",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "new page en c/gap: renders",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "disclaimer visible: new page en c/gap",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "new page en c/obligations: renders",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "disclaimer visible: new page en c/obligations",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "new page en c/playbook: renders",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "disclaimer visible: new page en c/playbook",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "new page en c/erp: renders",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "disclaimer visible: new page en c/erp",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "new page en d/gap: renders",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "disclaimer visible: new page en d/gap",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "new page en d/obligations: renders",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "disclaimer visible: new page en d/obligations",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "new page en d/playbook: renders",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "disclaimer visible: new page en d/playbook",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "new page en d/erp: renders",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "disclaimer visible: new page en d/erp",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "new page en watch: renders",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "disclaimer visible: new page en watch",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "new page en crosscheck: renders",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "disclaimer visible: new page en crosscheck",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "new page en review: renders",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "disclaimer visible: new page en review",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "new page en accuracy: renders",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "disclaimer visible: new page en accuracy",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "new page ar a/gap: renders",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "disclaimer visible: new page ar a/gap",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "new page ar a/obligations: renders",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "disclaimer visible: new page ar a/obligations",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "new page ar a/playbook: renders",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "disclaimer visible: new page ar a/playbook",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "new page ar a/erp: renders",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "disclaimer visible: new page ar a/erp",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "new page ar b/gap: renders",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "disclaimer visible: new page ar b/gap",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "new page ar b/obligations: renders",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "disclaimer visible: new page ar b/obligations",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "new page ar b/playbook: renders",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "disclaimer visible: new page ar b/playbook",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "new page ar b/erp: renders",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "disclaimer visible: new page ar b/erp",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "new page ar c/gap: renders",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "disclaimer visible: new page ar c/gap",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "new page ar c/obligations: renders",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "disclaimer visible: new page ar c/obligations",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "new page ar c/playbook: renders",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "disclaimer visible: new page ar c/playbook",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "new page ar c/erp: renders",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "disclaimer visible: new page ar c/erp",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "new page ar d/gap: renders",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "disclaimer visible: new page ar d/gap",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "new page ar d/obligations: renders",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "disclaimer visible: new page ar d/obligations",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "new page ar d/playbook: renders",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "disclaimer visible: new page ar d/playbook",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "new page ar d/erp: renders",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "disclaimer visible: new page ar d/erp",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "new page ar watch: renders",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "disclaimer visible: new page ar watch",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "new page ar crosscheck: renders",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "disclaimer visible: new page ar crosscheck",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "new page ar review: renders",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "disclaimer visible: new page ar review",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "new page ar accuracy: renders",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "disclaimer visible: new page ar accuracy",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "AR: native-review note is shown",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "fps probe (informational)",
+      "ok": true,
+      "detail": "53.6 fps"
+    },
+    {
+      "name": "no console errors or page errors anywhere",
+      "ok": true,
+      "detail": ""
+    }
+  ]
+}
