@@ -76,11 +76,11 @@ def parse_dates(text: str) -> list[date]:
         except ValueError:
             pass
 
-    for m in re.finditer(r"\b(\d{4})-(\d{1,2})-(\d{1,2})\b", text):
+    for m in re.finditer(r"(?<!\d)(\d{4})-(\d{1,2})-(\d{1,2})\b", text):
         add(m[1], m[2], m[3])
-    for m in re.finditer(r"\b(\d{1,2})[/.\-](\d{1,2})[/.\-](\d{4})\b", text):     # day first (UAE/IN convention)
+    for m in re.finditer(r"(?<!\d)(\d{1,2})[/.\-](\d{1,2})[/.\-](\d{4})\b", text):     # day first (UAE/IN convention)
         add(m[3], m[2], m[1])
-    pat_dmy = r"\b(\d{1,2})(?:st|nd|rd|th)?\s*(?:of\s+)?([A-Za-z]{3,9})\.?,?\s+(\d{4})\b"
+    pat_dmy = r"(?<!\d)(\d{1,2})(?:st|nd|rd|th)?\s*(?:of\s+)?([A-Za-z]{3,9})\.?,?\s+(\d{4})\b"
     for m in re.finditer(pat_dmy, text):
         mo = MONTHS.get(m[2].lower())
         if mo:

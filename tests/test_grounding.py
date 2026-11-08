@@ -140,3 +140,13 @@ def test_locate_returns_line_rects_for_multiline_quote():
     c = contract_from(oracle_input(A))
     ev = c.delay_cap.evidence
     assert ev.rects and ev.bbox[2] - ev.bbox[0] > 100
+
+
+def test_parse_dates_when_ocr_glues_the_date_to_the_previous_word():
+    """Real Docling output: '...of Sale Date14/06/2024' (no space). The date must still be found."""
+    assert date(2024, 6, 14) in parse_dates("4th Installment 5 % Within 12 month(s) of Sale Date14/06/2024")
+    assert date(2025, 3, 15) in parse_dates("Due15 March 2025")
+    assert date(2024, 6, 14) in parse_dates("Date2024-06-14")
+    assert parse_dates("ref 114/06/2024") == []                  # a longer number is not a day
+    assert parse_dates("12024-06-14") == []
+
