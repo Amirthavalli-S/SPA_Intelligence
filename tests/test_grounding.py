@@ -87,6 +87,26 @@ def test_ungrounded_payment_row_is_excluded():
     assert any("excluded" in w and "quote not found" in w for w in c.warnings)     # the warning says WHY the row was dropped
 
 
+def test_row_with_only_a_bad_date_is_kept_with_date_withheld():
+    """Quote and percent are real; the date is not in the quote (e.g. OCR misread). Keep the row, null the date, send to review."""
+    inp = oracle_input(A)
+    inp["payment_plan"][0]["due_date"] = "2025-03-16"                       # quote says 15 March 2025
+    c = contract_from(inp)
+    row = c.payment_plan[0]
+    assert len(c.payment_plan) == 5 and not c.ungrounded_rows
+    assert row.due_date is None and row.needs_review and row.confidence <= 0.7
+    assert row.grounding.claimed_value == "2025-03-16"
+    assert c.payment_plan_percent_sum == 100                                 # the verified percent still counts
+    assert any("date withheld, row kept" in w and "2025-03-16" in w for w in c.warnings)
+
+
+def test_row_with_bad_date_and_bad_quote_is_still_excluded():
+    inp = oracle_input(A)
+    inp["payment_plan"][0].update(due_date="2025-03-16", source_quote="Booking made-up row 99% sometime")
+    c = contract_from(inp)
+    assert len(c.payment_plan) == 4 and len(c.ungrounded_rows) == 1
+
+
 def test_payment_row_with_wrong_percent_says_which_check_failed():
     inp = oracle_input(A)
     inp["payment_plan"][0]["percent"] = 37.0

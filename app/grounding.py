@@ -230,6 +230,16 @@ def ground_contract(data: ContractData, pdf_bytes: bytes, pages: list[str]) -> C
         if m.human_verified:
             kept_rows.append(m); continue
         g = ground_item(m, f"payment_plan[{i}]", pdf_bytes, pages, doc_key, percent=m.percent)
+        failed = [c for c in g.checks if not c.passed]
+        if g.status == "ungrounded" and m.due_date is not None and failed and all(c.name == "date_in_quote" for c in failed):
+            # Quote and percent are verified; only the DATE is not in the quote (often an OCR misread). Withhold the date, keep the
+            # row (dropping a verified 5% would corrupt the plan total) and send it to a human.
+            g.claimed_value, g.status = m.due_date.isoformat(), "partial"
+            m.due_date, m.needs_review = None, True
+            m.confidence = min(m.confidence or 0.7, 0.7)
+            kept_rows.append(m)
+            notes.append(f"Grounding: payment-plan row '{m.name}' due date {g.claimed_value} is not in its source quote; date withheld, row kept (needs review).")
+            continue
         if g.status == "ungrounded":
             bad_rows.append(m)
             why = "; ".join(c.detail for c in g.checks if not c.passed) or "no source quote"
