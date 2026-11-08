@@ -18,3 +18,27 @@ Open http://localhost:5173. Without Azure keys the app starts, but extraction an
   Confirmation emails still need working email delivery in Supabase (see docs/supabase-setup.md).
 - **Scanned PDFs:** set QWEN_* (see docs/ocr.md). Optional local OCR tests: `apt install tesseract-ocr`.
 - Tests: `python -m pytest -q`. Database tests skip unless a local PostgreSQL is on 127.0.0.1:54329.
+
+## Scanned PDFs with Docling (runs on your machine, nothing leaves it)
+
+Needs about 6 GB free disk, 8 GB RAM recommended, and internet access once to download the models from Hugging Face.
+
+```bash
+pip install -r requirements-ocr.txt
+docling-tools models download      # one-time model download (skip it and the first scan downloads them instead)
+```
+
+In `.env` set `OCR_ENGINE=docling` and `OCR_VERIFY=0` (a single reader). Then check it:
+
+```bash
+python scripts/check_ocr.py --pages 2
+```
+
+You want PASS on "an OCR engine is available", "read the scanned pages" and "line positions are usable". The first run is slow
+(models load); later runs are faster. `GET http://localhost:8000/api/health` should show `"ocr":{"enabled":true,"engine":"docling",...}`.
+
+With one reader, every value taken from a scanned page is sent to the review queue by design. For a cross-check add a second
+reader (Qwen or an LM Studio vision model, see docs/ocr.md) and remove `OCR_VERIFY=0`.
+
+**Not verified:** a full Docling run. It was built and tested against Docling's own classes, but its models could not be
+downloaded in the build sandbox. If `check_ocr.py` fails, send me its output (it prints no secrets or page text).
