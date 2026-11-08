@@ -6,7 +6,7 @@ import { json, request } from "../api/client";
 type Mode = "signin" | "signup" | "forgot";
 
 const field: CSSProperties = {
-  minHeight: 46,
+  minHeight: 48,
   width: "100%",
   boxSizing: "border-box",
   background: "rgba(255,255,255,.08)",
@@ -24,6 +24,7 @@ export function EmailSignIn({ confirmed }: { confirmed: boolean }) {
   const [mode, setMode] = useState<Mode>("signin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPw, setShowPw] = useState(false);
   const [note, setNote] = useState<string | null>(confirmed ? t("login.email.confirmed") : null);
   const path = { signin: "/auth/supabase/login", signup: "/auth/supabase/signup", forgot: "/auth/supabase/recover" }[mode];
   const go = useMutation({
@@ -46,25 +47,30 @@ export function EmailSignIn({ confirmed }: { confirmed: boolean }) {
   return (
     <form onSubmit={submit} data-testid="email-form" style={{ display: "grid", gap: 10, textAlign: "start" }} noValidate>
       <h2 className="display" style={{ margin: 0, fontSize: "1.15rem", textAlign: "center", color: "#f3ead3" }}>{t(`login.email.title.${mode}`)}</h2>
-      <label style={{ display: "grid", gap: 4 }}>
+      <label className="login-field">
         <span>{t("login.email.email")}</span>
         <input type="email" autoComplete="email" dir="ltr" required value={email} onChange={(e) => setEmail(e.target.value)} style={field} />
       </label>
       {mode !== "forgot" && (
         <div style={{ display: "grid", gap: 4 }}>
-          <label style={{ display: "grid", gap: 4 }}>
+          <label className="login-field">
             <span>{t("login.email.password")}</span>
-            <input
-              type="password"
-              autoComplete={mode === "signup" ? "new-password" : "current-password"}
-              dir="ltr"
-              required
-              minLength={mode === "signup" ? 10 : 1}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              aria-describedby={mode === "signup" ? "pw-help" : undefined}
-              style={field}
-            />
+            <span className="login-pw">
+              <input
+                type={showPw ? "text" : "password"}
+                autoComplete={mode === "signup" ? "new-password" : "current-password"}
+                dir="ltr"
+                required
+                minLength={mode === "signup" ? 10 : 1}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                aria-describedby={mode === "signup" ? "pw-help" : undefined}
+                style={{ ...field, paddingInlineEnd: "4.5rem" }}
+              />
+              <button type="button" onClick={() => setShowPw((v) => !v)} aria-pressed={showPw} aria-label={t(showPw ? "login.email.hide" : "login.email.show")} data-testid="toggle-password">
+                {showPw ? "🙈" : "👁"}
+              </button>
+            </span>
           </label>
           {mode === "signup" && <small id="pw-help" style={{ color: "#b9c4cc" }}>{t("login.email.passwordHelp")}</small>}
         </div>

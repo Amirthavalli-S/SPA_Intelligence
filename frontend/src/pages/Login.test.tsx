@@ -1,5 +1,6 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { render, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import "../i18n";
@@ -25,6 +26,7 @@ const mount = (url = "/login") =>
         <MemoryRouter initialEntries={[url]}>
           <Routes>
             <Route path="/login" element={<Login />} />
+            <Route path="/" element={<p data-testid="home">home</p>} />
             <Route path="/app/*" element={<p data-testid="in-app">in the app</p>} />
           </Routes>
         </MemoryRouter>
@@ -44,7 +46,7 @@ describe("Login page", () => {
   it("never carries an outside destination (open-redirect defence)", async () => {
     vi.stubGlobal("fetch", api({}));
     mount("/login?next=https%3A%2F%2Fevil.example");
-    expect(await screen.findByTestId("github-signin")).toHaveAttribute("href", "/api/auth/github/login?next=%2Fapp");
+    expect(await screen.findByTestId("github-signin")).toHaveAttribute("href", "/api/auth/github/login?next=%2F");   // default: Home
   });
 
   it("explains a refused account by name, and other failures", async () => {
@@ -60,10 +62,38 @@ describe("Login page", () => {
     expect(screen.queryByTestId("login-error")).toBeNull();
   });
 
-  it("goes straight to the app when already signed in, or when server auth is off", async () => {
+  it("goes to Home when already signed in, or when server auth is off", async () => {
     vi.stubGlobal("fetch", api({ authenticated: true, name: "Alice" }));
     mount();
+    await waitFor(() => expect(screen.getByTestId("home")).toBeInTheDocument());
+  });
+
+  it("goes back to the page the visitor asked for, when it is inside the app", async () => {
+    vi.stubGlobal("fetch", api({ authenticated: true, name: "Alice" }));
+    mount("/login?next=%2Fapp%2Freview");
     await waitFor(() => expect(screen.getByTestId("in-app")).toBeInTheDocument());
+  });
+
+  it("shows the quote and the three promises beside the sign-in card", async () => {
+    vi.stubGlobal("fetch", api({}));
+    mount();
+    await screen.findByTestId("github-signin");
+    expect(screen.getByTestId("login-quote")).toHaveTextContent(/every detail has a page number/i);
+    expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(/know exactly what you signed/i);
+    expect(screen.getByText(/every value cites its page/i)).toBeInTheDocument();
+    expect(screen.getByText(/numbers you can trust/i)).toBeInTheDocument();
+    expect(screen.getByText(/a person checks what is unsure/i)).toBeInTheDocument();
+  });
+
+  it("lets the visitor show and hide the password they typed", async () => {
+    vi.stubGlobal("fetch", api({}, { mode: "supabase", github: false, email: true }));
+    mount();
+    const pw = (await screen.findByLabelText(/^password/i)) as HTMLInputElement;
+    expect(pw.type).toBe("password");
+    await userEvent.click(screen.getByTestId("toggle-password"));
+    expect(pw.type).toBe("text");
+    await userEvent.click(screen.getByTestId("toggle-password"));
+    expect(pw.type).toBe("password");
   });
 
   it("says sign-in is not configured when GitHub is not set up", async () => {

@@ -556,3 +556,160 @@ body {
   --sb-thumb-hover: linear-gradient(180deg, #f2bd6a, #dd9a52 55%, #c4602f);
   --sb-solid: #d4a24c;
 }
+
+/* =====================================================================================================
+   Login: story panel (quote and promises) beside the sign-in card, over the dusk scene
+   ===================================================================================================== */
+.login-grid {
+  position: relative;
+  z-index: 2;
+  width: min(1120px, 100%);
+  display: grid;
+  gap: clamp(1.5rem, 4vw, 3.5rem);
+  align-items: center;
+  grid-template-columns: minmax(0, 1fr);
+}
+@media (min-width: 940px) {
+  .login-grid {
+    grid-template-columns: minmax(0, 1.1fr) minmax(360px, 430px);
+  }
+}
+.login-story {
+  display: grid;
+  gap: 1.3rem;
+  color: #f3ead3;
+  text-align: start;
+  /* a soft glass panel keeps the text readable over the skyline */
+  padding: clamp(1.1rem, 3vw, 2rem);
+  border-radius: 24px;
+  background: linear-gradient(135deg, rgba(11, 27, 43, 0.72), rgba(11, 27, 43, 0.5));
+  border: 1px solid rgba(243, 234, 211, 0.16);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+@media (max-width: 939px) {
+  .login-card {
+    order: -1; /* on phones the sign-in form comes first; the story follows */
+  }
+}
+.login-eyebrow {
+  justify-self: start;
+  padding: 0.3rem 0.85rem;
+  border-radius: 999px;
+  border: 1px solid rgba(241, 207, 138, 0.55);
+  color: #f1cf8a;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+.login-quote {
+  margin: 0;
+  padding: 0.2rem 1.1rem;
+  border-inline-start: 3px solid #d4a24c;
+  display: grid;
+  gap: 0.4rem;
+}
+.login-quote blockquote {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.15rem, 2.4vw, 1.5rem);
+  line-height: 1.4;
+  color: #f1cf8a;
+  font-style: italic;
+}
+:root[lang="ar"] .login-quote blockquote {
+  font-style: normal;
+}
+.login-quote figcaption {
+  font-size: 0.85rem;
+  color: #c9d3da;
+}
+.login-points {
+  display: grid;
+  gap: 0.9rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.login-points li {
+  display: grid;
+  grid-template-columns: 2.6rem 1fr;
+  gap: 0.85rem;
+  align-items: start;
+}
+.login-points .ico {
+  width: 2.6rem;
+  height: 2.6rem;
+  border-radius: 0.8rem;
+  display: grid;
+  place-items: center;
+  background: rgba(212, 162, 76, 0.16);
+  border: 1px solid rgba(212, 162, 76, 0.45);
+  color: #f1cf8a;
+}
+.login-points strong {
+  display: block;
+  font-size: 1.02rem;
+  color: #f3ead3;
+}
+.login-points span.body {
+  color: #cdd6dd;
+  font-size: 0.93rem;
+  line-height: 1.5;
+}
+.login-card {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  border-radius: 24px;
+  overflow: hidden;
+  background: rgba(11, 27, 43, 0.82);
+  border: 1px solid rgba(243, 234, 211, 0.28);
+  box-shadow: 0 30px 80px -30px rgba(0, 0, 0, 0.75);
+  color: #f3ead3;
+}
+.login-card .body {
+  display: grid;
+  gap: 1rem;
+  padding: 0.6rem 1.7rem 1.7rem;
+}
+.login-field {
+  display: grid;
+  gap: 0.35rem;
+  font-weight: 600;
+  font-size: 0.92rem;
+}
+.login-pw {
+  position: relative;
+  display: grid;
+}
+.login-pw button {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-end: 0.4rem;
+  min-width: 44px;
+  background: none;
+  border: 0;
+  color: #f1cf8a;
+  font-weight: 600;
+  font-size: 0.82rem;
+}
+.login-divider {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  color: #b9c4cc;
+  font-size: 0.85rem;
+}
+.login-divider::before,
+.login-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: rgba(243, 234, 211, 0.22);
+}
+/* the login card is dark in both themes, so its buttons use the gold-on-navy pair, not the day palette */
+.login-card .btn {
+  background: #d4a24c;
+  color: #0b1b2b;
+}

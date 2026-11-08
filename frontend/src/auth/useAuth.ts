@@ -19,6 +19,8 @@ export function useAuth() {
 /** True when the server enforces sign-in and this visitor has not signed in yet. */
 export const needsSignIn = (me?: Me) => !!me && me.mode !== "off" && !me.authenticated;
 
-/** Only paths inside the app are accepted as a post-login destination. */
+/** Only Home ("/") or a path inside the app is accepted as a post-login destination. Default: Home. */
 export const safeNext = (p: string | null): string =>
-  p && /^\/app(\/[A-Za-z0-9._~%/-]{0,200})?$/.test(p) && !p.includes("//") && !p.includes("..") ? p : "/app";
+  p === "/" || (p && /^\/app(\/[A-Za-z0-9._~%/-]{0,200})?$/.test(p) && !p.includes("//") && !p.includes(".."))
+    ? (p as string)
+    : "/";

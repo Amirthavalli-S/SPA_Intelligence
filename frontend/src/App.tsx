@@ -22,7 +22,14 @@ export default function App() {
         <RouteFade>
           <Suspense fallback={<div style={{ minHeight: "100svh" }} aria-busy="true" />}>
             <Routes>
-              <Route path="/" element={<Landing />} />
+              <Route
+                path="/"
+                element={
+                  <AuthGate>
+                    <Landing />
+                  </AuthGate>
+                }
+              />
               <Route path="/login" element={<Login />} />
               <Route path="/reset" element={<Reset />} />
               <Route

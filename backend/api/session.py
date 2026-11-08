@@ -102,8 +102,10 @@ def safe_avatar(url) -> str | None:
 
 
 def safe_next(path: str) -> str:
-    """Where to land after sign-in: only paths inside /app (no open redirect)."""
-    return path if path and NEXT_RE.fullmatch(path) and "//" not in path and ".." not in path else "/app"
+    """Where to land after sign-in: Home ("/") or a path inside /app (no open redirect). Default: Home."""
+    if path == "/":
+        return "/"
+    return path if path and NEXT_RE.fullmatch(path) and "//" not in path and ".." not in path else "/"
 
 
 def make_session(github_id: int, login: str, name: str, role: str, avatar: str | None = None) -> str:

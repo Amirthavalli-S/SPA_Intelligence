@@ -27,6 +27,7 @@ export function TopBar() {
   const { pathname } = useLocation();
   const authMe = useAuth();
   const nav = navFor(kindOf(authMe.data), !!authMe.data);
+  const bare = pathname === "/login" || pathname === "/reset"; // the first page: brand, language and theme only
 
   useEffect(() => setOpen(false), [pathname, narrow]);
 
@@ -180,7 +181,15 @@ export function TopBar() {
       }}
     >
       {brand}
-      {narrow ? (
+      {bare ? (
+        <>
+          <div style={{ flex: 1 }} />
+          {langBtn}
+          {!narrow && digitsChk}
+          {!narrow && reduceBtn}
+          <Magnetic strength={narrow ? 0 : 0.25}>{themeBtn}</Magnetic>
+        </>
+      ) : narrow ? (
         <>
           <div style={{ flex: 1 }} />
           <Magnetic strength={0}>{themeBtn}</Magnetic>

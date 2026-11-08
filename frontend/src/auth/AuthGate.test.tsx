@@ -18,6 +18,14 @@ const mount = (start = "/app/contracts/abc/gap") =>
           <Routes>
             <Route path="/login" element={<Where />} />
             <Route
+              path="/"
+              element={
+                <AuthGate>
+                  <p>home page</p>
+                </AuthGate>
+              }
+            />
+            <Route
               path="/app/*"
               element={
                 <AuthGate>
@@ -46,6 +54,19 @@ describe("AuthGate", () => {
     mount();
     await waitFor(() => expect(screen.getByTestId("where")).toHaveTextContent("/login?next=%2Fapp%2Fcontracts%2Fabc%2Fgap"));
     expect(screen.queryByText("the app")).toBeNull();
+  });
+
+  it("opens on the login page, not Home, when nobody is signed in", async () => {
+    vi.stubGlobal("fetch", me({ mode: "supabase", authenticated: false }));
+    mount("/");
+    await waitFor(() => expect(screen.getByTestId("where")).toHaveTextContent("/login?next=%2F"));
+    expect(screen.queryByText("home page")).toBeNull();
+  });
+
+  it("shows Home once signed in", async () => {
+    vi.stubGlobal("fetch", me({ mode: "supabase", authenticated: true, name: "Alice A", roles: ["Spa.Reviewer"] }));
+    mount("/");
+    await waitFor(() => expect(screen.getByText("home page")).toBeInTheDocument());
   });
 
   it("shows the app once signed in", async () => {

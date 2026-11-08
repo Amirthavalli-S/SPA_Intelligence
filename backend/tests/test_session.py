@@ -66,7 +66,7 @@ def test_no_session_means_401_but_signin_endpoints_are_open(gh):
 
 def test_allowed_user_gets_a_session_and_the_token_is_not_kept(gh):
     r = sign_in(gh)
-    assert r.status_code == 302 and r.headers["location"] == "/app"
+    assert r.status_code == 302 and r.headers["location"] == "/"          # signing in lands on Home
     assert "gho_secret" not in r.headers["set-cookie"] and "httponly" in r.headers["set-cookie"].lower()
     me = gh.get("/api/auth/me").json()
     assert me["authenticated"] and me["name"] == "Alice A" and me["roles"] == ["Spa.Reviewer"]
@@ -178,9 +178,10 @@ def test_next_destination_is_limited_to_the_app(gh):
         state = parse_qs(urlparse(r.headers["location"]).query)["state"][0]
         return gh.get("/api/auth/github/callback", params={"code": "good", "state": state}).headers["location"]
     assert land("/app/contracts/abc/gap") == "/app/contracts/abc/gap"
+    assert land("/") == "/"
     for bad in ("https://evil.example", "//evil.example", "/other", "/app/../x", "/app//x", "javascript:1"):
-        assert land(bad) == "/app", bad
-    assert land("") == "/app"
+        assert land(bad) == "/", bad
+    assert land("") == "/"
 
 
 def test_user_cancelling_at_github_goes_back_to_the_login_page(gh):

@@ -630,8 +630,29 @@
       "toForgot": "Forgot your password?",
       "confirmed": "Your email is confirmed. You can sign in now.",
       "checkEmailSignup": "Check your email and open the link we sent to confirm your address. Then sign in.",
-      "checkEmailForgot": "If that address has an account, a reset link is on its way."
-    }
+      "checkEmailForgot": "If that address has an account, a reset link is on its way.",
+      "show": "Show password",
+      "hide": "Hide password"
+    },
+    "eyebrow": "UAE off-plan property contracts",
+    "headline": "Know exactly what you signed.",
+    "quote": "The deal is in the details, and every detail has a page number.",
+    "quoteBy": "The idea behind SPA Intelligence",
+    "points": {
+      "cite": {
+        "title": "Every value cites its page",
+        "body": "Each term links to the exact line in your PDF."
+      },
+      "calc": {
+        "title": "Numbers you can trust",
+        "body": "Money and dates come from tested code, never from an AI guess."
+      },
+      "human": {
+        "title": "A person checks what is unsure",
+        "body": "Anything the system cannot confirm waits for a human review."
+      }
+    },
+    "secure": "Your session is protected and expires automatically."
   },
   "buyers": {
     "title": "Buyers",
