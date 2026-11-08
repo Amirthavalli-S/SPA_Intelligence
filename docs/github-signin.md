@@ -58,7 +58,7 @@ Save and redeploy. If a variable is missing or too weak the server **refuses to 
 - The session is a signed, HttpOnly, SameSite=Lax, Secure cookie (default 8 hours, `SESSION_HOURS`). Tampered, expired or `alg:none` cookies are refused.
 - Changes made with the cookie must carry `X-Requested-With: spa` (the UI does this), so another website cannot make your browser change data.
 - The GitHub access token is used once to read your id and username and is then discarded (never stored or logged).
-- The review log and ERP audit use your **verified GitHub name**, not text typed into a request.
+- The review log uses your **verified GitHub name**, not text typed into a request.
 - The OAuth callback address comes from `PUBLIC_BASE_URL`, never from request headers.
 
 ## Limits

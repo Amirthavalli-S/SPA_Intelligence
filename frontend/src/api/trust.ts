@@ -266,19 +266,6 @@ export interface PlaybookResult {
   summary: Record<string, number>;
   llm_run: boolean;
 }
-export interface ErpResult {
-  mode: string;
-  entity: string;
-  placeholder_mapping: boolean;
-  mapping_note: string;
-  rows: Record<string, unknown>[];
-  row_count: number;
-  errors: { row: number; field: string; source: string; error: string }[];
-  valid: boolean;
-  csv: string;
-  push_enabled: boolean;
-}
-
 const q = (o: Record<string, string | number | boolean | undefined | null>) => {
   const p = new URLSearchParams();
   for (const [k, v] of Object.entries(o)) if (v !== undefined && v !== null && v !== "") p.set(k, String(v));
@@ -332,7 +319,4 @@ export const apiX = {
     request<Evidence>(`/crossdoc/sets/${setId}/documents/${docId}/evidence${q({ page, quote })}`),
   playbook: (id: string, runLlm: boolean) => request<PlaybookResult>(`/contracts/${id}/playbook${q({ run_llm: runLlm })}`),
   playbookCsvUrl: (id: string) => `${import.meta.env.VITE_API_BASE ?? "/api"}/contracts/${id}/playbook${q({ format: "csv" })}`,
-  erpExport: (id: string, body: { delay_days?: number; as_of_date?: string }) => request<ErpResult>(`/contracts/${id}/erp/export`, json(body)),
-  erpPush: (id: string, body: { delay_days?: number; as_of_date?: string; confirm: boolean; reviewer?: string }) =>
-    request<{ pushed: number; rows: number }>(`/contracts/${id}/erp/push`, json(body)),
 };

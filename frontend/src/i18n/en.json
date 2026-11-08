@@ -113,10 +113,6 @@
         "title": "Accuracy dashboard",
         "body": "Measure extraction accuracy against labelled sample contracts and track each run."
       },
-      "erp": {
-        "title": "ERP export",
-        "body": "Export the payment schedule as a dry run for your finance system. Live push is off by default."
-      },
       "roles": {
         "title": "Roles and buyer access",
         "body": "Administrator, reviewer, staff and buyer roles. Each buyer can ask about their own contract only."
@@ -191,8 +187,7 @@
     "assistant": "Assistant",
     "gap": "Gap",
     "obligations": "Obligations",
-    "playbook": "Playbook",
-    "erp": "ERP"
+    "playbook": "Playbook"
   },
   "terms": {
     "title": "Extracted terms",
@@ -519,28 +514,6 @@
     "llmCost": "Qualitative rules need one LLM call for this contract (cached afterwards).",
     "export": "Export findings (CSV)",
     "redline": "Redline against the approved clause"
-  },
-  "erp": {
-    "title": "ERP export (D365 F&O)",
-    "placeholder": "Entity and field names in the mapping are PLACEHOLDERS. Confirm them in your D365 environment (erp/d365_mapping.yaml) before any live push.",
-    "preview": "Preview rows",
-    "entity": "Entity",
-    "mode": "Mode",
-    "rows": "{{n}} rows",
-    "valid": "Valid",
-    "invalid": "{{n}} validation errors",
-    "exposureHelp": "Statutory exposure rows depend on unreviewed legal logic.",
-    "row": "Row",
-    "downloadCsv": "Download CSV",
-    "downloadJson": "Download JSON",
-    "push": "Push to D365…",
-    "pushDisabled": "Live push is disabled (ERP_PUSH_ENABLED is not set). Dry-run files above are always available.",
-    "confirmTitle": "Confirm live push",
-    "confirmBody": "This will send {{n}} rows to the configured D365 environment and write an audit-log entry.",
-    "confirmCheck": "I confirm the mapping has been checked",
-    "pushed": "{{n}} rows pushed",
-    "cancel": "Cancel",
-    "confirmPush": "Push now"
   },
   "review": {
     "title": "Review queue",

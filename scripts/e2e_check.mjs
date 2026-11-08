@@ -383,7 +383,7 @@ console.log("C11. scene framing + frame settling on Windows-like and macOS-like 
 }
 
 // ------------------------------------------------------------------ E. trust and intelligence pages
-console.log("E. evidence, gap, probabilistic, obligations, cross-check, playbook, ERP, review, accuracy");
+console.log("E. evidence, gap, probabilistic, obligations, cross-check, playbook, review, accuracy");
 const D = idOf("sample_d_rera.pdf"), RV = idOf("fixture_review_case.pdf");
 const num = (t) => Number(String(t).replace(/[^0-9.\-]/g, ""));
 const get = async (path) => (await fetch(`${BASE}/api${path}`)).json();
@@ -476,16 +476,6 @@ const get = async (path) => (await fetch(`${BASE}/api${path}`)).json();
   check("E6 playbook: running the clause specialists grounds and fills the qualitative rules", !/not run:\s*[1-9]/i.test(await page.getByTestId("pb-summary").innerText()));
   await shot(page, "trust_playbook_C", true);
 
-  // --- E7 ERP
-  await page.goto(`${BASE}/app/contracts/${A}/erp`); await sleep(2200);
-  check("E7 erp: placeholder warning is visible", await page.getByTestId("erp-placeholder").isVisible());
-  await page.getByTestId("erp-preview").click(); await page.getByTestId("erp-table").waitFor({ timeout: 8000 });
-  check("E7 erp: dry-run preview has rows and validates", (await page.getByTestId("erp-table").locator("tbody tr").count()) >= 5 && /Valid/.test(await page.getByTestId("erp-valid").innerText()));
-  const dl = page.waitForEvent("download"); await page.getByTestId("erp-csv").click(); const file = await dl;
-  check("E7 erp: CSV downloads", /\.csv$/.test(file.suggestedFilename()));
-  await page.getByTestId("erp-push").click(); await page.getByTestId("erp-confirm-check").check(); await page.getByTestId("erp-confirm-push").click(); await sleep(1200);
-  check("E7 erp: live push is refused while disabled, with a clear reason (after an explicit confirmation step)", /disabled/i.test(await page.getByTestId("erp-push-error").innerText()));
-  await shot(page, "trust_erp_A");
 
   // --- E8 review queue
   await page.goto(`${BASE}/app/review`); await sleep(2200);
@@ -516,7 +506,7 @@ const get = async (path) => (await fetch(`${BASE}/api${path}`)).json();
 // every new page for all samples, EN and AR: loads, shows the disclaimer, no console errors (checked at the end)
 for (const lang of ["en", "ar"]) {
   const ctx = await ctxFor({ lang }); const page = await ctx.newPage(); watch(page, `trust pages ${lang}`);
-  for (const [name, id] of [["a", A], ["b", B], ["c", C], ["d", D]]) for (const tab of ["gap", "obligations", "playbook", "erp"]) {
+  for (const [name, id] of [["a", A], ["b", B], ["c", C], ["d", D]]) for (const tab of ["gap", "obligations", "playbook"]) {
     await page.goto(`${BASE}/app/contracts/${id}/${tab}`); await sleep(2300);
     check(`new page ${lang} ${name}/${tab}: renders`, await page.locator("h2").first().isVisible() && (await page.locator("[role=alert]:has-text('Something went wrong')").count()) === 0);
     await disclaimer(page, `new page ${lang} ${name}/${tab}`);

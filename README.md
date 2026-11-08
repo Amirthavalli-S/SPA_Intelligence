@@ -39,12 +39,12 @@ spa-intel/
 ├── backend/api/        main.py, routes/{contracts,penalty,cashflow,chat,eval}.py, schemas.py, deps.py
 ├── backend/tests/      test_api.py (LLM mocked), e2e_server.py (test-only stub server)
 ├── app/                core logic: schema, extract, grounding, evidence, packs, statute_gap, montecarlo, obligations,
-│                       crossdoc, playbook, buyer, review, penalty, cashflow, agent, llm, engines/, erp/
+│                       crossdoc, playbook, buyer, review, penalty, cashflow, agent, llm, engines/
 ├── frontend/           Vite + React + TS (src/api, i18n, motion, scenes, components, pages, styles, state)
 ├── samples/            three synthetic Dubai SPAs (generated)        ground_truth.json
 ├── rules/              common.yaml, packs/{ae_dubai,in_rera}.yaml, rates/, grounding/simulation/obligations/crossdoc/playbook .yaml
 ├── eval/               run_eval.py, bakeoff.py, golden/ (documents + labels), runs/ (saved runs)
-├── clauses/approved/   example clause library      erp/d365_mapping.yaml (placeholders)
+├── clauses/approved/   example clause library
 ├── scripts/            docs/ (screenshots, video, reports)
 ```
 
@@ -73,7 +73,6 @@ cd frontend && npm install && cd ..
 | `RATE_UPLOADS`, `RATE_CHAT` | requests per minute per IP (defaults 10, 30) |
 | `AZURE_DOCINT_ENDPOINT`, `AZURE_DOCINT_KEY` | enable the `azure_docint` engine (otherwise "not configured") |
 | `BUYER_TOKENS` | `token=contract_id,...` or JSON: buyer token auth **stub** for `/buyer/chat` |
-| `ERP_PUSH_ENABLED`, `D365_TENANT_ID`, `D365_CLIENT_ID`, `D365_CLIENT_SECRET`, `D365_RESOURCE` | live D365 push (off by default; mapping names are placeholders) |
 | `AUTH_MODE`, `ENTRA_TENANT_ID`, `ENTRA_CLIENT_ID`, `BUYER_ACCOUNTS` | Entra sign-in for the API (see `docs/entra-setup.md`); default `AUTH_MODE=off` is for local development only |
 | `GITHUB_CLIENT_ID`, `GITHUB_CLIENT_SECRET`, `PUBLIC_BASE_URL`, `SESSION_SECRET`, `GITHUB_USERS` | GitHub sign-in for the browser UI (see `docs/github-signin.md`); users and roles come from the allow-list |
 | `AUTH_MODE=apikey`, `API_KEYS` | demo mode without Entra registrations: `X-API-Key` header, same roles, buyer keys bound to one contract (see `docs/demo-without-it.md`) |
@@ -117,7 +116,7 @@ model on page load: extraction runs only when you click **Extract** (or upload),
 | `POST /contracts/{id}/montecarlo`, `POST /portfolio/montecarlo`, `GET /simulation/defaults` | assumption-driven simulation |
 | `GET /obligations`, `GET /alerts`, `POST /alerts/{id}/ack`, `POST /alerts/recompute` | obligation watcher (in-app feed only) |
 | `GET /crossdoc/sets[/{id}]`, `POST /crossdoc/sets`, `POST .../documents` | cross-document check |
-| `GET /contracts/{id}/playbook`, `POST /contracts/{id}/erp/export`, `POST /contracts/{id}/erp/push` | internal playbook and ERP (dry run by default) |
+| `GET /contracts/{id}/playbook` | internal playbook |
 | `GET /eval/runs[/{id}]`, `GET /eval/engines`, `GET /eval/bakeoff` | run history, engines, engine comparison |
 | `POST /buyer/chat` | token-authenticated, contract-scoped buyer chat (`Authorization: Bearer`) |
 
@@ -273,7 +272,7 @@ missing rate row and a pack without a formula.
   "not configured". `python eval/bakeoff.py` runs the golden set through each configured engine; latency is measured, tokens and
   pages are real usage, and cost = usage x the constants **you** set in `rules/pricing.yaml` (n/a until set).
 
-### Cross-document, playbook, ERP, buyer agent
+### Cross-document, playbook, buyer agent
 
 - **Cross-document graph** (`app/crossdoc.py`, networkx): SPA, brochure, regulator filing and a CRM export (CSV/XLSX through
   the column mapping in `rules/crm_mapping.yaml`) per unit. Facts are normalised (currency formatting, sq m to sq ft, dates, payment
@@ -285,10 +284,6 @@ missing rate row and a pack without a formula.
   `clauses/approved/*.md` (metadata: clause type, jurisdiction, version, approved_by); if none exists the result says so and flags
   legal. A word-level redline (difflib) shows the contract clause against the approved one. **The seeded playbook and library are
   fictional examples ("example, replace with company-approved text").** Internal only: not exposed to buyers.
-- **ERP (D365 F&O)** (`app/erp/d365.py`, `erp/d365_mapping.yaml`): payment schedule and exposure rows validated against the mapping,
-  downloadable CSV/JSON. **Entity and field names in the mapping are placeholders you must confirm.** Live OData push needs
-  `ERP_PUSH_ENABLED=1` plus tenant/app credentials, an explicit confirmation, refuses placeholder names, and writes an audit-log
-  line per push; tests use a mock transport.
 - **Buyer agent**: tools `statute_gap_for_my_unit` and `upcoming_obligations` added to the original four (`playbook_status` is
   deliberately not a buyer tool). `POST /buyer/chat` is channel-agnostic and authenticated by `Authorization: Bearer <token>` where
   `BUYER_TOKENS` maps token -> contract id (**a stub: no login, rotation or user store**). The contract comes from the token, never
@@ -300,8 +295,8 @@ missing rate row and a pack without a formula.
 
 `AUTH_MODE=entra` makes every `/api` route except `/health` require a valid Entra access token (RS256 signature checked against the
 tenant's keys, audience, issuer, tenant, expiry; no secret on the server). Roles come from Entra app roles: `Spa.Staff` (read),
-`Spa.Reviewer` (also changes data or spends LLM calls, and pushes to the ERP), `Spa.Buyer` (only `/buyer/chat`, bound to the contract
-linked to that person in `BUYER_ACCOUNTS`). Reviewer and push audit names are taken from the verified token. Default is `off` (local
+`Spa.Reviewer` (also changes data or spends LLM calls, ), `Spa.Buyer` (only `/buyer/chat`, bound to the contract
+linked to that person in `BUYER_ACCOUNTS`). Reviewer audit names are taken from the verified token. Default is `off` (local
 development). The server refuses to start with `entra` and missing settings, or with an unknown mode value. Setup steps and limits:
 `docs/entra-setup.md`. Tested with locally signed tokens (18 tests, incl. wrong audience/tenant/issuer, expired, unknown key, key
 rollover, HS256 and `none` algorithm confusion, role matrix, identity provider outage -> 503). **The browser sign-in has not been
@@ -321,9 +316,8 @@ See `docs/power-platform.md`. Power BI is deliberately not part of this applicat
 (`app/notifiers.py`) so a flow can post alerts and review requests to Teams; a curated custom-connector definition
 (`integrations/power-platform/`, regenerated by `scripts/make_connector.py`, a test fails if it drifts from the API); flow recipes and
 Teams adaptive cards (`integrations/power-automate/`); a Copilot Studio buyer-agent definition with instructions and a 12-conversation
-acceptance script (`integrations/copilot-studio/`); and `python -m app.erp.check metadata.xml`, which validates your real D365 entity
-and field names against the environment's OData metadata before any live push. **None of the tenant-side pieces (flows, connector
-import, agent, D365 push) were run in a real Microsoft tenant**; the API-side parts are unit-tested.
+acceptance script (`integrations/copilot-studio/`). **None of the tenant-side pieces (flows, connector
+import, agent) were run in a real Microsoft tenant**; the API-side parts are unit-tested.
 
 ## Evaluation
 
@@ -367,10 +361,10 @@ believed correct, still unreviewed); `ae_oqood_registration`, `ae_escrow` (artic
 
 | Check | Result |
 |---|---|
-| `pytest` | 291 passed (LLM always mocked): grounding failures, hand-calculated statute-gap cases, seeded Monte Carlo reproducibility and degenerate-equals-deterministic, obligations at a fixed `as_of`, cross-document planted-error precision/recall 6/6 with 0 false positives, playbook, ERP with a mock transport, 12 buyer-agent questions incl. prompt injection and cross-contract access, eval history and regressions; penalty example 1,000,000 / 6% / 90 days / 30 grace = 9,863.01 |
+| `pytest` | 291 passed (LLM always mocked): grounding failures, hand-calculated statute-gap cases, seeded Monte Carlo reproducibility and degenerate-equals-deterministic, obligations at a fixed `as_of`, cross-document planted-error precision/recall 6/6 with 0 false positives, playbook, 12 buyer-agent questions incl. prompt injection and cross-contract access, eval history and regressions; penalty example 1,000,000 / 6% / 90 days / 30 grace = 9,863.01 |
 | `vitest` | 97 passed (highlight placement, badges, Gap tab from a mocked API, API client, responsive header menu, dismissible disclaimer, penalty table from mocked API, chat refusal and plain-text rendering, `dir` toggle, number settling, typewriter safety with real GSAP, EN/AR keys, WCAG contrast of both themes) |
 | `eslint`, `tsc` (strict), `prettier --check`, `vite build` | clean |
-| Playwright e2e (`scripts/e2e_check.mjs`, 311 checks) | 311/311: every new page (Gap, Obligations, Playbook, ERP, Watch, Cross-check, Review queue, Accuracy) for all samples in EN and AR; highlighted evidence in the PDF panel; UI amounts equal API amounts; same-seed simulation reproducible; ack removes an alert; both planted cross-document conflicts found; ERP push refused while disabled; review correction shown as human verified; landing in 8 theme x language x effects combinations; all 4 tabs for all 3 samples in EN, AR (RTL), day theme and reduced effects; mobile viewport; sample C flags; refusal; citation to PDF page; 9,863.01 case; banner dismiss/restore/remember; skyline lights floor by floor with step cards alternating sides and does not trap scrolling; the Palm animation takes the same time for a slow scroll and a hard flick; scenes settle into a centred frame at Windows- and macOS-like window sizes; themed scrollbar; plain orange cursor; mobile responsiveness across 6 viewports and 7 routes (no overflow, no off-screen controls, 44px touch targets, card tables, header menu); UI numbers equal API values; no console errors. Results in `docs/e2e-results.json`, screenshots in `docs/screenshots/`, demo video `docs/landing-scroll.webm` / `.gif` |
+| Playwright e2e (`scripts/e2e_check.mjs`, 311 checks) | 311/311: every new page (Gap, Obligations, Playbook, Watch, Cross-check, Review queue, Accuracy) for all samples in EN and AR; highlighted evidence in the PDF panel; UI amounts equal API amounts; same-seed simulation reproducible; ack removes an alert; both planted cross-document conflicts found; review correction shown as human verified; landing in 8 theme x language x effects combinations; all 4 tabs for all 3 samples in EN, AR (RTL), day theme and reduced effects; mobile viewport; sample C flags; refusal; citation to PDF page; 9,863.01 case; banner dismiss/restore/remember; skyline lights floor by floor with step cards alternating sides and does not trap scrolling; the Palm animation takes the same time for a slow scroll and a hard flick; scenes settle into a centred frame at Windows- and macOS-like window sizes; themed scrollbar; plain orange cursor; mobile responsiveness across 6 viewports and 7 routes (no overflow, no off-screen controls, 44px touch targets, card tables, header menu); UI numbers equal API values; no console errors. Results in `docs/e2e-results.json`, screenshots in `docs/screenshots/`, demo video `docs/landing-scroll.webm` / `.gif` |
 | Bundle | 198 kB gzip on initial load; Draggable, Inertia, Morph, Physics, ScrollSmoother, ogl and the chart library are lazy chunks; 0 key-name strings and 0 GSDevTools/MotionPathHelper in JS |
 
 **Lighthouse 12** (headless Chromium, production build with gzip; single runs; `docs/lighthouse.json`):
@@ -407,7 +401,7 @@ endpoint serves a valid inline PDF).
   against a mock transport.
 - The SBI MCLR table ships **empty** (so the India statute gap says "cannot compute" until you add dated rows). The browser demo and tests
   use illustrative values, labelled on screen.
-- The seeded playbook and approved-clause library are fictional examples. The D365 mapping uses placeholder names. Buyer auth is a
+- The seeded playbook and approved-clause library are fictional examples. Buyer auth is a
   token stub. Alerts are an in-app feed; the `Notifier` only logs.
 - Arabic strings added in this release are marked "needs native review".
 - Cross-document facts for brochures and filings need one LLM call per PDF; the tests use an oracle in place of the model.

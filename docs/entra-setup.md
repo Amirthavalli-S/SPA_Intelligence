@@ -14,7 +14,7 @@ tried against a real tenant** because none was available when it was written; ex
 | Display name | Value | Meaning |
 |---|---|---|
 | SPA Staff | `Spa.Staff` | read everything on the staff side |
-| SPA Reviewer | `Spa.Reviewer` | Staff + review decisions, upload/extract, golden export, jurisdiction, eval runs, ERP push |
+| SPA Reviewer | `Spa.Reviewer` | Staff + review decisions, upload/extract, golden export, jurisdiction, eval runs |
 | SPA Buyer | `Spa.Buyer` | only `POST /buyer/chat`, for the contract linked to that person |
 
 4. In *Manifest* set `"requestedAccessTokenVersion": 2` so tokens carry the v2 issuer.
@@ -56,7 +56,7 @@ These are identifiers, not secrets. Without them the build contains no sign-in c
 ## What changes for users and for other tools
 
 - Every `/api` route except `GET /api/health` returns 401 without a valid token and 403 without a suitable role.
-- The reviewer name in the review log and the ERP-push audit entry is the **verified** identity from the token, not text typed into a request.
+- The reviewer name in the review log is the **verified** identity from the token, not text typed into a request.
 - Buyer chat is bound to the signed-in buyer's linked contract; the request cannot name a contract.
 - **Power Automate / Copilot Studio / Power BI** call the API as an app or as a user: for a custom connector choose OAuth 2.0 with Azure AD,
   scope `api://<API client id>/.default` (app permissions need the roles assigned to the calling app registration).

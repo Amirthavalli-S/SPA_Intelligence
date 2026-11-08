@@ -674,40 +674,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/contracts/{contract_id}/erp/export": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Erp Export */
-        post: operations["erp_export_api_contracts__contract_id__erp_export_post"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/contracts/{contract_id}/erp/push": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Erp Push */
-        post: operations["erp_push_api_contracts__contract_id__erp_push_post"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/api/buyer/chat": {
         parameters: {
             query?: never;
@@ -1070,34 +1036,6 @@ export interface components {
              * @description Verbatim sentence stating the period.
              */
             source_quote: string;
-        };
-        /** ErpPush */
-        ErpPush: {
-            /** Delay Days */
-            delay_days?: number | null;
-            /** As Of Date */
-            as_of_date?: string | null;
-            /** Amounts Paid */
-            amounts_paid?: components["schemas"]["AmountPaid"][] | null;
-            /**
-             * Confirm
-             * @default false
-             */
-            confirm: boolean;
-            /**
-             * Reviewer
-             * @default
-             */
-            reviewer: string;
-        };
-        /** ErpRequest */
-        ErpRequest: {
-            /** Delay Days */
-            delay_days?: number | null;
-            /** As Of Date */
-            as_of_date?: string | null;
-            /** Amounts Paid */
-            amounts_paid?: components["schemas"]["AmountPaid"][] | null;
         };
         /** EvalField */
         EvalField: {
@@ -2900,76 +2838,6 @@ export interface operations {
             cookie?: never;
         };
         requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": unknown;
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-        };
-    };
-    erp_export_api_contracts__contract_id__erp_export_post: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                contract_id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: {
-            content: {
-                "application/json": components["schemas"]["ErpRequest"] | null;
-            };
-        };
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": unknown;
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-        };
-    };
-    erp_push_api_contracts__contract_id__erp_push_post: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                contract_id: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["ErpPush"];
-            };
-        };
         responses: {
             /** @description Successful Response */
             200: {

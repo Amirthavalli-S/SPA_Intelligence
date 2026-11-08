@@ -51,10 +51,6 @@ STAFF_OPS = [
     op("get", "/obligations", "ListObligations", "List obligations", "Dated obligations with evidence.", [q("as_of", "string", "YYYY-MM-DD"), q("within_days", "integer"), q("status", "string"), q("contract_id", "string")]),
     op("get", "/alerts", "ListAlerts", "List open alerts", "In-app alert feed (unacknowledged by default)."),
     op("post", "/alerts/{alert_id}/ack", "AcknowledgeAlert", "Acknowledge an alert", "Marks the alert handled.", [{"name": "alert_id", "in": "path", "required": True, "type": "string"}]),
-    op("post", "/contracts/{contract_id}/erp/export", "PreviewErpExport", "Preview D365 export (dry run)", "Validated rows and CSV; nothing is sent.", [ID],
-       B({"delay_days": {"type": "integer"}, "as_of_date": {"type": "string", "format": "date"}})),
-    op("post", "/contracts/{contract_id}/erp/push", "PushToErp", "Push to D365 (needs confirm)", "Refused unless the server enables it, the mapping has no placeholders and confirm is true.", [ID],
-       B({"confirm": {"type": "boolean"}, "delay_days": {"type": "integer"}, "as_of_date": {"type": "string", "format": "date"}}, ["confirm"]), role="Spa.Reviewer"),
 ]
 BUYER_OPS = [
     op("post", "/buyer/chat", "AskBuyerAssistant", "Ask the buyer assistant", "Answers only from the signed-in buyer's own contract, with page and quote citations. Legal-advice questions are refused with a pointer to the legal team.",

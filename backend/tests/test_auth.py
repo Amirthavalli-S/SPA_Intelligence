@@ -109,7 +109,6 @@ def test_roles_staff_reads_reviewer_writes_buyer_nothing(secure, seeded):
     assert secure.post(f"/api/contracts/{cid}/extract?force=true", headers=staff).status_code == 403
     assert secure.put(f"/api/contracts/{cid}/jurisdiction", json={"jurisdiction": None}, headers=staff).status_code == 403
     assert secure.post("/api/eval/run", json={}, headers=staff).status_code == 403
-    assert secure.post(f"/api/contracts/{cid}/erp/push", json={"confirm": True}, headers=staff).status_code == 403
     assert secure.post(f"/api/contracts/{cid}/fields/price/review", json=body, headers=rev).status_code == 200
 
 

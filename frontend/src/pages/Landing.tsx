@@ -32,7 +32,7 @@ function prewarm(tl: gsap.core.Timeline, resync?: () => void): () => void {
 
 const FEATURES = ["extraction", "penalty", "cashflow", "assistant"] as const;
 /** Cards in the closing gallery: what the app does today (checked against the code), then what is still to come. */
-const AVAILABLE = ["ocr", "cross", "statute", "review", "obligations", "accuracy", "erp", "roles"] as const;
+const AVAILABLE = ["ocr", "cross", "statute", "review", "obligations", "accuracy", "roles"] as const;
 const COMING = ["bilingual", "whatsapp", "evalset"] as const;
 const GALLERY = [...AVAILABLE.map((k) => ({ kind: "available" as const, k })), ...COMING.map((k) => ({ kind: "coming" as const, k }))];
 const LIGHT = "#f3ead3";

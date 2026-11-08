@@ -4,7 +4,7 @@ Status: **definition only, not created in a tenant.** Uses `../power-platform/sp
 connection holding the **staff** key (demo) or an Entra user connection (real deployment).
 
 Actions to add: `ListContracts`, `GetContract`, `ListObligations`, `ListAlerts`, `ListReviewQueue`, `GetStatuteGap`. Do **not** add
-`ReviewField`, `ExtractContract` or `PushToErp` to a chat agent: they change data or spend LLM calls; keep those in flows that ask a person first.
+`ReviewField` or `ExtractContract` to a chat agent: they change data or spend LLM calls; keep those in flows that ask a person first.
 
 Instructions:
 

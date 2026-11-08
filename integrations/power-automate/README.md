@@ -41,8 +41,7 @@ Trigger: *When a file is created* (SharePoint library "Contracts") or *When a ne
 2. HTTP/connector call **upload**: the API has `POST /contracts/upload` (multipart). It starts extraction (1 LLM call).
    *Custom connectors cannot send multipart well; use the built-in **HTTP** action with the Entra token (HTTP with Microsoft Entra ID, base resource `api://<API client id>`).*
 3. **Do until** `GetExtractionStatus` is `extracted` (delay 10 s, limit 30).
-4. `GetContract` → create or update the buyer/agreement record in D365 F&O (Finance and Operations connector, *Create a new record*), using the fields you confirmed in `erp/d365_mapping.yaml`.
-5. Post to Teams: "New contract ready for review: <name>".
+4. Post to Teams: "New contract ready for review: <name>".
 
 ## Flow 2: review in Teams (trigger = `review_needed` webhook)
 
@@ -62,15 +61,6 @@ Reviewed values become part of the golden set export, which is how you get real 
 3. On "Acknowledge": `AcknowledgeAlert` with the alert id.
 4. Optional second action: send a polite WhatsApp/SMS to the buyer through your approved messaging provider. The API never contacts buyers itself; a person should approve any buyer-facing message.
 Also add a **Recurrence** flow (daily 07:00) calling `ListAlerts` as a safety net in case a webhook delivery failed.
-
-## Flow 4: approval before ERP push
-
-Trigger: manual ("For a selected row") or after Flow 1.
-1. `GetStatuteGap` for the delay scenario you care about.
-2. **Condition** `findings` contains severity `high` → **Start and wait for an approval**, or the card `adaptive-card-approval.json` to legal.
-3. If approved → `PreviewErpExport`; if `valid` is true → `PushToErp` with `confirm: true`.
-4. If the server has push disabled, or the mapping still has placeholders, the call returns 409 with the reason: show it in Teams.
-The approval card states that the statutory figure is unreviewed legal logic.
 
 ## Limits worth knowing
 

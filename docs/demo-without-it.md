@@ -14,7 +14,7 @@ tenant. Allow time for small adjustments.**
 |---|---|
 | Upload a contract, extraction, evidence highlights, gap, simulation, playbook, cross-check (the web app, on your laptop) | Entra sign-in and real per-person roles |
 | Contract ready / overdue-payment / review-needed events posted to **Teams (to yourself or a chat)**, **email**, **an Excel table in your OneDrive** by Power Automate | A shared channel in a team you do not own |
-| A Power Automate flow that **calls the API** (statute gap, alerts, review decision) through a custom connector | Writing into D365 F&O (use the CSV/JSON dry-run export instead) |
+| A Power Automate flow that **calls the API** (statute gap, alerts, review decision) through a custom connector | Writing into D365 F&O (not part of this application) |
 | A **Copilot Studio buyer agent** that answers only from the demo contract through the API, with citations and refusals | Production hosting, real buyers, WhatsApp |
 | An **internal Copilot** for staff questions (obligations, alerts, review queue, statute gap) | Power BI (deliberately not part of this app) |
 

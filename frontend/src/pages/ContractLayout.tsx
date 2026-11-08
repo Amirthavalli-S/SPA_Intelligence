@@ -21,7 +21,6 @@ const Assistant = lazy(() => import("./Assistant"));
 const Gap = lazy(() => import("./Gap"));
 const Obligations = lazy(() => import("./Obligations"));
 const Playbook = lazy(() => import("./Playbook"));
-const Erp = lazy(() => import("./Erp"));
 const PdfPanel = lazy(() => import("../components/PdfPanel"));
 
 function ExtractControls({ id, force }: { id: string; force: boolean }) {
@@ -193,7 +192,6 @@ export default function ContractLayout() {
                 <Route path="cashflow" element={<Cashflow />} />
                 <Route path="obligations" element={<Obligations />} />
                 <Route path="playbook" element={<Playbook />} />
-                <Route path="erp" element={<Erp />} />
                 <Route path="assistant" element={<Assistant />} />
               </Routes>
             </Suspense>

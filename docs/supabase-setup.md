@@ -151,4 +151,4 @@ re-extracted or a decision is removed and values are flagged again, its approved
 
 Buyer chat gives no answers from a contract that still has open review items (HTTP 409 `pending_review`). To switch that
 off for demos set `REQUIRE_REVIEW=0`. The new table is created automatically at startup (`DB_AUTO_MIGRATE`, default on); or
-run `supabase/schema.sql` in the SQL editor. Not gated yet: alert emails and the ERP export.
+run `supabase/schema.sql` in the SQL editor. Not gated yet: alert emails.

@@ -6,7 +6,7 @@ CARDS = sorted((ROOT / "integrations/power-automate").glob("adaptive-card-*.json
 
 
 def test_adaptive_cards_are_valid_and_carry_the_disclaimer_or_warning():
-    assert len(CARDS) == 3
+    assert len(CARDS) == 2                        # alert and review-needed (the ERP approval card was removed with the ERP feature)
     for f in CARDS:
         c = json.loads(f.read_text())
         assert c["type"] == "AdaptiveCard" and c["version"] == "1.4" and c["body"] and c["actions"]
@@ -27,5 +27,5 @@ def test_flow_doc_names_only_operations_that_exist():
     spec = json.loads((ROOT / "integrations/power-platform/spa-intelligence.swagger.json").read_text())
     ops = {d["operationId"] for p in spec["paths"].values() for d in p.values()}
     doc = (ROOT / "integrations/power-automate/README.md").read_text()
-    used = set(re.findall(r"`([A-Z][A-Za-z]+)`", doc)) & {"ReviewField", "GetStatuteGap", "PreviewErpExport", "PushToErp", "ListAlerts", "AcknowledgeAlert", "GetContract", "GetExtractionStatus"}
+    used = set(re.findall(r"`([A-Z][A-Za-z]+)`", doc)) & {"ReviewField", "GetStatuteGap", "ListAlerts", "AcknowledgeAlert", "GetContract", "GetExtractionStatus"}
     assert used and used <= ops

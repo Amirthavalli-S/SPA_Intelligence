@@ -10,9 +10,9 @@ A token is accepted only if: RS256 signature verifies against the tenant's publi
 API (ENTRA_CLIENT_ID or api://ENTRA_CLIENT_ID), the issuer is this tenant, the tenant id matches, and it has not expired.
 Authorisation uses Entra *app roles* in the token's `roles` claim:
 
-  Spa.Staff     read everything for staff (contracts, gap, simulations, obligations, playbook, cross-check, ERP preview)
+  Spa.Staff     read everything for staff (contracts, gap, simulations, obligations, playbook, cross-check)
   Spa.Reviewer  everything Staff can do, plus actions that change data or spend LLM calls (review, upload/extract,
-                golden export, jurisdiction, eval runs, ERP push)
+                golden export, jurisdiction, eval runs)
   Spa.Buyer     only POST /buyer/chat, and only for the contract mapped to that person in BUYER_ACCOUNTS
   Spa.Admin     (supabase mode) listed in ADMIN_EMAILS: also manages users and their roles
   Spa.Channel   a messaging channel (Teams agent, WhatsApp adapter): only POST /buyer/chat, for the buyer named in the
@@ -48,7 +48,7 @@ WRITE_ROLES = {REVIEWER}
 # POST routes that only compute and return results (no stored change, no LLM spend): Staff may call them.
 READ_ONLY_POSTS = [re.compile(p) for p in (
     r"/penalty$", r"/cashflow$", r"/chat$", r"/statute-gap$", r"/montecarlo$", r"/portfolio/montecarlo$",
-    r"/erp/export$", r"/alerts/[^/]+/ack$", r"/alerts/recompute$")]
+    r"/alerts/[^/]+/ack$", r"/alerts/recompute$")]
 
 
 @dataclass

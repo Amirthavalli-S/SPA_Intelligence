@@ -24,11 +24,11 @@ describe("Landing gallery", () => {
   it("lists what the app does today, and only what is genuinely still to come", () => {
     open();
     const cards = screen.getAllByTestId("roadmap-card");
-    expect(cards).toHaveLength(11);
-    expect(screen.getAllByTestId("gallery-available")).toHaveLength(8);
+    expect(cards).toHaveLength(10);
+    expect(screen.getAllByTestId("gallery-available")).toHaveLength(7);
     expect(screen.getAllByTestId("gallery-coming")).toHaveLength(3);
     // built features appear as available
-    for (const t of ["Scanned contracts", "Cross-document check", "Statute and playbook check", "Human review queue", "Obligations and deadlines", "Accuracy dashboard", "ERP export", "Roles and buyer access"])
+    for (const t of ["Scanned contracts", "Cross-document check", "Statute and playbook check", "Human review queue", "Obligations and deadlines", "Accuracy dashboard", "Roles and buyer access"])
       expect(screen.getByText(t, { exact: false })).toBeInTheDocument();
     // only the unbuilt ones are still "coming next"
     const coming = cards.filter((c) => c.querySelector("[data-testid=gallery-coming]")).map((c) => c.textContent);
@@ -38,5 +38,6 @@ describe("Landing gallery", () => {
     // the old "coming next" cards for things that now exist are gone
     expect(screen.queryByText("Document Intelligence parsing")).toBeNull();
     expect(screen.queryByText("Rulebook check")).toBeNull();
+    expect(screen.queryByText(/ERP/)).toBeNull();                       // the ERP feature was removed from the app
   });
 });
