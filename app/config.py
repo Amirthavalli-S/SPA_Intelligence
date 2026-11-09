@@ -41,6 +41,7 @@ EVAL_RESULTS_PATH = ROOT / "eval" / "results.json"
 DEFAULT_RULES = "ae_dubai"
 ALERTS_PATH = Path(os.environ.get("SPA_ALERTS_PATH") or ROOT / "data" / "alerts.json")
 REVIEW_DIR = Path(os.environ.get("SPA_REVIEW_DIR") or ROOT / "data" / "reviews")
+AGREEMENT_DIR = Path(os.environ.get("SPA_AGREEMENT_DIR") or ROOT / "data" / "agreements")   # which agreement a document belongs to
 
 DISCLAIMER = "Decision support, not legal advice."
 

@@ -41,6 +41,33 @@ create table if not exists public.approved_contracts (
     data          jsonb not null
 );
 
+-- Documents of one agreement: an SPA plus its addenda and extension letters share an agreement_id, so the CURRENT terms can be
+-- worked out (app/reconcile.py). The project-level documents (RERA filing, brochure, CRM export) carry no agreement_id.
+alter table public.contracts add column if not exists agreement_id text;
+alter table public.contracts add column if not exists doc_type text check (doc_type in ('SPA','Addendum','Extension Letter','RERA Filing','Brochure','CRM Export'));
+alter table public.contracts add column if not exists date_signed date;
+create index if not exists contracts_agreement_idx on public.contracts (agreement_id);
+
+-- The current effective terms of each agreement, recomputed from its documents. penalty_rate_per_sqft is the rate AS STATED, and
+-- penalty_basis says its unit (per sq ft per month or per year). penalty_cap_months is reserved: no month cap is extracted yet.
+create table if not exists public.effective_contracts (
+    agreement_id          text primary key,
+    price                 numeric,
+    possession_date       date,
+    payment_plan_version  integer not null default 1,
+    penalty_rate_per_sqft numeric,
+    penalty_basis         text,
+    penalty_cap_pct       numeric,
+    penalty_cap_months    integer,
+    grace_period_days     integer,
+    documents             jsonb not null default '[]'::jsonb,
+    timeline              jsonb not null default '[]'::jsonb,
+    pending_review        integer not null default 0,
+    source_note           text,
+    updated_at            timestamptz not null default now()
+);
+alter table public.effective_contracts enable row level security;
+
 -- Which buyer identity may ask about which contract. Replaces hard-coded buyer keys.
 create table if not exists public.buyer_assignments (
     id          bigserial primary key,

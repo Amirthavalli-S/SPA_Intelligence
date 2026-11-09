@@ -18,6 +18,7 @@ const Crosscheck = lazy(() => import("./Crosscheck"));
 const ReviewQueue = lazy(() => import("./ReviewQueue"));
 const Buyers = lazy(() => import("./Buyers"));
 const Users = lazy(() => import("./Users"));
+const Reconciliation = lazy(() => import("./Reconciliation"));
 
 function Pick() {
   const { t } = useTranslation();
@@ -103,6 +104,8 @@ export default function AppShell() {
             <Route path="review" element={<ReviewQueue />} />
             <Route path="buyers" element={<Buyers />} />
             <Route path="users" element={<Users />} />
+            <Route path="agreements" element={<Reconciliation />} />
+            <Route path="agreements/:id" element={<Reconciliation />} />
             <Route
               path="*"
               element={<ErrorState title={t("errors.notFoundTitle")} message={t("errors.notFoundBody")} />}

@@ -982,6 +982,9 @@ export interface components {
             unit_id?: string | null;
             /** Price */
             price?: number | null;
+            agreement_id?: string | null;
+            doc_type?: string | null;
+            date_signed?: string | null;
         };
         /**
          * DatedClause

@@ -266,6 +266,21 @@ export interface PlaybookResult {
   summary: Record<string, number>;
   llm_run: boolean;
 }
+export type AgreementFieldKey = "price" | "possession_date" | "payment_schedule" | "penalty_rate" | "penalty_cap" | "grace_period_days";
+export interface AgreementChange { field: AgreementFieldKey; kind: "set" | "changed"; from: unknown; to: unknown }
+export interface AgreementDoc { doc_id: string; name: string; doc_type: string; date_signed: string | null; open_reviews?: number }
+export interface AgreementResult {
+  agreement_id: string;
+  currency: string | null;
+  documents: AgreementDoc[];
+  current: Partial<Record<AgreementFieldKey, unknown>> & { payment_plan_version: number };
+  sources: Partial<Record<AgreementFieldKey, { doc_id: string; name: string; doc_type: string; date_signed: string }>>;
+  missing: AgreementFieldKey[];
+  timeline: { date: string; doc_type: string; doc_id: string; name: string; changes: AgreementChange[] }[];
+  problems: string[];
+  pending_review: number;
+}
+export interface AgreementMetaBody { agreement_id: string | null; doc_type: string | null; date_signed: string | null }
 const q = (o: Record<string, string | number | boolean | undefined | null>) => {
   const p = new URLSearchParams();
   for (const [k, v] of Object.entries(o)) if (v !== undefined && v !== null && v !== "") p.set(k, String(v));
@@ -284,6 +299,9 @@ export interface BuyerAssignment {
 }
 
 export const apiX = {
+  agreements: () => request<{ agreement_id: string; documents: number; latest_signed: string | null }[]>("/agreements"),
+  agreement: (id: string) => request<AgreementResult>(`/agreements/${encodeURIComponent(id)}`),
+  setAgreement: (contractId: string, body: AgreementMetaBody) => request<AgreementMetaBody>(`/contracts/${contractId}/agreement`, { ...json(body), method: "PUT" }),
   buyers: () => request<{ assignments: BuyerAssignment[] }>("/buyers"),
   assignBuyer: (b: { contract_id: string; identity: string; channel: string }) => request<BuyerAssignment>("/buyers", json(b)),
   removeBuyer: (id: number) => request<{ removed: number }>(`/buyers/${id}`, { method: "DELETE" }),

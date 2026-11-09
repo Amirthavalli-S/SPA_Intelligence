@@ -17,8 +17,8 @@ describe("roles", () => {
   });
 
   it("shows each role only the links it may use", () => {
-    expect(navFor("buyer", true)).toMatchObject({ mine: true, app: false, review: false, buyers: false, users: false, accuracy: false });
-    expect(navFor("staff", true)).toMatchObject({ app: true, watch: true, review: false, buyers: false, users: false, mine: false });
+    expect(navFor("buyer", true)).toMatchObject({ mine: true, app: false, review: false, buyers: false, users: false, accuracy: false, agreements: false });
+    expect(navFor("staff", true)).toMatchObject({ app: true, watch: true, review: false, buyers: false, users: false, mine: false, agreements: true });
     expect(navFor("reviewer", true)).toMatchObject({ review: true, buyers: true, users: false });
     expect(navFor("admin", true)).toMatchObject({ review: true, buyers: true, users: true });
     expect(Object.values(navFor("pending", true)).some(Boolean)).toBe(false);

@@ -34,6 +34,7 @@ def env(tmp_path, monkeypatch):
     import eval.run_eval as _ev
     monkeypatch.setattr(_ev, "RUNS_DIR", tmp_path / "runs")
     monkeypatch.setattr(config, "REVIEW_DIR", tmp_path / "reviews")
+    monkeypatch.setattr(config, "AGREEMENT_DIR", tmp_path / "agreements")
     monkeypatch.setattr(config, "ALERTS_PATH", tmp_path / "alerts.json")
     monkeypatch.setenv("SPA_RATES_DIR", str(ROOT / "tests" / "fixtures" / "rates"))
     monkeypatch.setattr(config, "PROVIDER", "azure_openai")

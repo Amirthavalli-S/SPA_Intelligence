@@ -41,7 +41,8 @@
     "review": "Review queue",
     "buyers": "Buyers",
     "myContract": "My contract",
-    "users": "Users"
+    "users": "Users",
+    "agreements": "Agreements"
   },
   "landing": {
     "eyebrow": "UAE off-plan property contracts",
@@ -783,5 +784,52 @@
     "planTotal": "Payment plan",
     "planOk": "adds up to 100%",
     "planBad": "does not add up to 100%"
+  },
+  "agreements": {
+    "title": "Agreements",
+    "intro": "An agreement is an SPA plus the addenda and extension letters that changed it. Each later document only says what it changes, so this page works out the terms that apply today.",
+    "search": "Agreement ID, for example AGR-1105",
+    "show": "Show",
+    "docCount_one": "1 document",
+    "docCount_other": "{{count}} documents",
+    "emptyTitle": "No agreements yet",
+    "emptyBody": "Open a contract and give it an agreement ID, a document type and the date it was signed. Documents with the same ID are merged here.",
+    "notFoundTitle": "No document belongs to this agreement",
+    "notFoundBody": "Nothing is linked to “{{id}}”. Check the ID, or link a contract to it.",
+    "current": "Current effective terms",
+    "currentSub": "The latest-signed document that mentions a term decides it. A document that is silent on a term leaves it as it was.",
+    "planVersion": "Payment plan version {{n}}",
+    "planRows_one": "1 instalment",
+    "planRows_other": "{{count}} instalments",
+    "setBy": "Set by {{doc}}, signed {{date}}",
+    "noDoc": "Not stated in any document",
+    "timeline": "What changed, in the order signed",
+    "noChange": "Nothing changed by this document.",
+    "documents": "Documents",
+    "doc": "Document",
+    "type": "Type",
+    "signed": "Signed",
+    "review": "Review",
+    "open_one": "1 to review",
+    "open_other": "{{count}} to review",
+    "pending_one": "1 value in these documents still needs a person's review, so these terms may change.",
+    "pending_other": "{{count}} values in these documents still need a person's review, so these terms may change.",
+    "fields": {
+      "price": "Price",
+      "possession_date": "Possession date",
+      "payment_schedule": "Payment schedule",
+      "penalty_rate": "Delay compensation rate",
+      "penalty_cap": "Delay compensation cap",
+      "grace_period_days": "Grace period"
+    },
+    "link": "Agreement",
+    "linkHelp": "Group this document with the others of the same agreement. Only a reviewer can change this.",
+    "id": "Agreement ID",
+    "docType": "Document type",
+    "dateSigned": "Date signed",
+    "save": "Save",
+    "saved": "Saved.",
+    "clear": "Remove from agreement",
+    "open": "Open agreement"
   }
 }

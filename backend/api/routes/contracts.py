@@ -7,7 +7,7 @@ import pymupdf
 from fastapi import APIRouter, Depends, File, Query, UploadFile
 from fastapi.responses import FileResponse
 
-from app import config, ocr
+from app import agreements, config, ocr
 from app.cashflow import CashflowUnavailable, milestone_rows
 from app.extract import load_cached
 from backend.api import deps, persistence
@@ -26,7 +26,7 @@ def _summary(src: deps.Source) -> ContractSummary:
         extracted_at=c.extracted_at if c else None, model=c.model if c else None,
         warnings_count=len(c.warnings) if c else 0,
         buyer=c.buyer.value if c else None, unit_id=c.unit_id.value if c else None,
-        price=c.price.value if c else None)
+        price=c.price.value if c else None, **agreements.get(src.id, src.name))
 
 
 def _plan(contract) -> list[PlanRow]:

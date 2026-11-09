@@ -1053,3 +1053,59 @@ tr.missing-row {
     min-width: 0;
   }
 }
+
+/* agreement timeline: one node per document, in signing order */
+.ag-timeline {
+  display: flex;
+  gap: 1.1rem;
+  list-style: none;
+  margin: 0;
+  padding: 0.4rem 0.2rem 0.8rem;
+  position: relative;
+}
+.ag-node {
+  position: relative;
+  min-width: 250px;
+  max-width: 320px;
+  display: grid;
+  gap: 0.35rem;
+  align-content: start;
+  padding: 1.5rem 1rem 1rem;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+}
+.ag-node::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: -1.1rem;
+  width: 1.1rem;
+  top: 0.65rem;
+  height: 2px;
+  background: linear-gradient(90deg, var(--gold), var(--accent-fill));
+}
+.ag-node:first-child::before {
+  display: none;
+}
+.ag-dot {
+  position: absolute;
+  top: 0.35rem;
+  inset-inline-start: 1rem;
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 999px;
+  background: var(--gold);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--gold) 30%, transparent);
+}
+.ag-date {
+  font-weight: 700;
+  color: var(--gold-ink);
+}
+.ag-changes {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.25rem;
+  font-size: 0.92rem;
+}

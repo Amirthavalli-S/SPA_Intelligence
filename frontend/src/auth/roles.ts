@@ -17,11 +17,11 @@ export function kindOf(me?: Me): Kind {
 
 /** Which main-navigation links to show. The server enforces access; this only avoids showing links that would be refused. */
 export function navFor(kind: Kind, loaded: boolean) {
-  const everything = { app: true, watch: true, crosscheck: true, review: true, buyers: true, accuracy: true, users: false, mine: false };
+  const everything = { app: true, watch: true, crosscheck: true, review: true, buyers: true, accuracy: true, agreements: true, users: false, mine: false };
   if (!loaded || kind === "off") return everything;
-  if (kind === "buyer") return { app: false, watch: false, crosscheck: false, review: false, buyers: false, accuracy: false, users: false, mine: true };
+  if (kind === "buyer") return { app: false, watch: false, crosscheck: false, review: false, buyers: false, accuracy: false, agreements: false, users: false, mine: true };
   if (kind === "staff") return { ...everything, review: false, buyers: false };
   if (kind === "reviewer") return everything;
   if (kind === "admin") return { ...everything, users: true };
-  return { app: false, watch: false, crosscheck: false, review: false, buyers: false, accuracy: false, users: false, mine: false };
+  return { app: false, watch: false, crosscheck: false, review: false, buyers: false, accuracy: false, agreements: false, users: false, mine: false };
 }

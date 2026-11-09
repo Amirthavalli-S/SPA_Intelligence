@@ -75,7 +75,7 @@ export function TopBar() {
       }}
       className={({ isActive }) => {
         // "App" covers the contract views only, so it must not light up on the sibling sections that have their own link.
-        const on = isActive && !(to === "/app" && /^\/app\/(watch|crosscheck|review|buyers|users|accuracy)(\/|$)/.test(pathname));
+        const on = isActive && !(to === "/app" && /^\/app\/(watch|crosscheck|review|buyers|users|accuracy|agreements)(\/|$)/.test(pathname));
         return `rounded-full font-semibold ${big ? "px-4 py-3 text-base" : "px-3 py-1.5 text-sm"} ${on ? "bg-surface2 text-fg" : "text-muted hover:text-fg"}`;
       }}
       style={big ? { minHeight: 48, display: "flex", alignItems: "center" } : undefined}
@@ -227,6 +227,7 @@ export function TopBar() {
                 {nav.mine && navLink("/app", t("nav.myContract"), true)}
                 {nav.watch && navLink("/app/watch", t("nav.watch"), true)}
                 {nav.crosscheck && navLink("/app/crosscheck", t("nav.crosscheck"), true)}
+                {nav.agreements && navLink("/app/agreements", t("nav.agreements"), true)}
                 {nav.review && navLink("/app/review", t("nav.review"), true)}
                 {nav.buyers && navLink("/app/buyers", t("nav.buyers"), true)}
                 {nav.users && navLink("/app/users", t("nav.users"), true)}
@@ -249,6 +250,7 @@ export function TopBar() {
             {nav.mine && navLink("/app", t("nav.myContract"))}
             {nav.watch && navLink("/app/watch", t("nav.watch"))}
             {nav.crosscheck && navLink("/app/crosscheck", t("nav.crosscheck"))}
+            {nav.agreements && navLink("/app/agreements", t("nav.agreements"))}
             {nav.review && navLink("/app/review", t("nav.review"))}
             {nav.buyers && navLink("/app/buyers", t("nav.buyers"))}
             {nav.users && navLink("/app/users", t("nav.users"))}

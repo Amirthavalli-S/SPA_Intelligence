@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { Navigate, Route, Routes, useLocation, useParams } from "react-router-dom";
 import { ApiError } from "../api/client";
 import { useContract, useContracts, useExtract, useHealth, useStatus } from "../api/hooks";
+import { AgreementBox } from "../components/AgreementBox";
 import { ContractSummary } from "../components/ContractSummary";
 import { Tabs } from "../components/Tabs";
 import { Alert, EmptyState, ErrorState, Loader, Skeleton } from "../components/ui";
@@ -164,6 +165,7 @@ export default function ContractLayout() {
             </p>
           </div>
           <ContractSummary c={c} />
+          <AgreementBox key={id + (known?.agreement_id ?? "")} contractId={id} agreementId={known?.agreement_id} docType={known?.doc_type} dateSigned={known?.date_signed} />
           <details style={{ color: "var(--muted)" }}>
             <summary style={{ cursor: "pointer", color: "var(--fg)", fontWeight: 600 }}>🔄 {t("shell.rerun")}</summary>
             <div style={{ paddingBlockStart: 8 }}>

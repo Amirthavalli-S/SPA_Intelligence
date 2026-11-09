@@ -46,6 +46,9 @@ class ContractSummary(BaseModel):
     buyer: Optional[str] = None
     unit_id: Optional[str] = None
     price: Optional[float] = None
+    agreement_id: Optional[str] = None
+    doc_type: Optional[str] = None
+    date_signed: Optional[str] = None
 
 
 class ContractStatus(BaseModel):
