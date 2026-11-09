@@ -119,7 +119,8 @@
         "title": "Roles and buyer access",
         "body": "Administrator, reviewer, staff and buyer roles. Each buyer can ask about their own contract only."
       }
-    }
+    },
+    "forTeams": "For teams"
   },
   "shell": {
     "contracts": "Contracts",
@@ -903,5 +904,162 @@
         "body": "How accurate the extraction is on labelled contracts."
       }
     }
+  },
+  "enterprise": {
+    "eyebrow": "For property developers and the teams around them",
+    "title": "Every contract term, with its page, checked by a person.",
+    "lead": "Sale and purchase agreements are long, amended over time, and read by hand. This reads them, shows exactly where each value comes from, does the money maths in tested code, and holds anything uncertain for a person to confirm.",
+    "open": "Open the app",
+    "story": "See the story",
+    "unavailable": "Not available yet, or not for your account",
+    "problemTitle": "What reading by hand misses",
+    "problemLead": "Measured on the contracts in this system, not on a slide.",
+    "proofTitle": "Proof, measured live",
+    "proofFoot": "Accuracy is measured on the labelled sample contracts in the evaluation set, not on every contract you will ever upload. Every figure here is read from this server when the page opens.",
+    "on": "On",
+    "off": "Off",
+    "stat": {
+      "contracts": "Contracts read",
+      "contractsNote": "of {{total}} in this system",
+      "flagged": "Contracts with a warning",
+      "flaggedNote": "A warning means something to check: a total that does not add up, a missing clause, a value not found in the PDF.",
+      "warnings": "Warnings found",
+      "warningsNote": "Each one names what to check and where.",
+      "accuracy": "Extraction accuracy",
+      "accuracyNote": "{{checks}} value checks on {{files}} labelled sample contracts, evaluated {{date}}",
+      "quotes": "Quotes found on the page",
+      "quotesNote": "{{n}} source quotes checked against the PDF",
+      "agreements": "Agreements tracked",
+      "agreementsNote": "An SPA grouped with its addenda and extension letters",
+      "rls": "Database row-level security",
+      "rlsNote": "Checked on {{n}} tables right now"
+    },
+    "teamsTitle": "Built for five teams",
+    "teams": {
+      "legal": {
+        "name": "Legal",
+        "body": "Terms, statute comparison, rulebook check and cross-document mismatches, each with the page it came from."
+      },
+      "finance": {
+        "name": "Finance",
+        "body": "What a delay costs and when money falls due, from tested calculations."
+      },
+      "sales": {
+        "name": "Sales",
+        "body": "A buyer's contract looked up in seconds, without the price and delay figures that belong to Finance."
+      },
+      "management": {
+        "name": "Management",
+        "body": "Deadlines across the portfolio, and a measured view of how accurate the reading is."
+      },
+      "buyers": {
+        "name": "Buyers",
+        "body": "Answers about their own contract only, with the page, and legal questions passed to the legal team."
+      }
+    },
+    "capsTitle": "What it does",
+    "caps": {
+      "extraction": {
+        "name": "Extraction with evidence",
+        "body": "Key terms with page and exact quote. If the contract does not say it, we show not stated.",
+        "proof": {
+          "a": "Page on every value",
+          "b": "Exact quote",
+          "c": "Never guessed"
+        }
+      },
+      "penalty": {
+        "name": "Delay-penalty simulator",
+        "body": "Compensation for any delay, from the contract's own grace period, rate and cap.",
+        "proof": {
+          "a": "Tested code",
+          "b": "No AI arithmetic",
+          "c": "Cap applied"
+        }
+      },
+      "cashflow": {
+        "name": "Cash-flow",
+        "body": "Money due and money at risk, by month or quarter.",
+        "proof": {
+          "a": "From the payment plan",
+          "b": "By month or quarter",
+          "c": "At-risk split"
+        }
+      },
+      "crosscheck": {
+        "name": "Cross-document check",
+        "body": "Where the SPA, brochure, regulator filing and CRM disagree.",
+        "proof": {
+          "a": "Four document types",
+          "b": "Evidence from both sides",
+          "c": "Severity ranked"
+        }
+      },
+      "playbook": {
+        "name": "Company rulebook check",
+        "body": "Risky clauses against your rules, with approved wording suggested.",
+        "proof": {
+          "a": "Rules in code",
+          "b": "Approved clauses only",
+          "c": "Redline shown"
+        }
+      },
+      "reconcile": {
+        "name": "Amendment reconciliation",
+        "body": "The terms in force today after addenda and extension letters.",
+        "proof": {
+          "a": "Last signed wins",
+          "b": "Timeline of changes",
+          "c": "Plain code"
+        }
+      },
+      "buyer": {
+        "name": "Buyer self-service assistant",
+        "body": "A buyer asks about their own contract on the web and gets cited answers.",
+        "proof": {
+          "a": "Own contract only",
+          "b": "Cited pages",
+          "c": "Legal questions refused"
+        }
+      },
+      "review": {
+        "name": "Human review",
+        "body": "Uncertain values wait for a person to accept, correct or reject.",
+        "proof": {
+          "a": "Named reviewer",
+          "b": "Timestamped",
+          "c": "Approval before use"
+        }
+      }
+    },
+    "controlsTitle": "Controls built in, not bolted on",
+    "controlsLead": "The things a client's legal and security teams ask about are part of how the product works.",
+    "controls": {
+      "packs": {
+        "name": "Jurisdiction packs",
+        "body": "Dubai and India RERA rule sets are separate packs, selected from the contract's own wording."
+      },
+      "evidence": {
+        "name": "Evidence on every value",
+        "body": "A value without a page and an exact quote is not accepted."
+      },
+      "audit": {
+        "name": "Audit trail",
+        "body": "Buyer questions, refusals and reviewer decisions are recorded with who and when."
+      },
+      "rls": {
+        "name": "Row-level security",
+        "body": "Database tables are closed to the public API; only the server reads them."
+      },
+      "roles": {
+        "name": "Roles and departments",
+        "body": "Each team reaches only its own pages and data, enforced on the server, not just hidden in the menu."
+      },
+      "human": {
+        "name": "A person decides what is uncertain",
+        "body": "Nothing flagged becomes an approved record until someone has checked it."
+      }
+    },
+    "controlsFoot": "Jurisdiction rule packs are marked unreviewed until your lawyer signs them off. This is decision support, not legal advice."
   }
 }

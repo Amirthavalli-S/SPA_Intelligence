@@ -40,4 +40,10 @@ describe("Landing gallery", () => {
     expect(screen.queryByText("Rulebook check")).toBeNull();
     expect(screen.queryByText(/ERP/)).toBeNull();                       // the ERP feature was removed from the app
   });
+
+  it("keeps the cinematic front page and only adds a way into the business page", () => {
+    open();
+    expect(screen.getByTestId("for-teams")).toHaveTextContent("For teams");
+    expect(screen.getAllByTestId("roadmap-card").length).toBeGreaterThan(0);          // the gallery and the rest of the story are untouched
+  });
 });

@@ -44,3 +44,32 @@ describe("App entry", () => {
     expect(screen.queryByRole("navigation", { name: /main/i })).toBeNull();
   });
 });
+
+describe("Front pages and departments", () => {
+  const dept = (department: string | null, roles: string[]) =>
+    vi.fn(async (u: string) =>
+      u.endsWith("/auth/me")
+        ? jsonResponse({ authenticated: true, mode: "supabase", name: "Sam", login: "s@x.co", avatar_url: null, roles, department, features: department ? ["terms"] : null })
+        : u.endsWith("/contracts") ? jsonResponse([]) : jsonResponse({ mode: "supabase", github: false, email: true }),
+    );
+
+  it("a reviewer can open the enterprise page from the front page", async () => {
+    vi.stubGlobal("fetch", dept(null, ["Spa.Reviewer"]));
+    open("/enterprise");
+    expect(await screen.findByTestId("enterprise")).toBeInTheDocument();
+  });
+
+  it("department staff never see the five-teams page (it would reveal the other departments); it sends them home", async () => {
+    vi.stubGlobal("fetch", dept("sales", ["Spa.Staff"]));
+    open("/enterprise");
+    expect(await screen.findByTestId("dept-home-sales")).toBeInTheDocument();
+    expect(screen.queryByTestId("enterprise")).toBeNull();
+    expect(screen.queryByTestId("teams")).toBeNull();
+  });
+
+  it("department staff who open the front page land on their own home instead", async () => {
+    vi.stubGlobal("fetch", dept("legal", ["Spa.Staff"]));
+    open("/");
+    expect(await screen.findByTestId("dept-home-legal")).toBeInTheDocument();
+  });
+});

@@ -13,6 +13,7 @@ const RoleSwitch = lazy(() => import("./pages/RoleSwitch"));
 const Reset = lazy(() => import("./pages/Reset"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const Login = lazy(() => import("./pages/Login"));
+const Enterprise = lazy(() => import("./pages/Enterprise"));
 
 void loadDevtools(); // dev-only (?devtools=1); compiled away in production builds
 
@@ -38,6 +39,16 @@ export default function App() {
                   <AuthGate>
                     <HomeGate>
                       <Landing />
+                    </HomeGate>
+                  </AuthGate>
+                }
+              />
+              <Route
+                path="/enterprise"
+                element={
+                  <AuthGate>
+                    <HomeGate>
+                      <Enterprise />
                     </HomeGate>
                   </AuthGate>
                 }

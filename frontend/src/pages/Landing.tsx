@@ -997,6 +997,9 @@ export default function Landing() {
                 {t("landing.ctaPrimary")}
               </button>
             </Magnetic>
+            <button className="btn btn-ghost reveal" data-testid="for-teams" onClick={() => go("/enterprise")}>
+              {t("landing.forTeams")}
+            </button>
           </div>
         </section>
       </div>
