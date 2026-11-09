@@ -133,3 +133,25 @@ def test_a_normal_pdf_never_touches_ocr(client, env, monkeypatch):
     upload(client, ORIGINAL, "text.pdf")
     s, _ = wait(client, cid)
     assert s["status"] == "extracted" and not (env / "uploads" / "originals").exists()
+
+
+# ------------------------------------------------------------------ the routing decision is visible
+def test_how_each_pdf_is_read_is_logged_and_reported_in_the_status(client, env, with_ocr, caplog):
+    import logging
+    caplog.set_level(logging.INFO, logger="spa.ingest")
+    scan = make_scan(ORIGINAL)
+    cid = hashlib.sha256(scan).hexdigest()
+    upload(client, scan)
+    s, _ = wait(client, cid)
+    assert s["status"] == "extracted"
+    assert client.get(f"/api/contracts/{cid}/status").json()["route"] == "ocr"
+    msgs = " | ".join(r.getMessage() for r in caplog.records if r.name == "spa.ingest")
+    assert f"ingest {cid[:8]}: route=ocr" in msgs and "ocr=will run" in msgs and "OCR done" in msgs
+    assert "text=[] scan=[1," in msgs                                                                  # every page of a scan is read as an image
+    caplog.clear()
+    text_id = hashlib.sha256(ORIGINAL + b"\n% text copy").hexdigest()
+    upload(client, ORIGINAL + b"\n% text copy", name="text.pdf")
+    s2, _ = wait(client, text_id)
+    assert s2["status"] == "extracted"
+    assert client.get(f"/api/contracts/{text_id}/status").json()["route"] == "text"
+    assert "route=text" in " | ".join(r.getMessage() for r in caplog.records if r.name == "spa.ingest") and "ocr=not used" in caplog.text

@@ -39,16 +39,28 @@ def _env_float(name: str, default: float) -> float:
         return default
 
 
+def ingest_report(pdf_bytes: bytes) -> dict:
+    """How each page will be read, decided from the file alone: a page with text is read as text; a page with an image and almost no text
+    is a scan; a page with neither is blank. route: text | ocr | mixed | blank."""
+    min_chars = _env_int("OCR_MIN_CHARS", 25)
+    text, scan, blank = [], [], []
+    with pymupdf.open(stream=pdf_bytes, filetype="pdf") as doc:
+        for i, page in enumerate(doc, 1):
+            if len(page.get_text().strip()) >= min_chars:
+                text.append(i)
+            elif page.get_images(full=True):
+                scan.append(i)
+            else:
+                blank.append(i)
+        n = doc.page_count
+    route = "mixed" if text and scan else "ocr" if scan else "text" if text else "blank"
+    return {"pages": n, "text_pages": text, "scan_pages": scan, "blank_pages": blank, "route": route}
+
+
 def pages_needing_ocr(pdf_bytes: bytes) -> list[int]:
     """1-based pages that carry an image but almost no text (scans). Blank pages and normal text pages are left alone, so a mixed
     document only pays for the pages that need it."""
-    min_chars = _env_int("OCR_MIN_CHARS", 25)
-    out = []
-    with pymupdf.open(stream=pdf_bytes, filetype="pdf") as doc:
-        for i, page in enumerate(doc, 1):
-            if len(page.get_text().strip()) < min_chars and page.get_images(full=True):
-                out.append(i)
-    return out
+    return ingest_report(pdf_bytes)["scan_pages"]
 
 
 def _engines() -> dict[str, OcrEngine]:

@@ -111,8 +111,9 @@ def _start(src: deps.Source, force: bool):
 def status(contract_id: str):
     src = deps.get_source(contract_id)
     s, err = deps.status_for(src)
+    job = deps.JOBS.get(src.id)
     return ContractStatus(id=src.id, status=s, error=err, llm_configured=config.llm_configured(),
-                          model=config.model_tag())
+                          model=config.model_tag(), route=job.route if job else None)
 
 
 @router.post("/{contract_id}/extract", response_model=ContractStatus, status_code=202)

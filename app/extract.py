@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import hashlib
 from datetime import datetime
+from functools import lru_cache
 import json
 import re
 import sys
@@ -49,9 +50,46 @@ def quote_key(s: str) -> str:
     return re.sub(r"[\W_]+", "", normalize_text(s))
 
 
-def pdf_pages(pdf_bytes: bytes) -> list[str]:
+TABLE_ROWS_MARK = "[TABLE ROWS: each row read left to right]"
+MAX_TABLE_PAGES = 80            # find_tables costs time; a very long document is not scanned for tables page by page
+
+
+def _table_rows_missing(page, text: str) -> list[str]:
+    """Rows of ruled tables whose cells do NOT appear one after another in the page text. Some PDFs draw a table column by column,
+    so the default text order is Instalment/Booking/Foundation... then Percent/10%/20%... and no row can be quoted as one span."""
+    try:
+        tables = page.find_tables().tables
+    except Exception:  # noqa: BLE001  (an odd page must never stop ingestion; it just keeps its plain text)
+        return []
+    have, missing = quote_key(text), []
+    for t in tables:
+        for row in t.rows:
+            cells = [" ".join(page.get_text("text", clip=pymupdf.Rect(b)).split()) for b in row.cells if b]
+            cells = [c for c in cells if c]
+            line = " ".join(cells)
+            if len(cells) >= 2 and quote_key(line) not in have:
+                missing.append(line)
+    return missing
+
+
+@lru_cache(maxsize=16)
+def _pages(pdf_bytes: bytes) -> tuple[str, ...]:
+    out = []
     with pymupdf.open(stream=pdf_bytes, filetype="pdf") as doc:
-        return [p.get_text() for p in doc]
+        for p in doc:
+            text = p.get_text()
+            if doc.page_count <= MAX_TABLE_PAGES:
+                rows = _table_rows_missing(p, text)
+                if rows:
+                    text += f"\n\n{TABLE_ROWS_MARK}\n" + "\n".join(rows)
+            out.append(text)
+    return tuple(out)
+
+
+def pdf_pages(pdf_bytes: bytes) -> list[str]:
+    """The text of each page. Ordinary pages are PyMuPDF's text as it is. When a ruled table's rows are broken up by the way the PDF was
+    drawn, those rows are ALSO listed whole at the end of the page, so the model can quote a row and the quote can be found."""
+    return list(_pages(pdf_bytes))
 
 
 SCANNED_MAX_AVG_CHARS = 80   # fewer extractable characters per page than this => likely a scanned image PDF

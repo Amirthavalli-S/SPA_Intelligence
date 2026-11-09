@@ -57,6 +57,7 @@ class ContractStatus(BaseModel):
     error: Optional[str] = None
     llm_configured: bool
     model: str
+    route: Optional[str] = Field(None, description="How the PDF is read: text, ocr, mixed or blank.")
 
 
 class PlanRow(BaseModel):

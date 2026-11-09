@@ -944,6 +944,8 @@ export interface components {
             llm_configured: boolean;
             /** Model */
             model: string;
+            /** @description How the PDF is read: text, ocr, mixed or blank. */
+            route?: string | null;
         };
         /** ContractSummary */
         ContractSummary: {

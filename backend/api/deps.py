@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import logging
 import re
 import threading
 import time
@@ -16,6 +17,7 @@ from app import config
 from app.extract import extract_contract, file_hash, load_cached, pdf_stats
 from app.schema import ContractData
 
+log = logging.getLogger("spa.ingest")
 ID_RE = re.compile(r"^[0-9a-f]{64}$")
 
 
@@ -151,6 +153,7 @@ class Job:
     state: str = "queued"            # queued | running | done | error
     error: str | None = None
     updated: float = field(default_factory=time.time)
+    route: str | None = None         # how the PDF is read: text | ocr | mixed | blank (see app.ocr.ingest_report)
 
 
 JOBS: dict[str, Job] = {}
@@ -168,10 +171,16 @@ def start_extraction(src: Source, force: bool) -> Job:
         try:
             data = src.path.read_bytes()
             from app import ocr
-            if src.kind == "upload" and ocr.pages_needing_ocr(data) and ocr.enabled():
+            rep = ocr.ingest_report(data)
+            job.route = rep["route"]
+            will_ocr = src.kind == "upload" and bool(rep["scan_pages"]) and ocr.enabled()
+            log.info("ingest %s: route=%s pages=%d text=%s scan=%s blank=%s ocr=%s", src.id[:8], rep["route"], rep["pages"],
+                     rep["text_pages"], rep["scan_pages"], rep["blank_pages"], "will run" if will_ocr else "not used")
+            if will_ocr:
                 job.state = "ocr"                              # scanned pages: read them first, then extract as usual
                 data = _ocr_in_place(src, data)
                 job.state = "running"
+                log.info("ingest %s: OCR done", src.id[:8])
             extract_contract(data, source_name=src.name, use_cache=not force)
             job.state = "done"
             from backend.api.routes.obligations import recompute_now
