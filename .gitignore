@@ -18,3 +18,5 @@ data/audit/
 data/docsets/
 eval/results.json.tmp
 data/demo_keys.json
+
+data/agreements/
