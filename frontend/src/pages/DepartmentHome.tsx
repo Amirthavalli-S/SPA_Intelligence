@@ -15,7 +15,7 @@ const WHERE: Record<string, string | null> = {
   crosscheck: "/app/crosscheck",
   agreements: "/app/agreements",
   accuracy: "/app/accuracy",
-  bilingual: null, // gets its page with the bilingual check
+  bilingual: "/app/bilingual",
 };
 const ORDER = ["terms", "gap", "playbook", "crosscheck", "agreements", "bilingual", "penalty", "cashflow", "obligations", "accuracy"];
 

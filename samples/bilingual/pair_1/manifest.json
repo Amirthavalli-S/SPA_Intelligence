@@ -1,0 +1,11 @@
+{
+  "planted": [
+    {
+      "clause_id": "4",
+      "attribute": "cancellation_period",
+      "english": "30 days",
+      "arabic": "15 days"
+    }
+  ],
+  "note": "SYNTHETIC. Arabic needs native review."
+}

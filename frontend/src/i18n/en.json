@@ -43,7 +43,8 @@
     "buyers": "Buyers",
     "myContract": "My contract",
     "users": "Users",
-    "agreements": "Agreements"
+    "agreements": "Agreements",
+    "bilingual": "Arabic vs English"
   },
   "landing": {
     "eyebrow": "UAE off-plan property contracts",
@@ -75,10 +76,6 @@
     },
     "roadmapTitle": "What you can do today, and what comes next",
     "roadmap": {
-      "bilingual": {
-        "title": "Arabic–English check",
-        "body": "Spot differences between the two language versions."
-      },
       "whatsapp": {
         "title": "WhatsApp assistant",
         "body": "Ask your contract questions in a chat."
@@ -118,6 +115,10 @@
       "roles": {
         "title": "Roles and buyer access",
         "body": "Administrator, reviewer, staff and buyer roles. Each buyer can ask about their own contract only."
+      },
+      "bilingual": {
+        "title": "Arabic vs English check",
+        "body": "Finds clauses where the Arabic and English versions state different amounts, dates or periods."
       }
     },
     "forTeams": "For teams"
@@ -1062,5 +1063,28 @@
       }
     },
     "controlsFoot": "Jurisdiction rule packs are marked unreviewed until your lawyer signs them off. This is decision support, not legal advice."
+  },
+  "bilingual": {
+    "title": "Arabic vs English contract check",
+    "intro": "Compares the English and the Arabic version of one contract, clause by clause. Plain code compares the figures (amounts, percentages, periods, dates); it does not judge wording.",
+    "contract": "English contract",
+    "file": "Arabic version (PDF)",
+    "run": "Compare",
+    "sample": "Try the sample pair",
+    "running": "Comparing…",
+    "summary": "{{mismatch}} differ, {{match}} agree, {{unaligned}} could not be paired",
+    "clause": "Clause {{id}}",
+    "noId": "Unnumbered",
+    "english": "English",
+    "arabic": "Arabic",
+    "page": "page {{n}}",
+    "pairedByFigures": "Paired by shared figures, not by clause number: check it by eye.",
+    "status": {
+      "match": "Agree",
+      "mismatch": "Differ",
+      "unaligned": "Not paired"
+    },
+    "empty": "Choose a contract and an Arabic PDF, or try the sample pair.",
+    "note": "Pairing needs numbered clauses. A scan needs OCR first. Arabic text needs review by a native speaker."
   }
 }

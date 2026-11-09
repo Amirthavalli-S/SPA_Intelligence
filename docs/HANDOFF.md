@@ -17,6 +17,7 @@ optional OCR: Docling and/or Qwen vision model (`app/ocr/`) · optional Power Pl
 | DB persistence (files mirror, restore on boot) | `app/db.py`, `app/mirror.py`, `backend/api/persistence.py` |
 | RBAC / buyers | `app/users.py`, `app/buyers.py`, `backend/api/auth.py`, `routes/{users,buyers,supabase_auth}.py` |
 | OCR | `app/ocr/` (+ `docs/ocr.md`), hook in `extract.postprocess`, job step in `deps.start_extraction` |
+| Arabic vs English contract check | `app/bilingual_check.py`, `routes/bilingual.py`, `pages/Bilingual.tsx`, sample `samples/bilingual/pair_1` (`scripts/generate_bilingual.py`). Figures compared in code; optional `judge` hook for wording is NOT wired to the API. Needs numbered clauses; separate PDFs per language; scans need OCR first |
 | Email | `app/notifiers.py` (SMTP + webhook), `app/emailcards.py` |
 | Frontend pages | `frontend/src/pages/*` (Login, Reset, Pending, BuyerHome, Users, Buyers, Terms…), nav in `components/TopBar.tsx`, roles in `auth/roles.ts` |
 

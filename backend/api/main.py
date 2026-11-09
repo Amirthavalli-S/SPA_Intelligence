@@ -25,6 +25,7 @@ from backend.api.routes import session as session_routes
 from backend.api.routes import buyer, buyers as buyers_routes, cashflow, chat, contracts, crossdoc, internal, obligations, penalty, sim, trust
 from backend.api.routes import eval as eval_routes
 from backend.api.routes import reconcile as reconcile_routes
+from backend.api.routes import bilingual as bilingual_routes
 from app import ocr as _ocr
 from backend.api.schemas import Health
 
@@ -109,7 +110,7 @@ def create_app() -> FastAPI:
     auth.check_startup()                                   # AUTH_MODE=entra without settings stops the server
     staff = [Depends(auth.staff_access)]
     for r in (contracts.router, penalty.router, cashflow.router, chat.router, eval_routes.router, trust.router,
-              sim.router, obligations.router, crossdoc.router, internal.router, buyers_routes.router, reconcile_routes.router):
+              sim.router, obligations.router, crossdoc.router, internal.router, buyers_routes.router, reconcile_routes.router, bilingual_routes.router):
         app.include_router(r, prefix="/api", dependencies=staff)
     app.include_router(public_routes.router, prefix="/api")    # signed email image + logo: public by design
     app.include_router(session_routes.router, prefix="/api")   # sign-in endpoints: open by design

@@ -298,7 +298,31 @@ export interface BuyerAssignment {
   created_at: string;
 }
 
+export interface BilingualPair {
+  clause_id: string | null;
+  english_text: string | null;
+  arabic_text: string | null;
+  page_en: number | null;
+  page_ar: number | null;
+  aligned_by: "number" | "figures" | "none";
+  status: "match" | "mismatch" | "unaligned";
+  differences: string[];
+  checked_by: string[];
+}
+export interface BilingualResult {
+  pairs: BilingualPair[];
+  summary: { match: number; mismatch: number; unaligned: number; total: number };
+  paired_by_number: number;
+  disclaimer: string;
+}
+
 export const apiX = {
+  bilingual: (id: string, arabic: File | null) => {
+    if (!arabic) return request<BilingualResult>(`/contracts/${id}/bilingual-check?sample=pair_1`, { method: "POST" });
+    const fd = new FormData();
+    fd.append("arabic", arabic);
+    return request<BilingualResult>(`/contracts/${id}/bilingual-check`, { method: "POST", body: fd });
+  },
   agreements: () => request<{ agreement_id: string; documents: number; latest_signed: string | null }[]>("/agreements"),
   agreement: (id: string) => request<AgreementResult>(`/agreements/${encodeURIComponent(id)}`),
   setAgreement: (contractId: string, body: AgreementMetaBody) => request<AgreementMetaBody>(`/contracts/${contractId}/agreement`, { ...json(body), method: "PUT" }),

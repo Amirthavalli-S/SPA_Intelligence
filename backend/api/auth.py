@@ -49,7 +49,7 @@ WRITE_ROLES = {REVIEWER}
 # POST routes that only compute and return results (no stored change, no LLM spend): Staff may call them.
 READ_ONLY_POSTS = [re.compile(p) for p in (
     r"/penalty$", r"/cashflow$", r"/chat$", r"/statute-gap$", r"/montecarlo$", r"/portfolio/montecarlo$",
-    r"/alerts/[^/]+/ack$", r"/alerts/recompute$")]
+    r"/alerts/[^/]+/ack$", r"/alerts/recompute$", r"/bilingual-check$")]
 
 
 @dataclass

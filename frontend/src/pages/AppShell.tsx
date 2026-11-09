@@ -21,6 +21,7 @@ const ReviewQueue = lazy(() => import("./ReviewQueue"));
 const Buyers = lazy(() => import("./Buyers"));
 const Users = lazy(() => import("./Users"));
 const Reconciliation = lazy(() => import("./Reconciliation"));
+const Bilingual = lazy(() => import("./Bilingual"));
 const DepartmentHome = lazy(() => import("./DepartmentHome"));
 
 function Pick() {
@@ -114,6 +115,7 @@ export default function AppShell() {
             {DEPARTMENTS.map((d) => (
               <Route key={d} path={d} element={<DepartmentHome dept={d} />} />
             ))}
+            <Route path="bilingual" element={<Bilingual />} />
             <Route path="agreements" element={<Reconciliation />} />
             <Route path="agreements/:id" element={<Reconciliation />} />
             <Route
