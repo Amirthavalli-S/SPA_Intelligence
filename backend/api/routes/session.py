@@ -6,6 +6,7 @@ from urllib.parse import urlencode
 from fastapi import APIRouter, Request
 from fastapi.responses import JSONResponse, RedirectResponse
 
+from app import departments
 from backend.api import auth, session
 from backend.api.deps import ApiError
 
@@ -30,8 +31,10 @@ def me(request: Request):
         if e.status == 401:
             return {"authenticated": False, "mode": mode, "name": None, "login": None, "avatar_url": None, "roles": []}
         raise
+    feats = departments.features(p.department)
     return {"authenticated": True, "mode": mode, "name": p.display, "login": p.upn or None, "avatar_url": p.avatar, "roles": sorted(p.roles),
-            "pending": mode == "supabase" and not p.roles}
+            "pending": mode == "supabase" and not p.roles, "department": p.department,
+            "features": sorted(feats) if feats is not None else None, "redacted": departments.redacts(p.department)}
 
 
 @router.get("/github/login")

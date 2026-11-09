@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { NavLink, useLocation } from "react-router-dom";
-import { kindOf, navFor } from "../auth/roles";
+import { homeRouteFor, kindOf, navFor } from "../auth/roles";
 import { useAuth } from "../auth/useAuth";
 import { UserMenu } from "../auth/UserMenu";
 import { glitchText } from "../motion/effects";
@@ -26,7 +26,11 @@ export function TopBar() {
   const bar = useRef<HTMLElement>(null);
   const { pathname } = useLocation();
   const authMe = useAuth();
-  const nav = navFor(kindOf(authMe.data), !!authMe.data);
+  const kind = kindOf(authMe.data);
+  const nav = navFor(kind, !!authMe.data, authMe.data?.features);
+  const dept = kind === "staff" ? authMe.data?.department : null;
+  // Staff in a department start from their department's home (no general Home link); everyone else keeps Home.
+  const homeLink = (big = false) => (dept ? navLink(homeRouteFor(kind, dept), t(`dept.${dept}.name`), big) : navLink("/", t("nav.home"), big));
   const bare = pathname === "/login" || pathname === "/reset"; // the first page: brand, language and theme only
 
   useEffect(() => setOpen(false), [pathname, narrow]);
@@ -222,7 +226,7 @@ export function TopBar() {
               }}
             >
               <nav aria-label={t("common.mainNav")} style={{ display: "grid", gap: 2 }}>
-                {navLink("/", t("nav.home"), true)}
+                {homeLink(true)}
                 {nav.app && navLink("/app", t("nav.app"), true)}
                 {nav.mine && navLink("/app", t("nav.myContract"), true)}
                 {nav.watch && navLink("/app/watch", t("nav.watch"), true)}
@@ -245,7 +249,7 @@ export function TopBar() {
       ) : (
         <>
           <nav aria-label={t("common.mainNav")} style={{ display: "flex", gap: 2, marginInlineStart: 8 }}>
-            {navLink("/", t("nav.home"))}
+            {homeLink()}
             {nav.app && navLink("/app", t("nav.app"))}
             {nav.mine && navLink("/app", t("nav.myContract"))}
             {nav.watch && navLink("/app/watch", t("nav.watch"))}

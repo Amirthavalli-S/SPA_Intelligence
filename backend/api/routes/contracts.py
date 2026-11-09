@@ -4,10 +4,10 @@ import json
 from datetime import datetime, timezone
 
 import pymupdf
-from fastapi import APIRouter, Depends, File, Query, UploadFile
+from fastapi import APIRouter, Depends, File, Query, Request, UploadFile
 from fastapi.responses import FileResponse
 
-from app import agreements, config, ocr
+from app import agreements, config, departments, ocr
 from app.cashflow import CashflowUnavailable, milestone_rows
 from app.extract import load_cached
 from backend.api import deps, persistence
@@ -37,9 +37,29 @@ def _plan(contract) -> list[PlanRow]:
     return [PlanRow(**r | {"source_quote": m.source_quote}) for r, m in zip(rows, contract.payment_plan)]
 
 
+def _redacted(request: Request) -> bool:
+    p = getattr(request.state, "principal", None)
+    return bool(p and departments.redacts(p.department))
+
+
+def redact_contract(c):
+    """A copy of the contract without the price and the delay-exposure terms (and the payment-plan quotes, which carry amounts)."""
+    c = c.model_copy(deep=True)
+    for f in departments.REDACTED_FIELDS:
+        item = getattr(c, f)
+        item.value, item.source_quote, item.source_page, item.evidence = None, None, None, None
+    for m in [*c.payment_plan, *c.ungrounded_rows]:
+        m.source_quote = "-"
+    return c
+
+
 @router.get("", response_model=list[ContractSummary])
-def list_contracts():
-    return [_summary(s) for s in deps.list_sources()]
+def list_contracts(request: Request):
+    out = [_summary(s) for s in deps.list_sources()]
+    if _redacted(request):
+        for s in out:
+            s.price = None
+    return out
 
 
 @router.post("/upload", response_model=ContractStatus, status_code=202,
@@ -108,10 +128,16 @@ def extract(contract_id: str, force: bool = Query(False)):
 
 
 @router.get("/{contract_id}", response_model=ContractDetail)
-def detail(contract_id: str):
+def detail(contract_id: str, request: Request):
     src, c = deps.get_contract(contract_id)
+    plan = _plan(c)
+    restricted: list[str] = []
+    if _redacted(request):
+        c = redact_contract(c)
+        plan = [r.model_copy(update={"amount": None, "source_quote": "-"}) for r in plan]
+        restricted = [*departments.REDACTED_FIELDS, "plan_amounts"]
     return ContractDetail(id=src.id, name=src.name, pdf_url=f"/api/contracts/{src.id}/pdf",
-                          contract=c, plan=_plan(c))
+                          contract=c, plan=plan, restricted_fields=restricted)
 
 
 @router.get("/{contract_id}/pdf")

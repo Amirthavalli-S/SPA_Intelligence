@@ -72,9 +72,27 @@ Who does what:
 
 | Role | Can do |
 |---|---|
-| **Staff** | Upload, view terms, calculations, obligations. |
-| **Reviewer** | Everything staff can, plus verify or correct values and send test alerts. |
+| **Staff** | Read contracts, calculations and obligations. Staff belong to a **department** (below); a staff account with no department keeps the full read access. |
+| **Reviewer** | Everything staff can, plus upload, verify or correct values and send test alerts. A cross-cutting role: no department. |
+| **Administrator** | Everything a reviewer can, plus give people roles and departments. Set by `ADMIN_EMAILS`, never a database row. |
 | **Buyer** | Ask questions about their own contract only. |
+
+**Staff departments** (set only by an administrator; the table lives in one place, `app/departments.py`, and the server sends it to the browser):
+
+| Department | Home | Can use | Never receives |
+|---|---|---|---|
+| **Legal** | `/app/legal` | Terms, statute gap, rulebook (playbook), cross-document check, agreements, Arabic/English check, obligations | Penalty simulator, cash-flow |
+| **Finance** | `/app/finance` | Delay-penalty simulator, cash-flow | Rulebook, cross-check, statute gap, agreements, accuracy |
+| **Sales** | `/app/sales` | Terms (a lookup view) | The price, delay rate, basis and cap, and payment amounts: the server withholds them. Also no calculators |
+| **Management** | `/app/management` | Obligations across the portfolio, accuracy | Contract pages and calculators |
+
+**Design rule: auto-routing, no picker, ever.** The login form has no role or department field. Right after sign-in the app sends each
+person to the home of **their own** department. The header and contract pages show only that department's links, and there is no switcher
+or dropdown: a person in Legal cannot discover that a Finance section exists, and typing another department's address sends them back to
+their own. Reviewers and administrators, who work across teams, land on Home. The same table is enforced by the server on every request
+(a Legal account calling a Finance route gets 403), so hiding links is a convenience and never the protection. A test lists every route and
+fails if a new one is not assigned to a department feature. Limit: Sales can still open the PDF itself; the restriction covers the
+extracted values and the calculators, not the document.
 
 ## 5. The business logic, rule by rule
 

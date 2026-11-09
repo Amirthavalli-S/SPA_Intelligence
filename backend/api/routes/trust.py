@@ -8,7 +8,7 @@ from fastapi import APIRouter, Query, Request
 from fastapi.responses import Response
 from pydantic import BaseModel, Field
 
-from app import config
+from app import config, departments
 from app.evidence import locate, render_page_png
 from app.packs import list_packs, load_pack
 from app.review import ReviewError, add_decision, export_golden, get_item, load_store, review_items, save_store, valid_field
@@ -30,7 +30,10 @@ class EvidenceResponse(BaseModel):
 
 
 @router.get("/contracts/{contract_id}/evidence/{field:path}", response_model=EvidenceResponse)
-def evidence(contract_id: str, field: str):
+def evidence(contract_id: str, field: str, request: Request):
+    p = getattr(request.state, "principal", None)
+    if p and departments.redacts(p.department) and (field in departments.REDACTED_FIELDS or field.startswith(("payment_plan", "ungrounded_rows"))):
+        raise ApiError(403, "forbidden", "This value is not available to your department.")
     src, c = deps.get_contract(contract_id)
     try:
         item = get_item(c, field) if valid_field(field) else (c.jurisdiction_detected if field == "jurisdiction" else None)

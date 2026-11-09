@@ -153,7 +153,7 @@ describe("administrator: users", () => {
     expect(rows[2]).toHaveTextContent("Administrator");
     fireEvent.change(screen.getByLabelText("Role for new@x.co"), { target: { value: "staff" } });
     await waitFor(() => expect(f.mock.calls.some(([u, i]) => String(u).endsWith("/users/u1/role") && (i as RequestInit).method === "PUT")).toBe(true));
-    expect(bodyOf(f, "/users/u1/role")).toEqual({ role: "staff" });
+    expect(bodyOf(f, "/users/u1/role")).toEqual({ role: "staff", department: null });
   });
 
   it("shows the server's refusal to a non-administrator", async () => {

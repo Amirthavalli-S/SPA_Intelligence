@@ -7,7 +7,7 @@ import { countOpenReviews, useTermDisplay, type FieldKey } from "./termDisplay";
 const CARDS: FieldKey[] = ["buyer", "unit_id", "price", "area_sqft", "handover_date"];
 
 /** The few things a reader wants first, as cards: who, what, how much, when, whether the payment plan adds up, and whether a person still has to check anything. */
-export function ContractSummary({ c }: { c: ContractData }) {
+export function ContractSummary({ c, restricted }: { c: ContractData; restricted?: string[] | null }) {
   const { t } = useTranslation();
   const fmt = useFmt();
   const display = useTermDisplay();
@@ -21,11 +21,11 @@ export function ContractSummary({ c }: { c: ContractData }) {
       </h2>
       <div className="kpi-grid" data-testid="summary">
         {CARDS.map((k) => {
-          const d = display(k, c);
+          const d = display(k, c, restricted);
           const item = c[k];
           const hint = d.missing && item.source_quote ? t("summary.contractSays", { text: item.source_quote }) : null;
           return (
-            <div key={k} className={`kpi${d.missing ? " missing" : ""}`} data-testid={`kpi-${k}`}>
+            <div key={k} className={`kpi${d.missing || d.restricted ? " missing" : ""}`} data-testid={`kpi-${k}`}>
               <span className="label">{t(`terms.fields.${k}`)}</span>
               <span className="value" dir="auto">
                 {d.text}

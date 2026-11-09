@@ -39,7 +39,8 @@ export const GROUPS: { key: string; fields: FieldKey[] }[] = [
 export function useTermDisplay() {
   const { t } = useTranslation();
   const fmt = useFmt();
-  return (k: FieldKey, cc: ContractData): { text: string; missing: boolean } => {
+  return (k: FieldKey, cc: ContractData, restricted?: string[] | null): { text: string; missing: boolean; restricted?: boolean } => {
+    if (restricted?.includes(k)) return { text: t("common.restricted"), missing: false, restricted: true }; // withheld from this team, not "not stated"
     const item = cc[k];
     const v = item.value as unknown;
     if (k === "cancellation_clause")

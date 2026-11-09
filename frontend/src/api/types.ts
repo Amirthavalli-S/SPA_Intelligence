@@ -926,6 +926,8 @@ export interface components {
             contract: components["schemas"]["ContractData"];
             /** Plan */
             plan: components["schemas"]["PlanRow"][];
+            /** @description Values withheld from this account's department. */
+            restricted_fields?: string[];
         };
         /** ContractStatus */
         ContractStatus: {
@@ -1396,7 +1398,7 @@ export interface components {
             /** Percent */
             percent: number;
             /** Amount */
-            amount: number;
+            amount?: number | null;
             /** Due Date */
             due_date?: string | null;
             /** Trigger */

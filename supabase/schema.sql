@@ -115,3 +115,6 @@ alter table public.contracts         enable row level security;
 alter table public.buyer_assignments enable row level security;
 alter table public.audit_log         enable row level security;
 alter table public.approved_contracts enable row level security;
+
+-- Staff belong to a department (set only by an administrator; null = no department, the older behaviour). Meaningful only when role = 'staff'.
+alter table public.app_users add column if not exists department text check (department in ('legal','finance','sales','management'));

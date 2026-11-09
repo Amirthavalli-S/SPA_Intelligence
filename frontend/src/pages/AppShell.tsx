@@ -6,6 +6,8 @@ import { Sidebar } from "../components/Sidebar";
 import { useMotion } from "../motion/mm";
 import { gsap } from "../motion/registry";
 import { useContracts } from "../api/hooks";
+import { DEPARTMENTS, kindOf, navFor } from "../auth/roles";
+import { useAuth } from "../auth/useAuth";
 import { useMedia } from "../state/useMedia";
 import { usePrefs } from "../state/prefs";
 import { useLocation } from "react-router-dom";
@@ -19,6 +21,7 @@ const ReviewQueue = lazy(() => import("./ReviewQueue"));
 const Buyers = lazy(() => import("./Buyers"));
 const Users = lazy(() => import("./Users"));
 const Reconciliation = lazy(() => import("./Reconciliation"));
+const DepartmentHome = lazy(() => import("./DepartmentHome"));
 
 function Pick() {
   const { t } = useTranslation();
@@ -45,6 +48,8 @@ function Pick() {
 export default function AppShell() {
   const { t } = useTranslation();
   const q = useContracts();
+  const auth = useAuth();
+  const showList = navFor(kindOf(auth.data), !!auth.data, auth.data?.features).app;   // a team with no contract pages (Management) gets no contract list
   const root = useRef<HTMLDivElement>(null);
   const narrow = useMedia("(max-width: 900px)");
   const atHome = /^\/app\/?$/.test(useLocation().pathname);
@@ -68,7 +73,7 @@ export default function AppShell() {
       style={{
         display: "grid",
         gap: "1.25rem",
-        gridTemplateColumns: "minmax(250px, 330px) minmax(0, 1fr)",
+        gridTemplateColumns: showList ? "minmax(250px, 330px) minmax(0, 1fr)" : "minmax(0, 1fr)",
         padding: "5.2rem 1rem 1.5rem",
         maxWidth: 1500,
         margin: "0 auto",
@@ -77,6 +82,7 @@ export default function AppShell() {
       data-app-shell
     >
       <style>{`@media (max-width: 900px){ [data-app-shell]{ grid-template-columns: minmax(0,1fr) !important; } }`}</style>
+      {showList && (
       <aside data-shell-side aria-label={t("shell.contracts")}>
         {/* Narrow screens: a fixed-height collapsible panel, so the list loading never pushes the content down (CLS). */}
         {narrow ? (
@@ -88,6 +94,7 @@ export default function AppShell() {
           sidebar
         )}
       </aside>
+      )}
       <section style={{ minWidth: 0 }}>
         {lang === "ar" && (
           <p role="note" data-testid="ar-review" style={{ margin: "0 0 0.6rem", fontSize: "0.85rem", color: "var(--muted)" }}>
@@ -104,6 +111,9 @@ export default function AppShell() {
             <Route path="review" element={<ReviewQueue />} />
             <Route path="buyers" element={<Buyers />} />
             <Route path="users" element={<Users />} />
+            {DEPARTMENTS.map((d) => (
+              <Route key={d} path={d} element={<DepartmentHome dept={d} />} />
+            ))}
             <Route path="agreements" element={<Reconciliation />} />
             <Route path="agreements/:id" element={<Reconciliation />} />
             <Route

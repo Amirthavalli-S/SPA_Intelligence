@@ -66,10 +66,10 @@ export default function Terms() {
 
   const termRow = (k: FieldKey) => {
     const item = c[k];
-    const d = display(k, c);
+    const d = display(k, c, detail.restricted_fields);
     const mentioned = d.missing && !!item.source_quote;
     return (
-      <tr key={k} data-row data-testid={`row-${k}`} className={d.missing ? "missing-row" : undefined}>
+      <tr key={k} data-row data-testid={`row-${k}`} className={d.missing && !d.restricted ? "missing-row" : undefined}>
         <th scope="row" className="field" style={{ textAlign: "start" }}>
           {t(`terms.fields.${k}`)}
         </th>
@@ -107,7 +107,7 @@ export default function Terms() {
         </td>
         <td data-label={t("evidence.trust")}>
           <span style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
-            <GroundingChip item={item} />
+            {d.restricted ? <span className="badge muted">{t("common.restricted")}</span> : <GroundingChip item={item} />}
             {item.needs_review && !item.human_verified && (
               <Link className="badge warn" to="/app/review">
                 {t("evidence.needsReview")}
@@ -252,7 +252,7 @@ export default function Terms() {
                     {fmt.pct(p.percent, p.percent % 1 ? 2 : 0)}
                   </td>
                   <td data-label={t("terms.amount")} className="num nowrap" style={{ fontWeight: 600 }}>
-                    {fmt.aed(p.amount, 2)}
+                    {p.amount == null ? <span className="badge muted">{t("common.restricted")}</span> : fmt.aed(p.amount, 2)}
                   </td>
                   <td data-label={t("terms.due")} className="num nowrap">
                     {p.due_date ? fmt.date(p.due_date) : <span style={{ color: "var(--muted)" }}>–</span>}

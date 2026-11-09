@@ -149,7 +149,7 @@ export function MilestoneTimeline({ plan, asOf }: { plan: PlanRow[]; asOf: strin
                   fill="var(--muted)"
                   className="num"
                 >
-                  {fmt.aed(n.p.amount, 0)}
+                  {fmt.aed(n.p.amount ?? 0, 0)}
                 </text>
               </g>
             );

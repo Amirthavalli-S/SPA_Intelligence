@@ -8,12 +8,14 @@ interface UserRow {
   email: string;
   name: string;
   role: "staff" | "reviewer" | "buyer" | null;
+  department?: string | null;
   admin: boolean;
   via_assignment?: boolean;
   created_at: string;
   last_login_at: string | null;
 }
 const ROLES = ["staff", "reviewer", "buyer"] as const;
+const DEPTS = ["legal", "finance", "sales", "management"] as const;
 
 /** Administrator only: give each person who has signed up a role. A person with no role can sign in but sees nothing. */
 export default function Users() {
@@ -21,7 +23,8 @@ export default function Users() {
   const qc = useQueryClient();
   const list = useQuery({ queryKey: ["users"], queryFn: () => request<{ users: UserRow[] }>("/users"), retry: false });
   const set = useMutation({
-    mutationFn: (v: { id: string; role: string | null }) => request(`/users/${encodeURIComponent(v.id)}/role`, { ...json({ role: v.role }), method: "PUT" }),
+    mutationFn: (v: { id: string; role: string | null; department?: string | null }) =>
+      request(`/users/${encodeURIComponent(v.id)}/role`, { ...json({ role: v.role, department: v.role === "staff" ? (v.department ?? null) : null }), method: "PUT" }),
     onSuccess: () => void qc.invalidateQueries({ queryKey: ["users"] }),
   });
   return (
@@ -60,6 +63,21 @@ export default function Users() {
                 {ROLES.map((r) => <option key={r} value={r}>{t(`users.roles.${r}`)}</option>)}
               </select>
             </label>
+            {u.role === "staff" && (
+              <label style={{ display: "flex", gap: 6, alignItems: "center" }}>
+                <span className="sr-only">{t("users.department")}</span>
+                <select
+                  aria-label={t("users.departmentFor", { email: u.email })}
+                  value={u.department ?? ""}
+                  disabled={set.isPending}
+                  onChange={(e) => set.mutate({ id: u.user_id, role: "staff", department: e.target.value || null })}
+                  style={{ minHeight: 44 }}
+                >
+                  <option value="">{t("users.noDepartment")}</option>
+                  {DEPTS.map((d) => <option key={d} value={d}>{t(`dept.${d}.name`)}</option>)}
+                </select>
+              </label>
+            )}
           </article>
         ))}
       </div>

@@ -1,6 +1,8 @@
-import { lazy, Suspense } from "react";
-import { Route, Routes } from "react-router-dom";
+import { lazy, Suspense, type ReactNode } from "react";
+import { Navigate, Route, Routes } from "react-router-dom";
 import { AuthGate } from "./auth/AuthGate";
+import { homeRouteFor, kindOf } from "./auth/roles";
+import { useAuth } from "./auth/useAuth";
 import { DisclaimerBar } from "./components/Disclaimer";
 import { TopBar } from "./components/TopBar";
 import { RouteFade, TransitionProvider } from "./motion/Transition";
@@ -14,6 +16,14 @@ const Login = lazy(() => import("./pages/Login"));
 
 void loadDevtools(); // dev-only (?devtools=1); compiled away in production builds
 
+/** Staff in a department never see the general front page: Home for them IS their department's home. */
+function HomeGate({ children }: { children: ReactNode }) {
+  const me = useAuth();
+  const kind = kindOf(me.data);
+  if (kind === "staff" && me.data?.department) return <Navigate to={homeRouteFor(kind, me.data.department)} replace />;
+  return <>{children}</>;
+}
+
 export default function App() {
   return (
     <TransitionProvider>
@@ -26,7 +36,9 @@ export default function App() {
                 path="/"
                 element={
                   <AuthGate>
-                    <Landing />
+                    <HomeGate>
+                      <Landing />
+                    </HomeGate>
                   </AuthGate>
                 }
               />

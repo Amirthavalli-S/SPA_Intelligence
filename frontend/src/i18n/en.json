@@ -30,7 +30,8 @@
     "closeMenu": "Close menu",
     "pageShort": "p.",
     "arReview": "Arabic text needs native review",
-    "availableNow": "Available now"
+    "availableNow": "Available now",
+    "restricted": "Restricted"
   },
   "nav": {
     "home": "Home",
@@ -766,9 +767,13 @@
     "help": {
       "staff": "Staff: reads every contract, calculation and alert.",
       "reviewer": "Reviewer: everything staff can do, plus uploads, reviews and linking buyers.",
-      "buyer": "Buyer: asks questions about their own contract only. A buyer whose email is linked to a contract gets this role automatically."
+      "buyer": "Buyer: asks questions about their own contract only. A buyer whose email is linked to a contract gets this role automatically.",
+      "department": "A department limits staff to that team's pages and data. Only an administrator sets it."
     },
-    "viaLink": "Buyer (linked to a contract)"
+    "viaLink": "Buyer (linked to a contract)",
+    "department": "Department",
+    "departmentFor": "Department for {{email}}",
+    "noDepartment": "No department"
   },
   "summary": {
     "title": "At a glance",
@@ -831,5 +836,72 @@
     "saved": "Saved.",
     "clear": "Remove from agreement",
     "open": "Open agreement"
+  },
+  "dept": {
+    "tools": "What you can do here",
+    "open": "Open",
+    "fromList": "Pick a contract in the list, then open this page for it.",
+    "legal": {
+      "name": "Legal",
+      "title": "Legal workspace",
+      "intro": "Read what each contract says, check it against the statute and your rulebook, and compare it with the other documents."
+    },
+    "finance": {
+      "name": "Finance",
+      "title": "Finance workspace",
+      "intro": "See what a delay could cost and when money falls due, for any contract."
+    },
+    "sales": {
+      "name": "Sales",
+      "title": "Sales workspace",
+      "intro": "Look up a buyer's contract to answer a call: who the buyer is, the unit, the handover date and when each payment is due. Prices and delay figures are kept for Finance."
+    },
+    "management": {
+      "name": "Management",
+      "title": "Management overview",
+      "intro": "Follow upcoming deadlines across the portfolio and see how accurate the extraction is."
+    },
+    "features": {
+      "terms": {
+        "title": "Contract terms",
+        "body": "The extracted terms, each with its page and exact words."
+      },
+      "gap": {
+        "title": "Contract vs statute",
+        "body": "Compare the contract's delay compensation with the statute's formula."
+      },
+      "playbook": {
+        "title": "Rulebook check",
+        "body": "Risky clauses against your company rulebook, with suggested wording."
+      },
+      "crosscheck": {
+        "title": "Cross-document check",
+        "body": "Where the SPA, brochure, filing and CRM disagree."
+      },
+      "agreements": {
+        "title": "Agreements",
+        "body": "The current terms after addenda and extension letters."
+      },
+      "bilingual": {
+        "title": "Arabic vs English check",
+        "body": "Clauses where the two language versions say different things."
+      },
+      "penalty": {
+        "title": "Delay-penalty simulator",
+        "body": "The compensation for any delay, calculated in code."
+      },
+      "cashflow": {
+        "title": "Cash-flow",
+        "body": "Money due and money at risk, by month or quarter."
+      },
+      "obligations": {
+        "title": "Obligations and deadlines",
+        "body": "Dated obligations across contracts, with alerts."
+      },
+      "accuracy": {
+        "title": "Accuracy",
+        "body": "How accurate the extraction is on labelled contracts."
+      }
+    }
   }
 }

@@ -9,6 +9,9 @@ export interface Me {
   avatar_url: string | null;
   roles: string[];
   pending?: boolean;
+  department?: string | null; // staff only, set by an administrator
+  features?: string[] | null; // what that department may use; null = no department
+  redacted?: boolean; // true when price and delay-exposure values are withheld from this account
 }
 
 /** Who is signed in. The server always answers 200 (authenticated: false when nobody is), so no failed request is logged. */

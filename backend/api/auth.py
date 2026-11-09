@@ -38,6 +38,7 @@ import httpx
 import jwt
 from fastapi import Request
 
+from app import departments
 from backend.api.deps import ApiError
 
 log = logging.getLogger("spa.auth")
@@ -61,6 +62,7 @@ class Principal:
     raw_claims: dict = field(default_factory=dict, repr=False)
     contract: str | None = None          # apikey mode: the contract a buyer key is bound to
     avatar: str | None = None            # GitHub sign-in: profile picture URL (GitHub image host only)
+    department: str | None = None        # staff only: legal | finance | sales | management (set by an administrator)
 
     @property
     def display(self) -> str:
@@ -183,7 +185,8 @@ def api_keys() -> dict[str, dict]:
         if isinstance(k, str) and len(k) >= 24 and isinstance(v, dict) and isinstance(v.get("roles"), list):
             c = v.get("contract")
             if c is None or (isinstance(c, str) and re.fullmatch(r"[0-9a-f]{64}", c)):
-                out[k] = {"name": str(v.get("name") or "API key")[:60], "roles": {r for r in v["roles"] if isinstance(r, str)}, "contract": c}
+                out[k] = {"name": str(v.get("name") or "API key")[:60], "roles": {r for r in v["roles"] if isinstance(r, str)}, "contract": c,
+                          "department": v.get("department") if v.get("department") in departments.DEPARTMENTS and v["roles"] == ["Spa.Staff"] else None}
     return out
 
 
@@ -195,7 +198,7 @@ def validate_api_key(key: str) -> Principal:
     if found is None:
         raise ApiError(401, "unauthorized", "Invalid API key.")
     return Principal(oid="key:" + hashlib.sha256(key.encode()).hexdigest()[:12], name=found["name"], upn="", roles=found["roles"],
-                     tenant="", contract=found["contract"])
+                     tenant="", contract=found["contract"], department=found.get("department"))
 
 
 def _bearer(request: Request) -> str:
@@ -219,10 +222,13 @@ def _session_principal(request: Request) -> Principal | None:
     if c.get("prov") == "supabase":
         from app import users
         try:
-            roles = users.principal_roles(c["sub"].removeprefix("sb:"), c["email"])     # the database decides, on every request
+            uid = c["sub"].removeprefix("sb:")
+            roles = users.principal_roles(uid, c["email"])                              # the database decides, on every request
+            cross_cutting = "Spa.Admin" in roles or "Spa.Reviewer" in roles
+            dept = None if cross_cutting else users.department_for(uid, c["email"])
         except Exception:  # noqa: BLE001
             raise ApiError(503, "database_unavailable", "The user database is not reachable right now.") from None
-        return Principal(oid=c["sub"], name=str(c.get("name") or c["email"]), upn=c["email"], roles=roles, tenant="supabase")
+        return Principal(oid=c["sub"], name=str(c.get("name") or c["email"]), upn=c["email"], roles=roles, tenant="supabase", department=dept)
     return Principal(oid=c["sub"], name=str(c.get("name") or c.get("login") or ""), upn=str(c.get("login") or ""),
                      roles={c["role"]}, tenant="github", avatar=session.safe_avatar(c.get("avatar")))
 
@@ -272,6 +278,9 @@ def staff_access(request: Request) -> None:
     if not (p.roles & need):
         log.info("403 %s %s role=%s", request.method, request.url.path, sorted(p.roles))
         raise ApiError(403, "forbidden", "Your account does not have the role required for this action.")
+    if p.department and not departments.allows(p.department, request.url.path):
+        log.info("403 %s %s department=%s", request.method, request.url.path, p.department)
+        raise ApiError(403, "forbidden", "This part of the application is not available to your department.")
 
 
 def actor(request: Request, fallback: str = "") -> str:

@@ -1,5 +1,5 @@
 import { useQueryClient } from "@tanstack/react-query";
-import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState, type ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { Navigate, Route, Routes, useLocation, useParams } from "react-router-dom";
 import { ApiError } from "../api/client";
@@ -7,6 +7,8 @@ import { useContract, useContracts, useExtract, useHealth, useStatus } from "../
 import { AgreementBox } from "../components/AgreementBox";
 import { ContractSummary } from "../components/ContractSummary";
 import { Tabs } from "../components/Tabs";
+import { kindOf, tabsFor, type Tab } from "../auth/roles";
+import { useAuth } from "../auth/useAuth";
 import { Alert, EmptyState, ErrorState, Loader, Skeleton } from "../components/ui";
 import { coinBurst } from "../motion/effects";
 import { gsap } from "../motion/registry";
@@ -23,6 +25,16 @@ const Gap = lazy(() => import("./Gap"));
 const Obligations = lazy(() => import("./Obligations"));
 const Playbook = lazy(() => import("./Playbook"));
 const PdfPanel = lazy(() => import("../components/PdfPanel"));
+
+const PAGES: Record<Tab, ReactElement> = {
+  terms: <Terms />,
+  gap: <Gap />,
+  penalty: <Penalty />,
+  cashflow: <Cashflow />,
+  obligations: <Obligations />,
+  playbook: <Playbook />,
+  assistant: <Assistant />,
+};
 
 function ExtractControls({ id, force }: { id: string; force: boolean }) {
   const { t } = useTranslation();
@@ -95,6 +107,8 @@ export default function ContractLayout() {
   const body = useRef<HTMLDivElement>(null);
   const { tier } = usePrefs();
   const seg = loc.pathname.split("/").pop();
+  const auth = useAuth();
+  const tabs = tabsFor(kindOf(auth.data), auth.data?.features); // only the contract pages this account's department may open
 
   // tab content entrance
   useEffect(() => {
@@ -164,7 +178,7 @@ export default function ContractLayout() {
               {t("shell.extractedAt", { when: c.extracted_at ?? "", model: c.model ?? "" })}
             </p>
           </div>
-          <ContractSummary c={c} />
+          <ContractSummary c={c} restricted={ctx.detail.restricted_fields} />
           <AgreementBox key={id + (known?.agreement_id ?? "")} contractId={id} agreementId={known?.agreement_id} docType={known?.doc_type} dateSigned={known?.date_signed} />
           <details style={{ color: "var(--muted)" }}>
             <summary style={{ cursor: "pointer", color: "var(--fg)", fontWeight: 600 }}>🔄 {t("shell.rerun")}</summary>
@@ -172,7 +186,7 @@ export default function ContractLayout() {
               <ExtractControls id={id} force />
             </div>
           </details>
-          <Tabs base={base} />
+          <Tabs base={base} tabs={tabs} />
         </header>
         <div
           data-split
@@ -187,14 +201,11 @@ export default function ContractLayout() {
           <div ref={body} data-split-main style={{ minWidth: 0 }}>
             <Suspense fallback={<Skeleton h={300} />}>
               <Routes>
-                <Route index element={<Navigate to="terms" replace />} />
-                <Route path="terms" element={<Terms />} />
-                <Route path="gap" element={<Gap />} />
-                <Route path="penalty" element={<Penalty />} />
-                <Route path="cashflow" element={<Cashflow />} />
-                <Route path="obligations" element={<Obligations />} />
-                <Route path="playbook" element={<Playbook />} />
-                <Route path="assistant" element={<Assistant />} />
+                <Route index element={<Navigate to={tabs[0] ?? "terms"} replace />} />
+                {tabs.map((k) => (
+                  <Route key={k} path={k} element={PAGES[k]} />
+                ))}
+                <Route path="*" element={<Navigate to={tabs[0] ?? "terms"} replace />} />
               </Routes>
             </Suspense>
           </div>

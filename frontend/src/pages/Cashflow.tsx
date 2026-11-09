@@ -189,7 +189,7 @@ export default function Cashflow() {
         {d.unscheduled.length > 0 && (
           <Alert tone="warn">
             {t("cashflow.unscheduled")}:{" "}
-            {d.unscheduled.map((u) => `${u.milestone} (${fmt.aed(u.amount, 0)})`).join(", ")}
+            {d.unscheduled.map((u) => `${u.milestone} (${fmt.aed(u.amount ?? 0, 0)})`).join(", ")}
           </Alert>
         )}
       </section>

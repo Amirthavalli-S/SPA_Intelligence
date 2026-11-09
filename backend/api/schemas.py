@@ -62,7 +62,7 @@ class ContractStatus(BaseModel):
 class PlanRow(BaseModel):
     milestone: str
     percent: float
-    amount: float
+    amount: Optional[float] = None            # None for a department that may not see amounts
     due_date: Optional[date] = None
     trigger: Optional[str] = None
     type: Literal["handover_linked", "construction_linked", "time_based"]
@@ -77,6 +77,7 @@ class ContractDetail(BaseModel):
     pdf_url: str
     contract: ContractData
     plan: list[PlanRow]
+    restricted_fields: list[str] = Field(default_factory=list, description="Values withheld from this account's department.")
 
 
 class PenaltyRequest(BaseModel):

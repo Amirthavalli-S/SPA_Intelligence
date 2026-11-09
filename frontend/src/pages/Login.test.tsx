@@ -1,7 +1,7 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { MemoryRouter, Route, Routes } from "react-router-dom";
+import { MemoryRouter, Route, Routes, useLocation } from "react-router-dom";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import "../i18n";
 import { PrefsProvider } from "../state/prefs";
@@ -19,6 +19,8 @@ const api = (me: object, cfg: object = { mode: "apikey", github: true }) =>
       : jsonResponse(cfg),
   );
 
+const Where = () => <p data-testid="in-app">{useLocation().pathname}</p>;
+
 const mount = (url = "/login") =>
   render(
     <QueryClientProvider client={new QueryClient({ defaultOptions: { queries: { retry: false } } })}>
@@ -27,7 +29,7 @@ const mount = (url = "/login") =>
           <Routes>
             <Route path="/login" element={<Login />} />
             <Route path="/" element={<p data-testid="home">home</p>} />
-            <Route path="/app/*" element={<p data-testid="in-app">in the app</p>} />
+            <Route path="/app/*" element={<Where />} />
           </Routes>
         </MemoryRouter>
       </PrefsProvider>
@@ -62,10 +64,28 @@ describe("Login page", () => {
     expect(screen.queryByTestId("login-error")).toBeNull();
   });
 
-  it("goes to Home when already signed in, or when server auth is off", async () => {
-    vi.stubGlobal("fetch", api({ authenticated: true, name: "Alice" }));
+  it("goes to Home when a reviewer or administrator is already signed in, or when server auth is off", async () => {
+    vi.stubGlobal("fetch", api({ authenticated: true, name: "Alice", roles: ["Spa.Reviewer"] }));
     mount();
     await waitFor(() => expect(screen.getByTestId("home")).toBeInTheDocument());
+  });
+
+  it("drops staff straight into their own department's home, with no choice offered", async () => {
+    vi.stubGlobal("fetch", api({ authenticated: true, name: "Sam", roles: ["Spa.Staff"], department: "finance", features: ["penalty", "cashflow"] }));
+    mount();
+    await waitFor(() => expect(screen.getByTestId("in-app")).toHaveTextContent("/app/finance"));
+  });
+
+  it("sends buyers and people still waiting for a role to the app, which shows each their own page", async () => {
+    vi.stubGlobal("fetch", api({ authenticated: true, name: "Bo", roles: ["Spa.Buyer"] }));
+    mount();
+    await waitFor(() => expect(screen.getByTestId("in-app")).toHaveTextContent("/app"));
+  });
+
+  it("still honours an explicit destination, even for staff in a department", async () => {
+    vi.stubGlobal("fetch", api({ authenticated: true, name: "Sam", roles: ["Spa.Staff"], department: "legal", features: ["terms"] }));
+    mount("/login?next=%2Fapp%2Freview");
+    await waitFor(() => expect(screen.getByTestId("in-app")).toHaveTextContent("/app/review"));
   });
 
   it("goes back to the page the visitor asked for, when it is inside the app", async () => {

@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { Navigate, useSearchParams } from "react-router-dom";
 import { request } from "../api/client";
 import { EmailSignIn } from "../auth/EmailSignIn";
+import { homeRouteFor, kindOf } from "../auth/roles";
 import { needsSignIn, safeNext, useAuth } from "../auth/useAuth";
 import { Skeleton } from "../components/ui";
 import { useMotion } from "../motion/mm";
@@ -55,7 +56,8 @@ export default function Login() {
     gsap.from(q(".login-story > *"), { y: 16, opacity: 0, duration: 0.6, stagger: 0.1, ease: "power2.out", clearProps: "transform,opacity" });
   }, []);
 
-  if (me.data && !needsSignIn(me.data)) return <Navigate to={next} replace />; // already signed in, or server auth is off
+  // Signed in (or server auth is off): go where they asked to go, else straight to their own home. No choice is ever offered.
+  if (me.data && !needsSignIn(me.data)) return <Navigate to={params.get("next") ? next : homeRouteFor(kindOf(me.data), me.data.department)} replace />;
   const known = err && ERRORS.includes(err);
 
   return (

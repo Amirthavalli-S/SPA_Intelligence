@@ -4,17 +4,15 @@ import { NavLink, useLocation } from "react-router-dom";
 import { Flip } from "../motion/registry";
 import { usePrefs } from "../state/prefs";
 
-const TABS = ["terms", "gap", "penalty", "cashflow", "obligations", "playbook", "assistant"] as const;
-
-/** Tabs by URL. The highlight pill glides between tabs with Flip.fit. */
-export function Tabs({ base }: { base: string }) {
+/** Tabs by URL (only the pages this account may open). The highlight pill glides between tabs with Flip.fit. */
+export function Tabs({ base, tabs: TABS }: { base: string; tabs: readonly string[] }) {
   const { t } = useTranslation();
   const { pathname } = useLocation();
   const { tier, dir } = usePrefs();
   const wrap = useRef<HTMLDivElement>(null);
   const pill = useRef<HTMLSpanElement>(null);
   const first = useRef(true);
-  const active = TABS.find((k) => pathname.includes(`/${k}`)) ?? "terms";
+  const active = TABS.find((k) => pathname.includes(`/${k}`)) ?? TABS[0] ?? "terms";
 
   useEffect(() => {
     const el = wrap.current?.querySelector<HTMLElement>(`[data-tab="${active}"]`);

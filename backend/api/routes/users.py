@@ -15,6 +15,7 @@ router = APIRouter(prefix="/users", tags=["users"])
 
 class RoleChange(BaseModel):
     role: Optional[str] = Field(None, description="staff | reviewer | buyer, or null to remove access.")
+    department: Optional[str] = Field(None, description="legal | finance | sales | management; only with role staff.")
 
 
 @router.get("")
@@ -25,6 +26,6 @@ def list_users():
 @router.put("/{user_id}/role")
 def set_role(user_id: str, body: RoleChange, request: Request):
     try:
-        return users.set_role(user_id, body.role, auth.actor(request))
+        return users.set_role(user_id, body.role, auth.actor(request), body.department)
     except users.UserError as e:
         raise ApiError(404 if "not found" in str(e) else 422, "user_error", str(e)) from None

@@ -3,6 +3,8 @@ import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ApiError, api, type ContractSummary } from "../api/client";
 import { useHealth, useStatus, useUpload } from "../api/hooks";
+import { kindOf, tabsFor } from "../auth/roles";
+import { useAuth } from "../auth/useAuth";
 import { useFmt } from "../i18n/format";
 import { coinBurst } from "../motion/effects";
 import { Flip } from "../motion/registry";
@@ -205,12 +207,14 @@ export function Sidebar({
   const flipState = useRef<Flip.FlipState | null>(null);
   const list = useRef<HTMLDivElement>(null);
   const { tier } = usePrefs();
+  const auth = useAuth();
+  const firstTab = tabsFor(kindOf(auth.data), auth.data?.features)[0] ?? "terms"; // Finance opens on Penalty, Legal on Terms, ...
 
   // Flip: the clicked card expands smoothly while the others reflow
   const open = (id: string) => {
     flipState.current = Flip.getState("[data-card]");
     void qc.prefetchQuery({ queryKey: ["contract", id], queryFn: () => api.contract(id) }).catch(() => {});
-    nav(`/app/contracts/${id}/terms`);
+    nav(`/app/contracts/${id}/${firstTab}`);
   };
   useLayoutEffect(() => {
     if (flipState.current && tier !== "reduced") {
@@ -265,7 +269,7 @@ export function Sidebar({
           <Card key={c.id} c={c} active={c.id === activeId} onOpen={() => open(c.id)} />
         ))}
       </div>
-      <Upload onReady={(id) => nav(`/app/contracts/${id}/terms`)} />
+      <Upload onReady={(id) => nav(`/app/contracts/${id}/${firstTab}`)} />
     </div>
   );
 }
