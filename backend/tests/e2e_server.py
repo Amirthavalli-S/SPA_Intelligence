@@ -33,7 +33,7 @@ from app.extract import extract_contract, file_hash  # noqa: E402
 from backend.api.main import app  # noqa: E402
 from tests.fakes import FakeClient, facts_tool_input, judgements_tool_input, oracle_input  # noqa: E402
 
-SAMPLES = {file_hash(p.read_bytes()): p for p in sorted(config.SAMPLES_DIR.glob("*.pdf"))}
+SAMPLES = {file_hash(p.read_bytes()): p for p in sorted(config.SAMPLES_DIR.glob("*.pdf")) if not p.name.startswith("pgv_")}   # pgv_* have golden labels, not oracle truth
 DELAY = float(os.environ.get("E2E_EXTRACT_DELAY", "1.2"))
 CROSS = {}
 for _d in sorted((config.ROOT / "samples" / "crossdoc").glob("set_*")):
