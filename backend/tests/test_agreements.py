@@ -31,9 +31,10 @@ def test_the_contract_list_carries_the_agreement_and_clearing_it_removes_the_agr
     link(client, A)
     row = next(c for c in client.get("/api/contracts").json() if c["id"] == A)
     assert row["agreement_id"] == "AGR-T1" and row["doc_type"] == "SPA" and row["date_signed"] == "2025-01-14"
-    assert client.get("/api/agreements").json() == [{"agreement_id": "AGR-T1", "documents": 1, "latest_signed": "2025-01-14"}]
+    mine = lambda: [a for a in client.get("/api/agreements").json() if a["agreement_id"] == "AGR-T1"]  # noqa: E731  (the Green Valley samples bring their own)
+    assert mine() == [{"agreement_id": "AGR-T1", "documents": 1, "latest_signed": "2025-01-14"}]
     assert client.put(f"/api/contracts/{A}/agreement", json={}).status_code == 200
-    assert client.get("/api/agreements").json() == []
+    assert mine() == []
     assert client.get("/api/agreements/AGR-T1").status_code == 404
 
 

@@ -9,7 +9,7 @@ from app import config
 from app.engines import cost_usd, get_engine, list_engines
 from app.extract import extract_contract
 from eval import run_eval as ev
-from tests.fakes import FakeClient, oracle_input
+from tests.fakes import FakeClient, oracle_input, seed_pgv_golden
 
 ROOT = Path(__file__).resolve().parent.parent
 SAMPLES = ROOT / "samples"
@@ -33,12 +33,13 @@ def seed(mutate=None):
         if mutate:
             mutate(p.name, inp)
         extract_contract(p.read_bytes(), p.name, client=FakeClient(inp), use_cache=False)
+    seed_pgv_golden(extract_contract)                      # the Green Valley golden documents are part of the golden set too
 
 
 def test_golden_set_loads_and_is_labelled_synthetic():
     g = ev.load_golden()
-    assert len(g) == 4 and all(d["synthetic"] for d in g)
-    assert all(d["labels"]["price"]["page"] for d in g)
+    assert len(g) == 8 and all(d["synthetic"] for d in g)
+    assert all(d["labels"]["price"]["page"] for d in g if d["labels"]["price"]["value"] is not None)   # an extension letter states no price
 
 
 def test_perfect_run_scores_one_and_no_hallucinations(env):
@@ -47,8 +48,8 @@ def test_perfect_run_scores_one_and_no_hallucinations(env):
     run = ev.run_eval(use_cache=True, allow_llm=False, log=lambda *_: None)
     assert run["overall"]["f1"] == 1.0 and run["overall"]["hallucinations"] == 0
     assert run["overall"]["grounding_pass_rate"] == 1.0
-    assert run["golden"] == {"size": 4, "synthetic": 4, "real": 0, "docs": run["golden"]["docs"]}
-    assert run["table"]["row_f1"] == 1.0 and run["table"]["sum_correct"] == 4
+    assert run["golden"] == {"size": 8, "synthetic": 8, "real": 0, "docs": run["golden"]["docs"]}
+    assert run["table"]["row_f1"] == 1.0 and run["table"]["sum_correct"] == 6
     assert (env / "runs" / f"{run['run_id']}.json").exists() and run["compared_to"] is None
     assert run["git_commit"]
 
@@ -63,8 +64,8 @@ def test_wrong_and_ungrounded_values_hit_precision_recall_hallucinations(env):
     seed(mut)
     run = ev.run_eval(use_cache=True, log=lambda *_: None)
     f = run["fields"]
-    assert f["price"]["recall"] == 0.75 and f["price"]["precision"] == 1.0     # abstained on 1 of 4 -> FN, no FP
-    assert f["buyer"]["recall"] == 0.75
+    assert f["price"]["recall"] == round(6 / 7, 4) and f["price"]["precision"] == 1.0     # 7 golden docs state a price; abstained on 1 -> FN, no FP
+    assert f["buyer"]["recall"] == 0.875                                                  # all 8 state a buyer; 1 withheld
     assert run["overall"]["hallucinations"] == 3
     assert run["overall"]["abstention_rate"] > 0
     assert run["overall"]["f1"] < 1.0

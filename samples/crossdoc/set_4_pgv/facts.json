@@ -1,0 +1,24 @@
+{
+  "brochure": {
+    "doc": "brochure.pdf",
+    "quotes": {
+      "handover_date": "Possession: 31 December 2028",
+      "registration_number": "RERA Registration No. TN/29/Building/0234/2025"
+    },
+    "values": {
+      "handover_date": "2028-12-31",
+      "registration_number": "TN/29/Building/0234/2025"
+    }
+  },
+  "filing": {
+    "doc": "filing.pdf",
+    "quotes": {
+      "handover_date": "Proposed date of completion: 31 December 2028",
+      "registration_number": "Registration No. TN/29/Building/0234/2025"
+    },
+    "values": {
+      "handover_date": "2028-12-31",
+      "registration_number": "TN/29/Building/0234/2025"
+    }
+  }
+}

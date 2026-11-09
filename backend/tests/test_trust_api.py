@@ -114,6 +114,9 @@ def test_eval_runs_engines_bakeoff_endpoints(client, seeded, monkeypatch, tmp_pa
     monkeypatch.setattr(ev, "RUNS_DIR", tmp_path / "runs")
     monkeypatch.setattr(ev, "penalty_test_pass_rate", lambda: {"passed": 1, "failed": 0, "total": 1, "pass_rate": 1.0})
     assert client.get("/api/eval/runs").json()["runs"] == []
+    from app.extract import extract_contract
+    from tests.fakes import seed_pgv_golden
+    seed_pgv_golden(extract_contract)
     run = ev.run_eval(use_cache=True, log=lambda *_: None)
     rs = client.get("/api/eval/runs").json()["runs"]
     assert rs[0]["run_id"] == run["run_id"] and rs[0]["overall"]["f1"] == 1.0
@@ -122,7 +125,7 @@ def test_eval_runs_engines_bakeoff_endpoints(client, seeded, monkeypatch, tmp_pa
     es = {e["name"]: e for e in client.get("/api/eval/engines").json()["engines"]}
     assert es["claude_pdf"]["configured"] and not es["docling"]["configured"]
     b = client.get("/api/eval/bakeoff").json()
-    assert b["golden_size"] == 4 and b["golden_real"] == 0 and "only to our golden set" in b["note"]
+    assert b["golden_size"] == 8 and b["golden_real"] == 0 and "only to our golden set" in b["note"]
     row = {e["name"]: e for e in b["engines"]}
     assert row["claude_pdf"]["run"]["fields"]["price"] == 1.0 and row["docling"]["run"] is None
 

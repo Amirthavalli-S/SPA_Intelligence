@@ -94,6 +94,29 @@ python eval/run_eval.py --yes      # extraction accuracy vs ground_truth.json (u
 Extraction costs 1 LLM call (2 if the first answer fails validation) and is cached by file hash and model. Nothing calls the
 model on page load: extraction runs only when you click **Extract** (or upload), and scanned PDFs are read with OCR when an engine is configured (otherwise refused).
 
+## Featured demo: the Green Valley story (synthetic)
+
+One story, end to end, with planted problems a person can walk a client through in about ten minutes. Every document says
+**SYNTHETIC SAMPLE** on every page; none is a real contract. (The project name is fictional; change `PROJECT` in
+`scripts/generate_pgv.py` and re-run it if it is too close to a real brand.)
+
+```bash
+python scripts/seed_demo.py      # loads the story with no model and no key; the real grounding checks still run
+```
+
+| Step | Where | What it shows |
+|---|---|---|
+| 1 | **Agreements** > `AGR-1105` | An SPA (14 Jan 2025) plus an addendum (price only, 10 Mar 2026) and an extension letter (possession only, 18 Jul 2026) merge into the terms in force today: price Rs 95,00,000, possession 30 Jun 2029, payment plan unchanged. Each value names the document that set it. |
+| 2 | **Cross-check** > `set_4_pgv` | Three different possession dates: 31 Dec 2028 (RERA filing and brochure), 31 Mar 2029 (a stale CRM entry) and 30 Jun 2029 (the amended contract). It exists only because the amendments were merged first. |
+| 3 | Open `AGR-1108` > **Playbook** | A contract drafted on a discontinued template breaks three company rules: a 24-month postponement (limit 12), Rs 5 per sq ft per month (minimum 10) and no refund clause. Force majeure and the RERA number pass. |
+| 4 | `AGR-1105` > **Penalty** | A 90-day delay costs Rs 34,027.40: 1,150 sq ft x Rs 10 x 12 months x 90 / 365. A monthly rate is converted to a yearly one in code, then prorated by day. |
+| 5 | Sign in as staff in each **department** | Legal, Finance, Sales and Management each land on their own home and see only their own pages. Sales never receives the price or delay figures. |
+
+The documents, the CRM export, the oracle facts, the golden labels (`eval/golden/pgv_*`) and the agreement defaults
+(`samples/agreements.json`) are all generated from one set of constants by `python scripts/generate_pgv.py`, so they cannot drift.
+The company rulebook rules (`gv_*` in `rules/playbook.yaml`) apply only to this project's SPAs and are marked
+`reviewed_by_lawyer: false`. The three Dubai sample sets are unchanged; this is the fourth, and the one to demo.
+
 ## API (`/api`, JSON; errors are `{"error": {"code", "message"}}`)
 
 | Method and path | Purpose |

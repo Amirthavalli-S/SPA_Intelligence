@@ -29,4 +29,4 @@ def test_the_effective_terms_are_saved_and_removed_with_the_agreement(api):
     api.put(f"/api/contracts/{A}/agreement", json={})
     api.put(f"/api/contracts/{B}/agreement", json={})
     persistence.sync_contracts()
-    assert q("select count(*) from effective_contracts")[0][0] == 0
+    assert q("select count(*) from effective_contracts where agreement_id = 'AGR-T1'")[0][0] == 0

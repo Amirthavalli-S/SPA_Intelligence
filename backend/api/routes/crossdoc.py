@@ -40,16 +40,21 @@ def _find(set_id: str) -> tuple[str, Path]:
 
 
 def _spa_contract(d: Path, mf: dict):
+    """(the SPA's ContractData or None, the attributes an amendment changed). When the set names an agreement, the SPA side is that
+    agreement's CURRENT terms after addenda and extension letters; otherwise it is the SPA PDF as it stands."""
+    if mf.get("agreement_id"):
+        from backend.api.routes.reconcile import effective_for_agreement
+        return effective_for_agreement(mf["agreement_id"]) or (None, frozenset())
     cid = mf.get("spa_contract_id")
     if not cid and (d / "spa.pdf").exists():
         cid = file_hash((d / "spa.pdf").read_bytes())
     if not cid:
-        return None
+        return None, frozenset()
     try:
         src = deps.get_source(cid)
     except ApiError:
-        return None
-    return deps.effective_contract(src)
+        return None, frozenset()
+    return deps.effective_contract(src), frozenset()
 
 
 @router.get("/sets")
@@ -67,7 +72,7 @@ def analyse(set_id: str, extract: bool = Query(False, description="Allow LLM cal
     kind, d = _find(set_id)
     mf = json.loads((d / "manifest.json").read_text())
     ds = cd.load_set(d)
-    spa = _spa_contract(d, mf)
+    spa, overlaid = _spa_contract(d, mf)
     llm_calls = 0
 
     def facts(doc):
@@ -81,7 +86,7 @@ def analyse(set_id: str, extract: bool = Query(False, description="Allow LLM cal
         llm_calls += 1
         return cd.extract_facts_cached(pdf)
 
-    res = cd.analyze(ds, spa, facts)
+    res = cd.analyze(ds, spa, facts, overlaid)
     res.update({"kind": kind, "synthetic": kind == "sample", "llm_calls_made": llm_calls,
                 "planted": mf.get("planted") if kind == "sample" else None})
     if kind == "sample" and mf.get("planted") is not None and not res["pending"]:

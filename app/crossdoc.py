@@ -49,6 +49,7 @@ class DocumentRef(BaseModel):
     type: Literal["spa", "brochure", "regulator_filing", "crm_export"]
     name: str
     path: str
+    scope: Literal["unit", "project"] = "unit"     # a project-level brochure or filing states no unit: it speaks for every unit
 
 
 class DocumentSet(BaseModel):
@@ -141,13 +142,15 @@ def equal(attribute: str, a: Any, b: Any) -> bool:
 
 
 # ------------------------------------------------------------------ fact sources
-def facts_from_contract(c: ContractData, doc_id: str) -> list[Fact]:
+def facts_from_contract(c: ContractData, doc_id: str, overlaid: frozenset[str] | set[str] = frozenset()) -> list[Fact]:
+    """`overlaid` names the attributes whose value came from a LATER document (an addendum), so no evidence link points at the original SPA."""
     out = []
 
     def add(attr, item, fld, raw=None):
         raw = item.value if raw is None else raw
         if raw is not None:
-            out.append(Fact(attr, raw, normalize(attr, raw), doc_id, "spa", item.source_page, item.source_quote, field=fld))
+            out.append(Fact(attr, raw, normalize(attr, raw), doc_id, "spa", item.source_page, item.source_quote,
+                            field=None if attr in overlaid else fld))
 
     add("price", c.price, "price")
     add("area_sqft", c.area_sqft, "area_sqft")
@@ -156,7 +159,7 @@ def facts_from_contract(c: ContractData, doc_id: str) -> list[Fact]:
     if c.payment_plan:
         first = c.payment_plan[0]
         out.append(Fact("payment_plan", [m.percent for m in c.payment_plan], normalize("payment_plan", [m.percent for m in c.payment_plan]),
-                        doc_id, "spa", first.source_page, first.source_quote, field="payment_plan.1"))
+                        doc_id, "spa", first.source_page, first.source_quote, field=None if "payment_plan" in overlaid else "payment_plan.1"))
     return out
 
 
@@ -227,13 +230,14 @@ def load_set(d: Path) -> DocumentSet:
     mf = json.loads((d / "manifest.json").read_text())
     return DocumentSet(set_id=mf["set_id"], unit_key=mf["unit_key"], currency=mf.get("currency"),
                        crm_area_unit=mf.get("crm_area_unit", "sqft"),
-                       documents=[DocumentRef(id=x["type"], type=x["type"], name=x["file"], path=str(d / x["file"]))
+                       documents=[DocumentRef(id=x["type"], type=x["type"], name=x["file"], path=str(d / x["file"]), scope=x.get("scope", "unit"))
                                   for x in mf["documents"]])
 
 
 def analyze(ds: DocumentSet, spa_contract: Optional[ContractData],
-            pdf_facts: Callable[[DocumentRef], Optional[FactsOutput]]) -> dict:
-    """Pure analysis. `pdf_facts(doc)` returns grounded facts for a brochure/filing, or None if unavailable."""
+            pdf_facts: Callable[[DocumentRef], Optional[FactsOutput]], spa_overlaid: set[str] | frozenset[str] = frozenset()) -> dict:
+    """Pure analysis. `pdf_facts(doc)` returns grounded facts for a brochure/filing, or None if unavailable.
+    When the SPA has been amended, `spa_contract` is the CURRENT effective terms and `spa_overlaid` names what an amendment changed."""
     set_key = unit_key(ds.unit_key)
     facts: list[Fact] = []
     docs_out, pending = [], []
@@ -242,7 +246,7 @@ def analyze(ds: DocumentSet, spa_contract: Optional[ContractData],
         if d.type == "spa":
             if spa_contract is None:
                 pending.append(d.id); docs_out.append({**d.model_dump(), "match": "pending", "facts": 0}); continue
-            fs = facts_from_contract(spa_contract, d.id)
+            fs = facts_from_contract(spa_contract, d.id, spa_overlaid)
             uk = spa_contract.unit_id.value or ""
         elif d.type == "crm_export":
             fs, uk = facts_from_crm(Path(d.path), d.id, set_key, ds.crm_area_unit)
@@ -258,9 +262,12 @@ def analyze(ds: DocumentSet, spa_contract: Optional[ContractData],
         st, score = match_unit(unit_key(uk), set_key) if uk else ("unmatched", 0)
         if d.type == "spa" or (uk and unit_key(uk) == set_key):
             st = "normalized" if uk and uk.strip().lower() != ds.unit_key.strip().lower() else "exact"
+        if d.scope == "project" and d.type in ("brochure", "regulator_filing") and not uk:
+            st, score = "project", 100                                   # states no unit: it speaks for the whole project
         docs_out.append({**d.model_dump(), "match": st, "score": score, "unit_text": uk, "facts": len(fs),
                          "note": "Unit key matched after normalisation." if st == "normalized"
-                         else "Unit key is only similar: matching is UNCERTAIN." if st == "uncertain" else None})
+                         else "Unit key is only similar: matching is UNCERTAIN." if st == "uncertain"
+                         else "Project-level document: it applies to every unit in the project." if st == "project" else None})
         if st != "unmatched":
             for f in fs:
                 f.locator = f.locator

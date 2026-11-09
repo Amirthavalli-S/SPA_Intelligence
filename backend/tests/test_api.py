@@ -348,6 +348,8 @@ def test_eval_run_needs_confirmation_when_uncached(client, env):
 
 def test_eval_run_cached_completes(client, seeded, monkeypatch):
     import eval.run_eval as ev
+    from tests.fakes import seed_pgv_golden
+    seed_pgv_golden(extract_contract)
     monkeypatch.setattr(ev, "penalty_test_pass_rate", lambda: {"passed": 14, "failed": 0, "total": 14, "pass_rate": 1.0})
     assert client.post("/api/eval/run", json={}).status_code == 202
     t0 = time.time()

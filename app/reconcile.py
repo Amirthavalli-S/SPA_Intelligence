@@ -47,6 +47,35 @@ def fields_from_contract(c) -> dict[str, Any]:
     return out
 
 
+_OVERLAY = {"price": ("price",), "possession_date": ("handover_date",), "penalty_rate": ("delay_rate", "delay_basis"),
+            "penalty_cap": ("delay_cap",), "grace_period_days": ("grace_period_days",)}
+
+
+def overlay_current(base_id: str, result: dict, contracts: dict) -> tuple[Any, set[str]]:
+    """The agreement's CURRENT terms as one contract: the original SPA, with every term that a later document changed taken from that
+    document (its quote is prefixed with who changed it and when). Returns (contract, the attributes that were overlaid).
+    `result` is reconcile()'s output; `contracts` maps doc_id -> its ContractData."""
+    base = contracts[base_id].model_copy(deep=True)
+    changed: set[str] = set()
+    for f, src in result["sources"].items():
+        if src["doc_id"] == base_id:
+            continue
+        donor = contracts[src["doc_id"]]
+        tag = f"[{src['doc_type']} signed {src['date_signed']}] "
+        if f == "payment_schedule":
+            base.payment_plan = [m.model_copy(update={"source_quote": tag + m.source_quote, "evidence": None}) for m in donor.payment_plan]
+            base.payment_plan_percent_sum = donor.payment_plan_percent_sum
+            changed.add("payment_plan")
+            continue
+        for attr in _OVERLAY.get(f, ()):
+            item = getattr(donor, attr).model_copy(deep=True)
+            if item.source_quote:
+                item.source_quote, item.evidence = tag + item.source_quote, None
+            setattr(base, attr, item)
+        changed.add({"possession_date": "handover_date", "penalty_rate": "delay_rate", "penalty_cap": "delay_cap"}.get(f, f))
+    return base, changed
+
+
 def reconcile(agreement_id: str, docs: list[Doc]) -> dict:
     problems: list[str] = []
     used: list[Doc] = []

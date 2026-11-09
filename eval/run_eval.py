@@ -80,7 +80,7 @@ def compare(contract, truth: dict, pdf_bytes: bytes) -> dict:
         "correct": (cc.value is not None) == want_cancel, "quote_ok": _quote_ok(pages_norm, cc.source_quote)}
 
     # Deterministic warnings must fire exactly when the truth warrants them.
-    want_sum_warn = abs(sum(m["percent"] for m in tplan) - 100) > 0.01
+    want_sum_warn = bool(tplan) and abs(sum(m["percent"] for m in tplan) - 100) > 0.01      # an addendum has no plan: nothing to sum
     got_sum_warn = any("sum to" in w for w in contract.warnings)
     res["warning.percent_sum"] = {"correct": want_sum_warn == got_sum_warn, "quote_ok": None}
     got_cancel_warn = any("No cancellation clause" in w for w in contract.warnings)

@@ -1,0 +1,100 @@
+{
+  "doc_id": "pgv_agr1105_spa",
+  "kind": "synthetic",
+  "synthetic": true,
+  "currency": "INR",
+  "note": "Synthetic Green Valley demo document. Labels are known by construction.",
+  "buyer": {
+    "value": "Ravi Kumar S",
+    "page": 1,
+    "quote": "Ravi Kumar S"
+  },
+  "unit_id": {
+    "value": "A-1105",
+    "page": 1,
+    "quote": "A-1105, Tower A"
+  },
+  "price": {
+    "value": 10000000,
+    "page": 2,
+    "quote": "Rs. 1,00,00,000"
+  },
+  "area_sqft": {
+    "value": 1150.0,
+    "page": 1,
+    "quote": "1,150 sq ft"
+  },
+  "handover_date": {
+    "value": "2028-12-31",
+    "page": 2,
+    "quote": "31 December 2028"
+  },
+  "grace_period_days": {
+    "value": 0,
+    "page": 3,
+    "quote": "Grace period: 0 days"
+  },
+  "delay_rate": {
+    "value": 10.0,
+    "page": 3,
+    "quote": "Rs. 10 per sq ft per month"
+  },
+  "delay_basis": {
+    "value": "fixed_per_sqft_per_month",
+    "page": 3,
+    "quote": "Rs. 10 per sq ft per month"
+  },
+  "delay_cap": {
+    "value": null,
+    "page": null,
+    "quote": null
+  },
+  "cancellation_clause": {
+    "value": "present",
+    "page": 3,
+    "quote": "the Developer shall refund the full amount received with interest at 8% p.a."
+  },
+  "payment_plan": [
+    {
+      "name": "Booking",
+      "percent": 10.0,
+      "due_date": "2025-01-14",
+      "trigger": "On signing of this Agreement",
+      "page": 2,
+      "quote": "Booking 10% 14 January 2025 On signing of this Agreement"
+    },
+    {
+      "name": "Foundation",
+      "percent": 20.0,
+      "due_date": "2025-07-15",
+      "trigger": "On completion of the foundation",
+      "page": 2,
+      "quote": "Foundation 20% 15 July 2025 On completion of the foundation"
+    },
+    {
+      "name": "Structure",
+      "percent": 25.0,
+      "due_date": "2026-03-31",
+      "trigger": "On completion of the structure",
+      "page": 2,
+      "quote": "Structure 25% 31 March 2026 On completion of the structure"
+    },
+    {
+      "name": "Finishing",
+      "percent": 25.0,
+      "due_date": "2027-06-30",
+      "trigger": "On completion of internal finishing",
+      "page": 2,
+      "quote": "Finishing 25% 30 June 2027 On completion of internal finishing"
+    },
+    {
+      "name": "Possession",
+      "percent": 20.0,
+      "due_date": "2028-12-31",
+      "trigger": "On offer of possession",
+      "page": 2,
+      "quote": "Possession 20% 31 December 2028 On offer of possession"
+    }
+  ],
+  "dated_clauses": []
+}

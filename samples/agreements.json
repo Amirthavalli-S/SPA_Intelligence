@@ -1,0 +1,22 @@
+{
+  "pgv_agr1105_spa.pdf": {
+    "agreement_id": "AGR-1105",
+    "doc_type": "SPA",
+    "date_signed": "2025-01-14"
+  },
+  "pgv_agr1108_spa.pdf": {
+    "agreement_id": "AGR-1108",
+    "doc_type": "SPA",
+    "date_signed": "2025-02-02"
+  },
+  "pgv_agr1105_addendum1.pdf": {
+    "agreement_id": "AGR-1105",
+    "doc_type": "Addendum",
+    "date_signed": "2026-03-10"
+  },
+  "pgv_agr1105_extension.pdf": {
+    "agreement_id": "AGR-1105",
+    "doc_type": "Extension Letter",
+    "date_signed": "2026-07-18"
+  }
+}

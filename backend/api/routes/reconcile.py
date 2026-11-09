@@ -49,6 +49,27 @@ def build(agreement_id: str) -> dict | None:
     return out
 
 
+def effective_for_agreement(agreement_id: str):
+    """(ContractData of the CURRENT terms, the attributes an amendment changed) for one agreement, or None if it cannot be built."""
+    contracts, docs = {}, []
+    for s in deps.list_sources():
+        m = agreements.get(s.id, s.name)
+        if m["agreement_id"] != agreement_id:
+            continue
+        status, _ = deps.status_for(s)
+        eff = deps.effective_contract(s) if status == "extracted" else None
+        ds = date.fromisoformat(m["date_signed"]) if m["date_signed"] else None
+        docs.append(reconcile.Doc(s.id, s.name, m["doc_type"] or "SPA", ds, reconcile.fields_from_contract(eff) if eff else {}))
+        if eff is not None:
+            contracts[s.id] = eff
+    usable = [d for d in docs if d.doc_id in contracts and d.doc_type == "SPA" and d.date_signed]
+    if not usable:
+        return None
+    base = min(usable, key=lambda d: d.date_signed)
+    result = reconcile.reconcile(agreement_id, [d for d in docs if d.doc_id in contracts])
+    return reconcile.overlay_current(base.doc_id, result, contracts)
+
+
 @router.get("/agreements")
 def list_agreements():
     groups: dict[str, list[dict]] = {}

@@ -579,7 +579,8 @@
       "uncertain": "UNCERTAIN match",
       "unmatched": "unit not found",
       "pending": "not read",
-      "matched": "matched"
+      "matched": "matched",
+      "project": "project-level (applies to every unit)"
     },
     "score": "Planted-error check: precision {{p}}, recall {{r}} ({{tp}} of {{n}} found)",
     "graph": "Document and attribute graph",

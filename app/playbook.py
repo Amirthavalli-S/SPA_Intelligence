@@ -82,9 +82,29 @@ def _suggest(clause_type: str | None, jurisdiction: str, contract_text: str | No
             "redline": redline(contract_text, ap["text"]) if contract_text else None}
 
 
+def _applies(r: dict, pages: list[str]) -> bool:
+    """A rule may be limited to one company's or project's contracts: applies_when_text is a CASE-SENSITIVE regex over the whole text."""
+    w = r.get("applies_when_text")
+    return not w or re.search(w, "\n".join(pages), re.S) is not None
+
+
+def _months(amount: float, unit: str) -> float:
+    return amount if unit == "months" else amount / 30
+
+
+def _sentence(pages: list[str], pattern: str) -> tuple[int, str] | None:
+    for i, pg in enumerate(pages, 1):
+        m = re.search(pattern, " ".join(pg.split()), re.I)
+        if m:
+            return i, m.group(0).strip()
+    return None
+
+
 def run_deterministic(c: ContractData, pages: list[str], pdf: bytes, pb: dict, jurisdiction: str, library: list[dict]) -> list[dict]:
     out = []
     for r in pb["deterministic"]:
+        if not _applies(r, pages):
+            continue
         item = None
         status, reason, ev, clause_text = "pass", "", None, None
         t = r["type"]
@@ -129,8 +149,67 @@ def run_deterministic(c: ContractData, pages: list[str], pdf: bytes, pb: dict, j
                 ev = locate(pdf, pg, clause_text)
             else:
                 reason = "No forbidden terms found."
+        elif t == "dated_clause_max_months":          # how long the developer may postpone before compensation applies
+            pat = re.compile(r["match"], re.I)
+            found = [(_months(cl.amount, cl.unit), f"{cl.amount} {cl.unit}", cl.evidence, cl.source_quote) for cl in c.dated_clauses
+                     if pat.search(cl.description or "")]
+            g = c.grace_period_days.value
+            if g:
+                found.append((g / 30, f"{g} days", c.grace_period_days.evidence, c.grace_period_days.source_quote))
+            if not found:
+                reason = f"No postponement or grace period is stated, so none exceeds {r['threshold']:g} months."
+            else:
+                worst = max(found, key=lambda x: x[0])
+                ev, clause_text = worst[2], worst[3]
+                if worst[0] > r["threshold"]:
+                    status, reason = "fail", f"The developer may postpone by {worst[1]}, above the limit of {r['threshold']:g} months."
+                else:
+                    reason = f"The longest postponement is {worst[1]}, within the limit of {r['threshold']:g} months."
+        elif t == "min_rate_per_sqft_month":           # a plain comparison of the stated rate; yearly rates are divided by 12 in code
+            rate, basis = c.delay_rate.value, c.delay_basis.value
+            ev, clause_text = c.delay_rate.evidence, c.delay_rate.source_quote
+            if rate is None or basis not in ("fixed_per_sqft_per_month", "fixed_per_sqft_per_year"):
+                reason = "No fixed per-sq-ft compensation rate is stated, so there is no rate to compare."
+            else:
+                monthly = rate if basis == "fixed_per_sqft_per_month" else rate / 12
+                if monthly < r["threshold"]:
+                    status, reason = "fail", f"Compensation is {monthly:g} per sq ft per month, below the minimum of {r['threshold']:g}."
+                else:
+                    reason = f"Compensation is {monthly:g} per sq ft per month, at or above the minimum of {r['threshold']:g}."
+        elif t == "refund_clause":                     # a clause committing the developer to refund, with interest of at least min_interest_pct
+            hit = _sentence(pages, r"[^.]*\b(?:shall|will|must)\s+refund\b[^.]*\.")
+            if hit is None:
+                status, reason = "fail", "No clause committing the developer to refund the purchaser was found."
+            else:
+                pg, clause_text = hit
+                ev = locate(pdf, pg, clause_text)
+                pcts = [float(x) for x in re.findall(r"(\d+(?:\.\d+)?)\s*%", clause_text)]
+                if not pcts or max(pcts) < r["min_interest_pct"]:
+                    status = "fail"
+                    reason = (f"The refund clause states interest of {max(pcts):g}%, below the minimum of {r['min_interest_pct']:g}% a year."
+                              if pcts else f"The refund clause states no interest (minimum {r['min_interest_pct']:g}% a year).")
+                else:
+                    reason = f"The refund clause carries interest of {max(pcts):g}% a year (minimum {r['min_interest_pct']:g}%)."
+        elif t == "required_terms":
+            hit = next((h for term in r["terms"] if (h := _sentence(pages, rf"[^.]*{re.escape(term)}[^.]*\.?"))), None)
+            if hit is None:
+                status, reason = "fail", "None of the required wording was found: " + ", ".join(f"'{x}'" for x in r["terms"]) + "."
+            else:
+                clause_text, ev = hit[1], locate(pdf, hit[0], hit[1])
+                reason = "The required clause is present."
+        elif t == "registration_equals":
+            hit = _sentence(pages, r["pattern"])
+            if hit is None:
+                status, reason = "fail", "No registration number was found in the contract."
+            else:
+                clause_text, ev = hit[1], locate(pdf, hit[0], hit[1])
+                found = re.search(r["pattern"], clause_text, re.I).group(1)
+                if re.sub(r"\s", "", found).lower() != re.sub(r"\s", "", r["expected"]).lower():
+                    status, reason = "fail", f"The contract prints registration number {found}; the active filing is {r['expected']}."
+                else:
+                    reason = f"Registration number {found} matches the active filing."
         row = {"rule_id": r["id"], "kind": "deterministic", "clause_type": r.get("clause_type"), "title": r["title"],
-               "status": status, "severity": r["severity"], "reason": reason,
+               "status": status, "severity": r["severity"], "reason": reason, "reviewed_by_lawyer": bool(r.get("reviewed_by_lawyer", False)),
                "evidence": ev.model_dump() if ev else None, "confidence": 1.0,
                "suggestion": _suggest(r.get("clause_type"), jurisdiction, clause_text, library) if status == "fail" else None}
         out.append(row)

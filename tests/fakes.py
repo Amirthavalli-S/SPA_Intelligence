@@ -108,3 +108,12 @@ def judgements_tool_input(pages: list[str]) -> dict:
         out.append({"clause_type": ct, "clause_found": pg is not None, "compliant": True if pg else None,
                     "reason": "Stub judgement for tests.", "source_page": pg, "source_quote": text if pg else None, "confidence": 0.9})
     return {"judgements": out}
+
+
+def seed_pgv_golden(extract_contract) -> None:
+    """Seed the extraction cache for the Green Valley golden documents from their labels (the labels are the truth by construction)."""
+    from eval.labels import labels_to_tool_input
+    for doc_id in ("pgv_agr1105_spa", "pgv_agr1105_addendum1", "pgv_agr1105_extension", "pgv_agr1108_spa"):
+        d = ROOT / "eval" / "golden" / doc_id
+        labels = json.loads((d / "labels.json").read_text())
+        extract_contract((d / "doc.pdf").read_bytes(), doc_id, client=FakeClient(labels_to_tool_input(labels)), use_cache=False)

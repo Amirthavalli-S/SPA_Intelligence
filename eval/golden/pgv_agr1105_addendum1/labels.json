@@ -1,0 +1,59 @@
+{
+  "doc_id": "pgv_agr1105_addendum1",
+  "kind": "synthetic",
+  "synthetic": true,
+  "currency": "INR",
+  "note": "Synthetic Green Valley demo document. Labels are known by construction.",
+  "buyer": {
+    "value": "Ravi Kumar S",
+    "page": 1,
+    "quote": "Ravi Kumar S"
+  },
+  "unit_id": {
+    "value": "A-1105",
+    "page": 1,
+    "quote": "A-1105, Tower A"
+  },
+  "price": {
+    "value": 9500000,
+    "page": 1,
+    "quote": "Rs. 95,00,000"
+  },
+  "area_sqft": {
+    "value": null,
+    "page": null,
+    "quote": null
+  },
+  "handover_date": {
+    "value": null,
+    "page": null,
+    "quote": null
+  },
+  "grace_period_days": {
+    "value": null,
+    "page": null,
+    "quote": null
+  },
+  "delay_rate": {
+    "value": null,
+    "page": null,
+    "quote": null
+  },
+  "delay_basis": {
+    "value": null,
+    "page": null,
+    "quote": null
+  },
+  "delay_cap": {
+    "value": null,
+    "page": null,
+    "quote": null
+  },
+  "cancellation_clause": {
+    "value": null,
+    "page": null,
+    "quote": null
+  },
+  "payment_plan": [],
+  "dated_clauses": []
+}

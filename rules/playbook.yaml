@@ -44,6 +44,50 @@ deterministic:               # evaluated in plain code, no LLM
     clause_type: cancellation_forfeiture
     severity: medium
 
+  # ---- Green Valley company rulebook (demo). Applies only to this project's SPAs. NOT reviewed by a lawyer.
+  - id: gv_postponement_max
+    title: "Developer may postpone possession by at most 12 months before compensation applies"
+    type: dated_clause_max_months
+    match: "postpon|grace|extension"
+    threshold: 12
+    applies_when_text: "AGREEMENT FOR SALE.*Prestige Green Valley"
+    reviewed_by_lawyer: false
+    clause_type: delay
+    severity: high
+  - id: gv_min_rate
+    title: "Delay compensation at least 10 per sq ft per month"
+    type: min_rate_per_sqft_month
+    threshold: 10
+    applies_when_text: "AGREEMENT FOR SALE.*Prestige Green Valley"
+    reviewed_by_lawyer: false
+    clause_type: delay
+    severity: high
+  - id: gv_refund_required
+    title: "Refund of the full amount with interest of at least 8% a year if the developer does not complete"
+    type: refund_clause
+    min_interest_pct: 8
+    applies_when_text: "AGREEMENT FOR SALE.*Prestige Green Valley"
+    reviewed_by_lawyer: false
+    clause_type: cancellation_forfeiture
+    severity: high
+  - id: gv_force_majeure_required
+    title: "A force majeure clause is present"
+    type: required_terms
+    terms: ["force majeure"]
+    applies_when_text: "AGREEMENT FOR SALE.*Prestige Green Valley"
+    reviewed_by_lawyer: false
+    clause_type: force_majeure
+    severity: medium
+  - id: gv_rera_matches
+    title: "RERA registration number matches the project's active TNRERA filing"
+    type: registration_equals
+    pattern: 'RERA Registration No\.?\s*([A-Z0-9/\-]+)'
+    expected: "TN/29/Building/0234/2025"
+    applies_when_text: "AGREEMENT FOR SALE.*Prestige Green Valley"
+    reviewed_by_lawyer: false
+    clause_type: registration
+    severity: high
+
 qualitative:                 # judged by a clause-specialist LLM prompt, then checked by the grounding step
   - id: q_delay
     clause_type: delay

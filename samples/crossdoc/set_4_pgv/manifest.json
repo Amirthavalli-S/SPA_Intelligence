@@ -1,0 +1,39 @@
+{
+  "set_id": "set_4_pgv",
+  "unit_key": "A-1105",
+  "spa": "spa.pdf",
+  "currency": "INR",
+  "agreement_id": "AGR-1105",
+  "crm_area_unit": "sqft",
+  "documents": [
+    {
+      "type": "spa",
+      "file": "spa.pdf"
+    },
+    {
+      "type": "brochure",
+      "file": "brochure.pdf",
+      "scope": "project"
+    },
+    {
+      "type": "regulator_filing",
+      "file": "filing.pdf",
+      "scope": "project"
+    },
+    {
+      "type": "crm_export",
+      "file": "crm.csv"
+    }
+  ],
+  "planted": [
+    {
+      "attribute": "handover_date",
+      "docs": [
+        "spa",
+        "brochure",
+        "regulator_filing",
+        "crm_export"
+      ]
+    }
+  ]
+}
