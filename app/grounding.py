@@ -120,7 +120,8 @@ def _value_check(field: str, value, quote: str, basis: str | None = None):
         return None
     if field == "delay_basis":
         pat = {"percent_per_annum": r"per\s+annum|p\.a\.|annum|per\s+year|%",
-               "fixed_per_sqft_per_year": r"sq|square|feet|foot"}.get(value)
+               "fixed_per_sqft_per_year": r"sq|square|feet|foot",
+               "fixed_per_sqft_per_month": r"month|monthly|p\.m\.|شهر"}.get(value)
         if pat is None:
             return None
         ok = re.search(pat, quote, re.IGNORECASE) is not None

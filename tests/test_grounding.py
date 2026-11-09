@@ -150,3 +150,9 @@ def test_parse_dates_when_ocr_glues_the_date_to_the_previous_word():
     assert parse_dates("ref 114/06/2024") == []                  # a longer number is not a day
     assert parse_dates("12024-06-14") == []
 
+
+
+def test_monthly_basis_needs_the_word_month_in_the_quote():
+    from app.grounding import _value_check
+    assert _value_check("delay_basis", "fixed_per_sqft_per_month", "Rs 10 per sq ft per month").passed
+    assert not _value_check("delay_basis", "fixed_per_sqft_per_month", "Rs 120 per sq ft per annum").passed

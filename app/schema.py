@@ -13,7 +13,7 @@ from pydantic import BaseModel, Field, model_validator
 
 T = TypeVar("T")
 
-DelayBasis = Literal["percent_per_annum", "fixed_per_sqft_per_year", "other"]
+DelayBasis = Literal["percent_per_annum", "fixed_per_sqft_per_year", "fixed_per_sqft_per_month", "other"]
 
 
 GroundingStatus = Literal["grounded", "partial", "ungrounded", "not_stated"]
@@ -103,7 +103,7 @@ class ExtractionOutput(BaseModel):
     grace_period_days: Sourced[int]
     delay_rate: Sourced[float] = Field(
         ..., description="Number only: percent per annum if delay_basis is percent_per_annum; "
-                         "currency units per sq ft per year if fixed_per_sqft_per_year.")
+                         "currency units per sq ft per year if fixed_per_sqft_per_year, per month if fixed_per_sqft_per_month.")
     delay_basis: Sourced[DelayBasis]
     delay_cap: Sourced[float] = Field(
         ..., description="Cap on delay compensation as a percentage of the purchase price; null if no cap.")

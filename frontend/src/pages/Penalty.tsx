@@ -45,7 +45,9 @@ export default function Penalty() {
       t("penalty.rate"),
       terms.basis.value === "fixed_per_sqft_per_year"
         ? t("terms.rateFixed", { value: fmt.aed(terms.rate.value ?? 0, 2) })
-        : t("terms.ratePercent", { value: `${fmt.flex(terms.rate.value ?? 0)}%` }),
+        : terms.basis.value === "fixed_per_sqft_per_month"
+          ? t("terms.rateFixedMonth", { value: fmt.aed(terms.rate.value ?? 0, 2) })
+          : t("terms.ratePercent", { value: `${fmt.flex(terms.rate.value ?? 0)}%` }),
       terms.rate.source_page,
       terms.rate.source_quote,
     ],

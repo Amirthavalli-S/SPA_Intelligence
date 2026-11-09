@@ -84,6 +84,15 @@ def test_simulate_fixed_basis():
     assert rows[2]["penalty"] == 1770.04
 
 
+def test_simulate_monthly_rate_is_converted_to_annual_then_prorated_by_day():
+    """Rs 10 per sq ft per month on 1,150 sq ft = 1,150 x 120 a year; 90 days -> 1,150*120*90/365."""
+    rows = simulate(contract(basis="fixed_per_sqft_per_month", rate=10.0, grace=0, area=1150), [90])
+    assert rows[0]["penalty"] == 34027.4
+    assert rows[0]["penalty"] == delay_penalty_fixed_per_sqft(1150, 120, 90)       # identical to the yearly-rate path
+    yearly = simulate(contract(basis="fixed_per_sqft_per_year", rate=120.0, grace=0, area=1150), [90])
+    assert rows == yearly
+
+
 def test_simulate_unavailable_when_rate_missing_or_other_basis():
     with pytest.raises(SimulationUnavailable):
         simulate(contract(rate=None))

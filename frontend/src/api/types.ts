@@ -1478,7 +1478,7 @@ export interface components {
              * Value
              * @description Extracted value, or null if the document does not state it.
              */
-            value?: ("percent_per_annum" | "fixed_per_sqft_per_year" | "other") | null;
+            value?: ("percent_per_annum" | "fixed_per_sqft_per_year" | "fixed_per_sqft_per_month" | "other") | null;
             /**
              * Source Page
              * @description 1-based PDF page number where the value is stated.

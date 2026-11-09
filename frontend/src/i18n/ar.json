@@ -222,7 +222,8 @@
     "basis": {
       "percent_per_annum": "نسبة مئوية سنويًا",
       "fixed_per_sqft_per_year": "مبلغ ثابت لكل قدم مربعة سنويًا",
-      "other": "أخرى"
+      "other": "أخرى",
+      "fixed_per_sqft_per_month": "مبلغ ثابت لكل قدم مربعة شهريًا"
     },
     "fields": {
       "buyer": "المشتري",
@@ -269,7 +270,8 @@
       "cancel": "الإلغاء"
     },
     "planSub": "الدفعات التي يطلبها العقد. يجب أن يكون مجموع النسب 100%.",
-    "planProgress": "{{pct}} من السعر مجدول"
+    "planProgress": "{{pct}} من السعر مجدول",
+    "rateFixedMonth": "{{value}} لكل قدم مربعة شهريًا"
   },
   "penalty": {
     "title": "محاكي غرامة التأخير",

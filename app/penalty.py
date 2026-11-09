@@ -76,9 +76,9 @@ def penalty_for_contract(contract: ContractData, delay_days: int, rules: dict | 
     dc = rules["penalty"]["day_count_basis"]
     basis = contract.delay_basis.value
     rate = contract.delay_rate.value
-    if basis not in ("percent_per_annum", "fixed_per_sqft_per_year"):
-        raise SimulationUnavailable(f"Delay basis is '{basis}'; only percent_per_annum and "
-                                    f"fixed_per_sqft_per_year can be simulated.")
+    if basis not in ("percent_per_annum", "fixed_per_sqft_per_year", "fixed_per_sqft_per_month"):
+        raise SimulationUnavailable(f"Delay basis is '{basis}'; only percent_per_annum, "
+                                    f"fixed_per_sqft_per_year and fixed_per_sqft_per_month can be simulated.")
     if rate is None:
         raise SimulationUnavailable("The contract does not state a delay rate.")
     grace = contract.grace_period_days.value or 0
@@ -90,7 +90,9 @@ def penalty_for_contract(contract: ContractData, delay_days: int, rules: dict | 
     else:
         if contract.area_sqft.value is None:
             raise SimulationUnavailable("The contract does not state the area (sq ft).")
-        amount = delay_penalty_fixed_per_sqft(contract.area_sqft.value, rate, delay_days, grace,
+        # a monthly rate is converted to an annual one (x12) and then prorated by day like every other rate
+        annual = rate * 12 if basis == "fixed_per_sqft_per_month" else rate
+        amount = delay_penalty_fixed_per_sqft(contract.area_sqft.value, annual, delay_days, grace,
                                               contract.price.value, cap, dc)
     cap_amount = (round(contract.price.value * cap / 100, 2)
                   if cap is not None and contract.price.value is not None else None)

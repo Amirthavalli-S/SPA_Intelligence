@@ -214,7 +214,8 @@
     "basis": {
       "percent_per_annum": "Percent per annum",
       "fixed_per_sqft_per_year": "Fixed amount per sq ft per year",
-      "other": "Other"
+      "other": "Other",
+      "fixed_per_sqft_per_month": "Fixed amount per sq ft per month"
     },
     "fields": {
       "buyer": "Buyer",
@@ -261,7 +262,8 @@
       "cancel": "Cancellation"
     },
     "planSub": "The instalments the contract asks you to pay. The percentages should add up to 100%.",
-    "planProgress": "{{pct}} of the price is scheduled"
+    "planProgress": "{{pct}} of the price is scheduled",
+    "rateFixedMonth": "{{value}} per sq ft per month"
   },
   "penalty": {
     "title": "Delay-penalty simulator",

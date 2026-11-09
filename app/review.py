@@ -77,8 +77,8 @@ def _coerce(field: str, value: Any):
         except ValueError:
             raise ReviewError("handover_date must be YYYY-MM-DD") from None
     if field == "delay_basis":
-        if value not in ("percent_per_annum", "fixed_per_sqft_per_year", "other"):
-            raise ReviewError("delay_basis must be percent_per_annum, fixed_per_sqft_per_year or other")
+        if value not in ("percent_per_annum", "fixed_per_sqft_per_year", "fixed_per_sqft_per_month", "other"):
+            raise ReviewError("delay_basis must be percent_per_annum, fixed_per_sqft_per_year, fixed_per_sqft_per_month or other")
         return value
     try:
         v = float(value)

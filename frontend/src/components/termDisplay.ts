@@ -66,7 +66,9 @@ export function useTermDisplay() {
           text:
             basis === "fixed_per_sqft_per_year"
               ? t("terms.rateFixed", { value: fmt.aed(v as number, 2) })
-              : basis === "percent_per_annum"
+              : basis === "fixed_per_sqft_per_month"
+                ? t("terms.rateFixedMonth", { value: fmt.aed(v as number, 2) })
+                : basis === "percent_per_annum"
                 ? t("terms.ratePercent", { value: `${fmt.flex(v as number)}%` })
                 : fmt.flex(v as number),
           missing: false,
