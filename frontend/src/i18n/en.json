@@ -76,10 +76,6 @@
     },
     "roadmapTitle": "What you can do today, and what comes next",
     "roadmap": {
-      "whatsapp": {
-        "title": "WhatsApp assistant",
-        "body": "Ask your contract questions in a chat."
-      },
       "evalset": {
         "title": "Real evaluation set",
         "body": "Accuracy measured on real, labelled contracts."
@@ -119,6 +115,10 @@
       "bilingual": {
         "title": "Arabic vs English check",
         "body": "Finds clauses where the Arabic and English versions state different amounts, dates or periods."
+      },
+      "buyerchat": {
+        "title": "Buyer chat",
+        "body": "Buyers ask questions about their own contract in a chat and get answers with the page and exact words."
       }
     },
     "forTeams": "For teams"
@@ -751,7 +751,14 @@
     "send": "Send",
     "referred": "Referred to the legal team",
     "notLinkedTitle": "No contract is linked to your account yet",
-    "notLinkedBody": "Ask the sales team to link your email address to your contract. Then reload this page."
+    "notLinkedBody": "Ask the sales team to link your email address to your contract. Then reload this page.",
+    "newChat": "New conversation",
+    "typing": "Looking in your contract…",
+    "hint": "Enter to send, Shift+Enter for a new line. Decision support, not legal advice.",
+    "s1": "When is my handover date?",
+    "s2": "What are my payment milestones?",
+    "s3": "What happens if the seller is late?",
+    "s4": "How much have I paid and what is left?"
   },
   "users": {
     "title": "Users and roles",

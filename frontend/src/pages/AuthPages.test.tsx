@@ -129,6 +129,34 @@ describe("buyer chat", () => {
     expect(bodyOf(f, "/buyer/chat")).toMatchObject({ message: "When is handover?", channel: "web" });
   });
 
+  it("is interactive: starter question, Enter sends, typing shown, conversation kept and resettable", async () => {
+    sessionStorage.clear();
+    let release: (v: Response) => void = () => {};
+    const f = vi.fn((u: string) => u.endsWith("/buyer/me") ? Promise.resolve(jsonResponse({ linked: true, contract_name: "c.pdf" }))
+      : new Promise<Response>((res) => { release = res; }));
+    vi.stubGlobal("fetch", f);
+    const view = mount(<BuyerHome />);
+    fireEvent.click(await screen.findByRole("button", { name: "When is my handover date?" }));     // a tap on a starter asks it
+    expect(await screen.findByTestId("chat-typing")).toBeInTheDocument();
+    expect(screen.getByTestId("msg-user")).toHaveTextContent("When is my handover date?");
+    release(jsonResponse({ answer: "30 June 2027.", refused: false, citations: [] }));
+    expect(await screen.findByTestId("msg-assistant")).toHaveTextContent("30 June 2027");
+    expect(screen.queryByTestId("chat-typing")).toBeNull();
+    const input = screen.getByLabelText("Ask about your contract");
+    fireEvent.change(input, { target: { value: "and the price?" } });
+    fireEvent.keyDown(input, { key: "Enter" });                                                    // Enter sends
+    await waitFor(() => expect(screen.getAllByTestId("msg-user")).toHaveLength(2));
+    fireEvent.change(input, { target: { value: "line one" } });
+    fireEvent.keyDown(input, { key: "Enter", shiftKey: true });                                    // Shift+Enter does not
+    expect(screen.getAllByTestId("msg-user")).toHaveLength(2);
+    view.unmount();
+    mount(<BuyerHome />);                                                                          // remembered for this browser tab
+    expect(await screen.findAllByTestId("msg-user")).toHaveLength(2);
+    fireEvent.click(screen.getByTestId("chat-reset"));
+    expect(screen.queryByTestId("msg-user")).toBeNull();
+    expect(screen.getByTestId("chat-starters")).toBeInTheDocument();
+  });
+
   it("explains when no contract is linked yet", async () => {
     vi.stubGlobal("fetch", vi.fn(async () => jsonResponse({ linked: false, contract_name: null })));
     mount(<BuyerHome />);

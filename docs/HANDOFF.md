@@ -68,7 +68,7 @@ Last run at commit `a26e052`: backend 403 passed + 1 skipped (Docling-only), fro
 ## Backlog (suggested order)
 1. Finish OCR live verification; fix issues found. 2. Portfolio dashboard (total delay exposure, open reviews, deadlines this month).
 3. Bulk upload. 4. Larger labelled accuracy set incl. scans (`eval/`). 5. Production hosting (paid Render, backups, error alerts, domain).
-6. Arabic OCR text layer. 7. Add auth/OCR browser checks to CI-style scripts. 8. Optional WhatsApp endpoint.
+6. Arabic OCR text layer. 7. Add auth/OCR browser checks to CI-style scripts. (WhatsApp: owner decided NOT to build it; the buyer web chat is the interactive channel.)
 
 ## Known gotchas
 - Contract id = SHA-256 of the **uploaded** file; OCR'd uploads keep it via `.meta.json` `"id"` (`deps._stable_id`).
